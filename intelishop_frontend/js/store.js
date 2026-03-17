@@ -4,7 +4,15 @@ import { App, storeFeedback, $, API_BASE_URL } from './config.js';
 // HÀM MỚI: Tự động ghép nối URL của Backend vào đường dẫn ảnh
 const getFullUrl = (path) => {
     if (!path) return '';
-    return path.startsWith('http') ? path : `${API_BASE_URL}${path}`;
+    // Nếu path đã là link đầy đủ (ví dụ avatar Google) thì trả về luôn
+    if (path.startsWith('http')) return path;
+
+    // Loại bỏ dấu '/' ở cuối API_BASE_URL (nếu có) để tránh lỗi //
+    const baseUrl = API_BASE_URL.replace(/\/$/, '');
+    // Đảm bảo đường dẫn path luôn bắt đầu bằng dấu '/'
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+
+    return `${baseUrl}${cleanPath}`;
 };
 
 // 1. RENDER DANH SÁCH THƯƠNG HIỆU

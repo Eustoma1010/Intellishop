@@ -46,10 +46,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # BẮT BUỘC NẰM TRÊN CÙNG
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # Thêm dòng này ở đây!
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -131,6 +130,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     "https://intelishop-frontend.vercel.app",
+# ]
+# (Lưu ý: Nếu bạn muốn bảo mật tuyệt đối, hãy dùng CORS_ALLOW_ALL_ORIGINS = False và khai báo chính xác URL: CORS_ALLOWED_ORIGINS = ["https://intelishop.vercel.app"] - chú ý không có dấu / ở cuối).
 
 
 # Đường dẫn URL để truy cập file (VD: http://localhost:8000/media/file.mp3)

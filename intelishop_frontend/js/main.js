@@ -1,66 +1,94 @@
 import { API_BASE_URL, App } from './config.js';
-import { showHome, showLogin, showRegister, showAccount, updateAuthUI } from './ui.js';
-import { handleRegister, handleLogin, logout } from './auth.js';
-import { selectStore, renderStoreTabs, renderHotDeals, loadMoreProducts, scrollStoreTabs, checkScrollButtons, renderCatalog, filterByCategory } from './store.js';
-import { addToCart, showCart, updateCartQty, removeFromCart, proceedToCheckout, nextStep, prevStep, selectShipping, placeOrder, showOrders } from './cart.js';
-import { toggleAIPanel, handleChatKeyPress, sendChatMessage, toggleVoiceRecording } from './chatbot.js';
+import * as UI from './ui.js';
+import * as Auth from './auth.js';
+import * as Store from './store.js';
+import * as Cart from './cart.js';
+import * as Chatbot from './chatbot.js';
 
-// Gắn các hàm lên window để HTML gọi được (Giải quyết lỗi Function is not defined)
-window.showHome = showHome;
-window.showLogin = showLogin;
-window.scrollStoreTabs = scrollStoreTabs;
-window.checkScrollButtons = checkScrollButtons;
-window.showRegister = showRegister;
-window.showAccount = showAccount;
-window.handleRegister = handleRegister;
-window.handleLogin = handleLogin;
-window.logout = logout;
-window.selectStore = selectStore;
-window.loadMoreProducts = loadMoreProducts;
-window.selectStore = selectStore;
-window.addToCart = addToCart;
-window.showCart = showCart;
-window.updateCartQty = updateCartQty;
-window.removeFromCart = removeFromCart;
-window.proceedToCheckout = proceedToCheckout;
-window.nextStep = nextStep;
-window.filterByCategory = filterByCategory;
-window.prevStep = prevStep;
-window.selectShipping = selectShipping;
-window.placeOrder = placeOrder;
-window.showOrders = showOrders;
+// =======================================================
+// GẮN TOÀN BỘ HÀM LÊN WINDOW ĐỂ HTML ONCLICK GỌI ĐƯỢC
+// =======================================================
 
-window.toggleAIPanel = toggleAIPanel;
-window.handleChatKeyPress = handleChatKeyPress;
-window.sendChatMessage = sendChatMessage;
-window.toggleVoiceRecording = toggleVoiceRecording;
+// UI Navigation
+window.showHome = UI.showHome;
+window.showLogin = UI.showLogin;
+window.showRegister = UI.showRegister;
+window.showAccount = UI.showAccount;
 
+// Auth
+window.handleRegister = Auth.handleRegister;
+window.handleLogin = Auth.handleLogin;
+window.logout = Auth.logout;
+window.checkPasswordStrength = Auth.checkPasswordStrength;
+window.checkPasswordMatch = Auth.checkPasswordMatch;
+window.togglePassword = Auth.togglePassword;
+
+// Store & Products
+window.selectStore = Store.selectStore;
+window.loadMoreProducts = Store.loadMoreProducts;
+window.scrollStoreTabs = Store.scrollStoreTabs;
+window.checkScrollButtons = Store.checkScrollButtons;
+window.filterByCategory = Store.filterByCategory;
+
+// Cart & Checkout
+window.addToCart = Cart.addToCart;
+window.showCart = Cart.showCart;
+window.updateCartQty = Cart.updateCartQty;
+window.removeFromCart = Cart.removeFromCart;
+window.proceedToCheckout = Cart.proceedToCheckout;
+window.nextStep = Cart.nextStep;
+window.prevStep = Cart.prevStep;
+window.selectShipping = Cart.selectShipping;
+window.placeOrder = Cart.placeOrder;
+window.showOrders = Cart.showOrders;
+
+// Chatbot
+window.toggleAIPanel = Chatbot.toggleAIPanel;
+window.handleChatKeyPress = Chatbot.handleChatKeyPress;
+window.sendChatMessage = Chatbot.sendChatMessage;
+window.toggleVoiceRecording = Chatbot.toggleVoiceRecording;
+
+// =======================================================
+// KHỞI TẠO ỨNG DỤNG KHI TRÌNH DUYỆT TẢI XONG
+// =======================================================
 async function initApp() {
     try {
+        // 1. Kiểm tra trạng thái đăng nhập (JWT Token)
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            App.isLoggedIn = true;
+            // (Tương lai bạn có thể gọi API /api/me/ để lấy Tên từ Token)
+            App.currentUser = { name: "Khách hàng", email: "user@email.com" };
+        }
+
+        // 2. Lấy dữ liệu cửa hàng từ Backend Django
         const response = await fetch(`${API_BASE_URL}/api/data/`);
         const data = await response.json();
 
         if (data.success) {
             App.storeInfo = data.storeInfo;
             App.storeProducts = data.storeProducts;
-            App.hotDeals = data.hotDeals; // Nhận data Deal Hot
+            App.hotDeals = data.hotDeals;
             App.categories = data.categories;
 
             // Tự động sinh giao diện
-            renderStoreTabs();
-            renderHotDeals();
-            renderCatalog();
+            Store.renderStoreTabs();
+            Store.renderHotDeals();
+            Store.renderCatalog();
 
-            // Lấy ID của cửa hàng đầu tiên trong danh sách để chọn mặc định
+            // Lấy ID của cửa hàng đầu tiên để chọn mặc định
             const firstStoreId = Object.keys(data.storeInfo)[0];
-            if(firstStoreId) selectStore(firstStoreId);
+            if(firstStoreId) Store.selectStore(firstStoreId);
 
-            updateAuthUI();
-            console.log("✅ Đã render UI bằng dữ liệu động từ Django!");
+            UI.updateAuthUI();
+            UI.showHome(); // Mặc định hiển thị trang chủ
+            console.log("✅ Đã khởi tạo Intelishop thành công!");
         }
     } catch (error) {
         console.error("Lỗi khi tải dữ liệu từ server:", error);
+        UI.showNotification("Không thể kết nối máy chủ!", "error");
     }
 }
 
-initApp();
+// Kích hoạt app
+document.addEventListener('DOMContentLoaded', initApp);
