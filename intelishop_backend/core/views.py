@@ -66,11 +66,17 @@ def get_store_data(request):
             store_products[store.id] = []
 
             for p in store.products.all():
-                # Bảo vệ lỗi file ảnh
+                # BẢN VÁ: Bảo vệ lỗi file ảnh và tự động sửa đường dẫn sai
                 prod_image_url = ''
                 if p.image and hasattr(p.image, 'url'):
-                    try: prod_image_url = p.image.url
-                    except: pass
+                    try:
+                        url = p.image.url
+                        # Nếu đường dẫn bị lặp do import sai, ta tự động cắt gọt lại
+                        if '/media/media/' in url:
+                            url = url.replace('/media/media/', '/media/')
+                        prod_image_url = url
+                    except:
+                        pass
 
                 prod_data = {
                     'id': p.id,
