@@ -3,35 +3,30 @@ import re
 import random
 import base64
 import edge_tts
-import faiss
 import numpy as np
 import asyncio
-import os # Thêm thư viện os
-import tempfile # Thêm thư viện tempfile
-import whisper # Thêm thư viện whisper
-
-from asgiref.sync import sync_to_async
+import os
+import faiss
+from dotenv import load_dotenv
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 
 import google.generativeai as genai
-# Lưu ý: Import thêm Category
 from .models import Store, Product, Order, OrderItem, Category
 
-genai.configure(api_key="AIzaSyB0De4DFz4bdo6npbpZVk5uiePnfGOqCbI")
-model = genai.GenerativeModel('gemini-2.5-flash')
+load_dotenv()
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+FPT_API_KEY = os.getenv("FPT_API_KEY")
 
-print("Đang tải mô hình AI Whisper (có thể mất chút thời gian lần đầu)...")
-whisper_model = whisper.load_model("base")
-print("Đã tải xong Whisper!")
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel('gemini-2.5-flash')
 
 try:
     FAISS_INDEX = faiss.read_index("product_vectors.index")
 except Exception as e:
     FAISS_INDEX = None
-
 
 @csrf_exempt
 def get_store_data(request):
@@ -144,40 +139,16 @@ def generate_audio_safe(text):
     finally:
         loop.close()
 
-
 @csrf_exempt
 def chat_with_ai(request):
     if request.method != 'POST': return JsonResponse({'success': False, 'reply': 'Sai phương thức'}, status=405)
 
     try:
+        user_text = request.POST.get('message', '').strip()
         user_name = request.POST.get('user_name', 'Khách hàng')
         cart_items = request.POST.get('cart_items', '[]')
 
-        # Mặc định lấy text nếu người dùng gõ phím
-        user_text = request.POST.get('message', '').strip()
-
-        # NẾU CÓ FILE AUDIO GỬI LÊN TỪ MICRO CỦA TRÌNH DUYỆT
-        audio_file = request.FILES.get('audio')
-        if audio_file:
-            # Lưu file audio tạm thời xuống ổ cứng để Whisper đọc
-            with tempfile.NamedTemporaryFile(delete=False, suffix='.webm') as tmp:
-                for chunk in audio_file.chunks():
-                    tmp.write(chunk)
-                tmp_path = tmp.name
-
-            try:
-                # Dùng Whisper dịch file âm thanh sang tiếng Việt
-                result = whisper_model.transcribe(tmp_path, language="vi")
-                user_text = result["text"].strip()
-                print(f"Whisper nghe được: {user_text}")  # In ra terminal để debug
-            finally:
-                # Dịch xong thì xóa file tạm đi cho nhẹ máy
-                os.remove(tmp_path)
-
-        # Nếu cả file âm thanh lẫn text đều trống
-        if not user_text:
-            return JsonResponse(
-                {'success': False, 'reply': 'Tôi không nghe rõ, bạn có thể nói lại hoặc gõ tin nhắn được không?'})
+        if not user_text: return JsonResponse({'success': False, 'reply': 'Không nhận được tin nhắn.'})
 
         relevant_products_context = retrieve_relevant_products(user_text, top_k=3)
 
@@ -211,12 +182,11 @@ def chat_with_ai(request):
         audio_bytes = generate_audio_safe(clean_text_for_speech(bot_reply))
         audio_data_uri = f"data:audio/mp3;base64,{base64.b64encode(audio_bytes).decode('utf-8')}"
 
-        # Trả về thêm đoạn text khách đã nói (để hiển thị lên UI cho đẹp)
-        return JsonResponse({'success': True, 'reply': bot_reply, 'action': action, 'audio_url': audio_data_uri,
-                             'user_text_recognized': user_text})
+        return JsonResponse({'success': True, 'reply': bot_reply, 'action': action, 'audio_url': audio_data_uri})
     except Exception as e:
         print("Lỗi Backend AI:", str(e))
         return JsonResponse({'success': False, 'reply': "Máy chủ AI đang bận, vui lòng thử lại sau."})
+
 
 # ==========================================
 # CÁC API CƠ BẢN
