@@ -12,7 +12,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
-
+from rest_framework_simplejwt.tokens import RefreshToken
 import google.generativeai as genai
 from .models import Store, Product, Order, OrderItem, Category
 
@@ -193,27 +193,53 @@ def chat_with_ai(request):
 # ==========================================
 @csrf_exempt
 def register_user(request):
-    if request.method != 'POST': return JsonResponse({'success': False}, status=405)
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Sai phương thức'}, status=405)
     try:
         data = json.loads(request.body)
-        email, password, name = data.get('email'), data.get('password'), data.get('name', 'Người dùng mới')
+        email = data.get('email')
+        password = data.get('password')
+        name = data.get('name', 'Người dùng mới')
+
+        # Sẽ bổ sung lấy phone, gender, dob từ giao diện mới ở đây sau
+
         if User.objects.filter(username=email).exists():
             return JsonResponse({'success': False, 'message': 'Email đã được sử dụng!'})
+
+        # Tạo user với username là email để hàm authenticate hoạt động đúng
         User.objects.create_user(username=email, email=email, password=password, first_name=name)
         return JsonResponse({'success': True, 'message': 'Đăng ký thành công!'})
-    except Exception as e: return JsonResponse({'success': False, 'message': str(e)})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
+
 
 @csrf_exempt
 def login_user(request):
-    if request.method != 'POST': return JsonResponse({'success': False}, status=405)
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Sai phương thức'}, status=405)
     try:
         data = json.loads(request.body)
-        user = authenticate(request, username=data.get('email'), password=data.get('password'))
+        email = data.get('email')
+        password = data.get('password')
+
+        # Django mặc định authenticate bằng username, do lúc nãy ta gán username=email nên dùng email ở đây
+        user = authenticate(request, username=email, password=password)
+
         if user:
-            login(request, user)
-            return JsonResponse({'success': True, 'message': 'Đăng nhập thành công!', 'name': user.first_name, 'email': user.email})
+            # Tạo JWT Token thay vì dùng session
+            refresh = RefreshToken.for_user(user)
+            return JsonResponse({
+                'success': True,
+                'message': 'Đăng nhập thành công!',
+                'name': user.first_name,
+                'email': user.email,
+                'access_token': str(refresh.access_token),  # Trả về token
+                'refresh_token': str(refresh)
+            })
+
         return JsonResponse({'success': False, 'message': 'Sai email hoặc mật khẩu!'})
-    except Exception as e: return JsonResponse({'success': False, 'message': str(e)})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
 
 @csrf_exempt
 def create_order(request):

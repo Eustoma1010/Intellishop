@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e=b)=m01ivdnt0sqbjef2$3^o5u+r8zt&)ul%s4x7*)15rc=qw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False #True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,9 +41,13 @@ INSTALLED_APPS = [
     'corsheaders',  # Thêm dòng này
     'core',         # Thêm dòng này
     'import_export',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware', # Thêm dòng này ở đây!
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -120,7 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -134,3 +138,15 @@ MEDIA_URL = '/media/'
 
 # Trỏ chính xác đến thư mục 'media' nằm cùng cấp với file manage.py
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
