@@ -10,3 +10,4 @@ faiss-cpu
 google-generativeai
 edge-tts
 pillow
+django-import-export
