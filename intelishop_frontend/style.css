@@ -1,0 +1,246 @@
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', sans-serif;
+                background: linear-gradient(145deg, #f8e8f4 0%, #f5d9e8 50%, #f2c9dc 100%);
+                min-height: 100vh;
+                position: relative;
+                overflow-x: hidden;
+            }
+
+            body::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: radial-gradient(circle at 10% 20%, rgba(255,182,193,0.5) 0%, transparent 40%),
+                            radial-gradient(circle at 90% 70%, rgba(255,105,180,0.4) 0%, transparent 40%),
+                            radial-gradient(circle at 30% 80%, rgba(147,112,219,0.3) 0%, transparent 50%);
+                pointer-events: none;
+            }
+
+            .glass {
+                background: rgba(255, 255, 255, 0.3);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                box-shadow: 0 8px 32px 0 rgba(255, 105, 180, 0.2);
+            }
+
+            .glass-card {
+                background: rgba(255, 255, 255, 0.4);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                border-radius: 30px;
+                transition: all 0.3s ease;
+            }
+
+            .glass-card:hover {
+                background: rgba(255, 255, 255, 0.5);
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(255, 105, 180, 0.25);
+            }
+
+            /* Store Cards */
+            .store-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-behavior: smooth;
+                scroll-snap-type: x mandatory; /* Bật chế độ Snap ngang */
+                -webkit-overflow-scrolling: touch;
+            }
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }.store-card {
+                scroll-snap-align: start; /* Thẻ tự hút vào sát lề trái khi cuộn */
+                min-width: 280px; /* Độ rộng cố định của thẻ */
+                flex-shrink: 0;
+                background: rgba(255, 255, 255, 0.6);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                border-radius: 24px; /* Bo góc mềm mại hơn */
+                padding: 1.5rem;
+                cursor: pointer;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Hiệu ứng mượt hơn */
+                text-align: center;
+                position: relative;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            }
+
+            .store-card.active {
+                border: 2px solid #ec4899;
+                transform: translateY(-8px); /* Nhô cao lên khi active */
+                box-shadow: 0 20px 25px -5px rgba(236, 72, 153, 0.25), 0 10px 10px -5px rgba(236, 72, 153, 0.1);
+            }
+
+            .store-card:hover:not(.active) {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                background: rgba(255, 255, 255, 0.9);
+            }
+
+            .store-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+                pointer-events: none;
+            }
+
+            .store-icon {
+                font-size: 3rem;
+                margin-bottom: 0.5rem;
+                filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            }
+
+            .store-name {
+                font-weight: bold;
+                font-size: 1.1rem;
+                color: #831843;
+            }
+
+            .store-stats {
+                font-size: 0.8rem;
+                color: #9d174d;
+                margin-top: 0.5rem;
+            }
+
+            /* Store-specific colors */
+            .store-1 { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+            .store-2 { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
+            .store-3 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+            .store-4 { background: linear-gradient(135deg, #000000 0%, #434343 100%); color: white; }
+            .store-5 { background: linear-gradient(135deg, #1428a0 0%, #1e3c72 100%); color: white; }
+
+            .store-4 .store-name, .store-5 .store-name { color: white; }
+            .store-4 .store-stats, .store-5 .store-stats { color: #ddd; }
+
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+
+            .float-animation {
+                animation: float 3s ease-in-out infinite;
+            }
+
+            .hide {
+                display: none !important;
+            }
+
+            /* Feedback section */
+            .feedback-section {
+                margin-top: 2rem;
+                padding: 2rem;
+                border-radius: 30px;
+                background: rgba(255, 255, 255, 0.3);
+                backdrop-filter: blur(8px);
+            }
+
+            .feedback-card {
+                background: rgba(255, 255, 255, 0.5);
+                border-radius: 20px;
+                padding: 1.5rem;
+                transition: all 0.3s ease;
+            }
+
+            .feedback-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            /* Progress steps */
+            .step-indicator {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 2rem;
+            }
+
+            .step {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                position: relative;
+            }
+
+            .step.active {
+                background: #ec4899;
+                color: white;
+            }
+
+            .step-line {
+                width: 100px;
+                height: 2px;
+                background: rgba(255,255,255,0.5);
+                margin: 0 10px;
+            }
+
+            .step-line.active {
+                background: #ec4899;
+            }
+
+            .store-card.store-4.active,
+            .store-card.store-5.active {
+                background: rgba(255, 255, 255, 0.9) !important;
+                box-shadow: 0 15px 30px rgba(236, 72, 153, 0.3) !important;
+            }
+
+            .store-card.store-4.active .store-name,
+            .store-card.store-5.active .store-name {
+                color: #831843 !important;
+            }
+
+            .store-card.store-4.active .store-stats,
+            .store-card.store-5.active .store-stats {
+                color: #9d174d !important;
+            }
+
+            /* CSS cuộn cho Deal Hot */
+            .scroll-mt-32 {
+                scroll-margin-top: 8rem;
+            }
+
+            /* CSS THÊM CHO FORM ĐĂNG NHẬP/ĐĂNG KÝ VÀ DROPDOWN */
+            .auth-input {
+                width: 100%;
+                border: 1px solid rgba(236, 72, 153, 0.3);
+                border-radius: 0.75rem;
+                padding: 0.75rem 1rem 0.75rem 2.5rem;
+                background: rgba(255, 255, 255, 0.7);
+                transition: all 0.3s;
+            }
+            .auth-input:focus {
+                outline: none;
+                border-color: #ec4899;
+                box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+                background: white;
+            }
+            .auth-icon {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #ec4899;
+                opacity: 0.7;
+            }
