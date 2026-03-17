@@ -10,3 +10,4 @@ google-generativeai
 edge-tts
 pillow
 django-import-export
+djangorestframework-simplejwt
