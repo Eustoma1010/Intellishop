@@ -5,7 +5,6 @@ gunicorn
 whitenoise
 python-dotenv
 openai
-openai-whisper
 faiss-cpu
 google-generativeai
 edge-tts
