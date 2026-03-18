@@ -15,7 +15,7 @@ print(SECRET_KEY)
 DEBUG = True #os.environ.get('DEBUG', 'False') == 'True'
 print(DEBUG)
 # Lấy danh sách domain được phép truy cập từ biến môi trường (cách nhau bởi dấu phẩy)
-allowed_hosts_env = '*'#os.environ.get('ALLOWED_HOSTS', '*')
+allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '*')
 ALLOWED_HOSTS = allowed_hosts_env.split(',') if allowed_hosts_env != '*' else ['*']
 print(allowed_hosts_env)
 print(ALLOWED_HOSTS)
