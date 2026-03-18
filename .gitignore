@@ -1,5 +1,5 @@
 intelishop_backend/.venv/
-intelishop_backend/env/
+intelishop_backend/.env/
 *.pyc
 __pycache__/
 db.sqlite3

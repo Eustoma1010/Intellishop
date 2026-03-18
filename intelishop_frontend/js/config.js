@@ -1,25 +1,54 @@
-export const API_BASE_URL = 'https://intelishop-backend.onrender.com'; //http://127.0.0.1:8000
+// ==================================================
+// 1. CẤU HÌNH MÔI TRƯỜNG & KẾT NỐI API
+// ==================================================
+// Tự động chuyển đổi API dựa trên môi trường chạy (Local vs Production)
+const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+export const API_BASE_URL = isLocalhost 
+    ? 'http://127.0.0.1:8000' 
+    : 'https://intelishop-backend.onrender.com';
 
-// Helper: Tối ưu việc lấy Element
-export const $ = id => document.getElementById(id);
+// ==================================================
+// 2. HELPER FUNCTIONS (TIỆN ÍCH)
+// ==================================================
+// Tối ưu hàm lấy Element: Tích hợp cảnh báo rủi ro (Defensive Programming)
+export const $ = (id) => {
+    const el = document.getElementById(id);
+    if (!el && isLocalhost) {
+        console.warn(`[Cảnh báo UI]: Không tìm thấy phần tử có ID '${id}' trên giao diện.`);
+    }
+    return el;
+};
 
+// ==================================================
+// 3. TRẠNG THÁI ỨNG DỤNG (GLOBAL STATE)
+// ==================================================
 export const App = {
+    // Dữ liệu sản phẩm
     storeProducts: {},
     storeInfo: {},
+    hotDeals: [],
+    categories: [],         
+    currentCategory: 'all',
+
+    // Cấu hình phân trang / Hiển thị
     currentStore: 1,
-    productsPerPage: 8, // Số sản phẩm hiển thị ban đầu (VD: 8 cái = 2 hàng)
-    currentVisibleProducts: 8, // Số sản phẩm đang được hiển thị thực tế
+    productsPerPage: 8, 
+    currentVisibleProducts: 8, 
+
+    // Giỏ hàng & Thanh toán
     cart: [],
     selectedShipping: 'standard',
     shippingFees: { standard: 7.99, express: 17.99, 'express-plus': 29.99 },
-    isLoggedIn: false,
     hasActiveOrder: false,
+
+    // Trạng thái người dùng
+    isLoggedIn: false,
     currentUser: { name: "Khách hàng", email: "user@email.com" },
-    hotDeals: [],
-    categories: [],         // Mảng chứa danh mục từ DB
-    currentCategory: 'all',
 };
 
+// ==================================================
+// 4. MOCK DATA (DỮ LIỆU TĨNH)
+// ==================================================
 // Dữ liệu tĩnh Đánh giá cửa hàng
 export const storeFeedback = {
     1: [

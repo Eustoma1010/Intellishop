@@ -1,31 +1,26 @@
 import { API_BASE_URL, $ } from './config.js';
 import { addToCart, proceedToCheckout } from './cart.js';
 
-// ==================================================
-// HÀM QUẢN LÝ TRẠNG THÁI Ô NHẬP LIỆU (MỚI)
-// ==================================================
 function setInputState(isDisabled, placeholderText) {
     const inputField = $('chat-input');
-    // Tìm nút Gửi dựa trên thuộc tính onclick
     const sendBtn = document.querySelector('button[onclick="sendChatMessage()"]');
+    if (!inputField) return;
 
     inputField.disabled = isDisabled;
     if (placeholderText) inputField.placeholder = placeholderText;
 
     if (isDisabled) {
-        // Giao diện khi bị khóa
-        inputField.classList.add('bg-gray-200', 'cursor-not-allowed', 'opacity-70');
+        inputField.classList.add('bg-gray-100', 'cursor-not-allowed', 'opacity-80');
         inputField.classList.remove('bg-pink-50/50');
-        if(sendBtn) {
+        if (sendBtn) {
             sendBtn.disabled = true;
             sendBtn.classList.add('opacity-50', 'cursor-not-allowed');
             sendBtn.classList.remove('hover:shadow-lg', 'hover:scale-105', 'hover:bg-pink-700');
         }
     } else {
-        // Giao diện khi mở khóa
-        inputField.classList.remove('bg-gray-200', 'cursor-not-allowed', 'opacity-70');
+        inputField.classList.remove('bg-gray-100', 'cursor-not-allowed', 'opacity-80');
         inputField.classList.add('bg-pink-50/50');
-        if(sendBtn) {
+        if (sendBtn) {
             sendBtn.disabled = false;
             sendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             sendBtn.classList.add('hover:shadow-lg', 'hover:scale-105');
@@ -36,11 +31,13 @@ function setInputState(isDisabled, placeholderText) {
 export function toggleAIPanel() {
     const panel = $('ai-side-panel');
     const toggleBtn = $('chat-toggle-btn');
+    if (!panel || !toggleBtn) return;
+
     if (panel.classList.contains('translate-x-full')) {
         panel.classList.remove('translate-x-full');
         toggleBtn.classList.add('hidden');
-        if(window.innerWidth > 640) document.body.style.paddingRight = '400px';
-        setTimeout(() => $('chat-input').focus(), 300);
+        if (window.innerWidth > 640) document.body.style.paddingRight = '400px';
+        setTimeout(() => { const input = $('chat-input'); if(input) input.focus(); }, 300);
     } else {
         panel.classList.add('translate-x-full');
         toggleBtn.classList.remove('hidden');
@@ -54,9 +51,9 @@ export function handleChatKeyPress(event) {
 
 export async function sendChatMessage() {
     const inputField = $('chat-input');
-    const message = inputField.value.trim();
+    if (!inputField) return;
 
-    // Nếu ô chat đang bị khóa hoặc không có chữ thì không làm gì cả
+    const message = inputField.value.trim();
     if (!message || inputField.disabled) return;
 
     appendMessage('user', message);
@@ -67,10 +64,8 @@ export async function sendChatMessage() {
     await processAIRequest(formData);
 }
 
-// ==================================================
-// HỆ THỐNG VOICE CALL (TỰ ĐỘNG GỬI & KHÓA UI)
-// ==================================================
-let recognition;
+// KHỞI TẠO SPEECH API AN TOÀN
+let recognition = null;
 let isCallMode = false;
 let silenceTimeout = null;
 let finalMessageBuffer = "";
@@ -86,28 +81,28 @@ if (SpeechRecognition) {
 export async function toggleVoiceRecording() {
     const micBtn = $('mic-btn');
     const inputField = $('chat-input');
+    if (!micBtn || !inputField) return;
 
     if (!recognition) {
-        alert("Trình duyệt không hỗ trợ nhận diện giọng nói. Vui lòng dùng Chrome.");
+        alert("Trình duyệt không hỗ trợ nhận diện giọng nói. Vui lòng sử dụng Google Chrome.");
         return;
     }
 
-    // NẾU ĐANG TRONG CUỘC GỌI -> BẤM ĐỂ TẮT (CÚP MÁY)
     if (isCallMode) {
+        // Cúp máy an toàn
         isCallMode = false;
-        recognition.stop();
-        clearTimeout(silenceTimeout);
+        try { recognition.stop(); } catch(e) {}
+        if (silenceTimeout) clearTimeout(silenceTimeout);
 
         micBtn.classList.remove('bg-red-500', 'text-white', 'animate-pulse');
         micBtn.classList.add('text-pink-500', 'hover:bg-pink-50');
 
-        // Mở khóa UI khi cúp máy
         setInputState(false, "Nhập tin nhắn...");
         inputField.value = '';
         return;
     }
 
-    // BẮT ĐẦU CHẾ ĐỘ CUỘC GỌI
+    // Bật máy
     isCallMode = true;
     finalMessageBuffer = "";
     inputField.value = "";
@@ -115,14 +110,13 @@ export async function toggleVoiceRecording() {
     micBtn.classList.remove('text-pink-500', 'hover:bg-pink-50');
     micBtn.classList.add('bg-red-500', 'text-white', 'animate-pulse');
 
-    // Khóa luôn UI gõ phím khi đang bật Mic
     setInputState(true, "Đang nghe... (Tự động gửi khi bạn dừng nói)");
 
-    try { recognition.start(); } catch (e) {}
+    try { recognition.start(); } catch (e) { console.warn("Mic đã đang bật."); }
 
     recognition.onresult = (event) => {
         if (!isCallMode) return;
-        clearTimeout(silenceTimeout);
+        if (silenceTimeout) clearTimeout(silenceTimeout);
 
         let interimTranscript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -135,12 +129,11 @@ export async function toggleVoiceRecording() {
         silenceTimeout = setTimeout(() => {
             const finalMessage = inputField.value.trim();
             if (finalMessage) {
-                recognition.stop();
+                try { recognition.stop(); } catch(e) {}
                 inputField.value = '';
                 finalMessageBuffer = '';
 
                 appendMessage('user', finalMessage);
-
                 const formData = new FormData();
                 formData.append('message', finalMessage);
                 processAIRequest(formData, true);
@@ -153,26 +146,22 @@ export async function toggleVoiceRecording() {
     };
 
     recognition.onend = () => {
-        if (isCallMode && $('chat-input').placeholder.includes("Đang nghe")) {
+        if (isCallMode && $('chat-input')?.placeholder.includes("Đang nghe")) {
             try { recognition.start(); } catch (e) {}
         }
     };
 }
 
-// ==================================================
-// XỬ LÝ GIAO TIẾP VỚI BACKEND VÀ MỞ KHÓA
-// ==================================================
 export async function processAIRequest(formData, isVoice = false) {
-    // Luôn khóa UI và đổi chữ khi AI đang gọi API (Dù là Text hay Voice)
     setInputState(true, "AI đang suy nghĩ...");
-
-    const typingId = appendMessage('bot', '<i class="fa-solid fa-ellipsis hover:animate-ping"></i> Đang phân tích...', true);
+    const typingId = appendMessage('bot', '<i class="fa-solid fa-circle-notch fa-spin text-pink-500"></i> Đang phân tích...', true);
     if (window.setAvatarAction) window.setAvatarAction('thinking');
 
     try {
         const response = await fetch(`${API_BASE_URL}/api/chat/`, { method: 'POST', body: formData });
-        const data = await response.json();
+        if (!response.ok) throw new Error("Server Error");
 
+        const data = await response.json();
         removeMessage(typingId);
 
         if (data.success) {
@@ -182,30 +171,25 @@ export async function processAIRequest(formData, isVoice = false) {
             if (data.action && data.action.type !== 'none') {
                 if (data.action.type === 'add_to_cart' && data.action.product_id) {
                     addToCart(data.action.product_id);
-                    appendMessage('bot', `<i>*AI đã thêm sản phẩm vào giỏ hàng giúp bạn*</i>`);
+                    appendMessage('bot', `<i class="text-green-600 text-sm">*Đã tự động thêm vào giỏ hàng*</i>`);
                 } else if (data.action.type === 'checkout') {
                     proceedToCheckout();
-                    appendMessage('bot', `<i>*Đang chuyển hướng đến trang thanh toán...*</i>`);
                 }
             }
 
-            // NẾU CÓ ÂM THANH
             if (data.audio_url) {
                 if (window.setAvatarAction) window.setAvatarAction('explaining');
-
-                // Đổi chữ hiển thị khi AI đang nói
                 setInputState(true, "AI đang trả lời...");
 
                 if (window.playAvatarAudio) {
                     window.playAvatarAudio(data.audio_url);
                 } else {
                     const audio = new Audio(data.audio_url);
-                    audio.play();
+                    audio.play().catch(e => console.error("Autoplay bị chặn", e));
                     audio.onended = () => window.dispatchEvent(new Event('ai-audio-ended'));
                 }
             } else {
                 if (window.setAvatarAction) window.setAvatarAction('idle');
-                // Nếu không có Audio, phát sự kiện kết thúc ngay
                 window.dispatchEvent(new Event('ai-audio-ended'));
             }
         } else {
@@ -215,40 +199,41 @@ export async function processAIRequest(formData, isVoice = false) {
         }
     } catch (error) {
         removeMessage(typingId);
-        appendMessage('bot', 'Lỗi kết nối đến máy chủ AI!');
+        appendMessage('bot', '<span class="text-red-500">Lỗi kết nối đến máy chủ AI!</span>');
         if (window.setAvatarAction) window.setAvatarAction('apologizing', 3000);
         window.dispatchEvent(new Event('ai-audio-ended'));
     }
 }
 
-// LẮNG NGHE SỰ KIỆN AI NÓI XONG ĐỂ QUYẾT ĐỊNH MỞ KHÓA HAY NGHE TIẾP
 window.addEventListener('ai-audio-ended', () => {
     if (isCallMode) {
-        // Nếu đang gọi Voice Call -> Giữ trạng thái Khóa phím, bật lại Mic
         setInputState(true, "Đang nghe... (Tự động gửi khi bạn dừng nói)");
         try { recognition.start(); } catch (e) {}
     } else {
-        // Nếu chat bằng Text -> Mở khóa phím bình thường
         setInputState(false, "Nhập tin nhắn...");
     }
 });
 
-// ... (Giữ nguyên các hàm appendMessage và removeMessage ở cuối file) ...
 export function appendMessage(sender, text, isTyping = false) {
     const chatMessages = $('chat-messages');
+    if (!chatMessages) return null;
+
     const msgDiv = document.createElement('div');
     const msgId = `msg-${Date.now()}`;
     msgDiv.id = msgId;
 
     if (sender === 'user') {
-        msgDiv.className = 'flex items-start justify-end space-x-2';
-        msgDiv.innerHTML = `<div class="bg-gradient-to-r from-pink-500 to-purple-500 text-white p-3 rounded-2xl rounded-tr-none shadow-sm text-sm max-w-[85%] break-words">${text}</div>`;
+        msgDiv.className = 'flex items-start justify-end space-x-2 mb-4';
+        msgDiv.innerHTML = `<div class="bg-gradient-to-r from-pink-500 to-purple-500 text-white p-3.5 rounded-2xl rounded-tr-none shadow-md text-sm max-w-[85%] break-words">${text}</div>`;
     } else {
-        msgDiv.className = `flex items-start space-x-2 ${isTyping ? 'opacity-70' : ''}`;
-        msgDiv.innerHTML = `<div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0"><i class="fa-solid fa-robot"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 max-w-[85%] border border-pink-100 break-words">${text}</div>`;
+        msgDiv.className = `flex items-start space-x-3 mb-4 ${isTyping ? 'opacity-70' : ''} animate-fade-in-up`;
+        msgDiv.innerHTML = `
+            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0 shadow-sm"><i class="fa-solid fa-robot"></i></div>
+            <div class="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 max-w-[85%] border border-pink-100 break-words leading-relaxed">${text}</div>
+        `;
     }
     chatMessages.appendChild(msgDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
     return msgId;
 }
 

@@ -57,38 +57,53 @@ async function initApp() {
         const token = localStorage.getItem('access_token');
         if (token) {
             App.isLoggedIn = true;
-            // (Tương lai bạn có thể gọi API /api/me/ để lấy Tên từ Token)
             App.currentUser = { name: "Khách hàng", email: "user@email.com" };
         }
 
-        // 2. Lấy dữ liệu cửa hàng từ Backend Django
+        // 2. Fetch data (Sử dụng cách thức fetch an toàn)
         const response = await fetch(`${API_BASE_URL}/api/data/`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
 
         if (data.success) {
-            App.storeInfo = data.storeInfo;
-            App.storeProducts = data.storeProducts;
-            App.hotDeals = data.hotDeals;
-            App.categories = data.categories;
+            // Tối ưu: Dùng Object.assign để nạp state gọn gàng hơn
+            Object.assign(App, {
+                storeInfo: data.storeInfo,
+                storeProducts: data.storeProducts,
+                hotDeals: data.hotDeals,
+                categories: data.categories
+            });
 
             // Tự động sinh giao diện
             Store.renderStoreTabs();
             Store.renderHotDeals();
             Store.renderCatalog();
 
-            // Lấy ID của cửa hàng đầu tiên để chọn mặc định
+            // Lấy ID của cửa hàng đầu tiên để chọn mặc định an toàn
             const firstStoreId = Object.keys(data.storeInfo)[0];
-            if(firstStoreId) Store.selectStore(firstStoreId);
+            if (firstStoreId) {
+                Store.selectStore(firstStoreId);
+            }
 
             UI.updateAuthUI();
-            UI.showHome(); // Mặc định hiển thị trang chủ
+            UI.showHome();
             console.log("✅ Đã khởi tạo Intelishop thành công!");
+        } else {
+            throw new Error(data.message || "Dữ liệu server trả về không hợp lệ");
         }
+
     } catch (error) {
         console.error("Lỗi khi tải dữ liệu từ server:", error);
-        UI.showNotification("Không thể kết nối máy chủ!", "error");
+        // Fallback UI nếu server sập
+        if (typeof UI.showNotification === "function") {
+            UI.showNotification("Không thể kết nối máy chủ! Đang thử lại...", "error");
+        }
     }
 }
 
-// Kích hoạt app
+// Kích hoạt app an toàn
 document.addEventListener('DOMContentLoaded', initApp);

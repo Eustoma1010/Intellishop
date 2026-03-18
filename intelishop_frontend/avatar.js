@@ -11,8 +11,9 @@ const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 20);
 camera.position.set(0, 1.4, 1.2);
 camera.lookAt(0, 1.35, 0);
 
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-renderer.setPixelRatio(window.devicePixelRatio);
+// Tối ưu: Ép trình duyệt dùng GPU hiệu suất cao và quản lý pixelRatio
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Giới hạn pixel ratio để tránh lag trên màn hình retina (4k)
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 container.appendChild(renderer.domElement);
 
@@ -34,7 +35,10 @@ scene.add(light);
 scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
 let currentVrm = undefined;
-const loader = new GLTFLoader();
+
+// Tối ưu: Dùng LoadingManager để quản lý luồng tải tốt hơn
+const loadingManager = new THREE.LoadingManager();
+const loader = new GLTFLoader(loadingManager);
 
 loader.register((parser) => { return new VRMLoaderPlugin(parser); });
 
@@ -45,9 +49,9 @@ loader.load(
         currentVrm = vrm;
         scene.add(vrm.scene);
         vrm.scene.position.set(0, -0.3, 0);
-        console.log("Đã tải xong Avatar 3D toàn thân!");
+        console.log("✅ Đã tải xong Avatar 3D toàn thân!");
     },
-    (progress) => console.log('Đang tải...', 100.0 * (progress.loaded / progress.total), '%'),
+    (progress) => { /* Xóa log console rác để tăng tốc render */ },
     (error) => console.error("Lỗi tải VRM:", error)
 );
 
@@ -55,17 +59,12 @@ loader.load(
 let analyser;
 let dataArray;
 let isSpeaking = false;
-let currentAction = 'idle'; // Các trạng thái: 'idle', 'thinking', 'explaining', 'apologizing'
+let currentAction = 'idle'; // 'idle', 'thinking', 'explaining', 'apologizing'
 let actionTimeout;
 
-// Hàm đồng bộ từ script.js sang
 window.setAvatarAction = (action, duration = null) => {
     currentAction = action;
-
-    // Xóa timeout cũ nếu có để tránh đụng độ
     if (actionTimeout) clearTimeout(actionTimeout);
-
-    // Tự động quay về trạng thái idle sau một khoảng thời gian (dành cho xin lỗi/vui mừng)
     if (duration) {
         actionTimeout = setTimeout(() => {
             currentAction = 'idle';
@@ -88,11 +87,11 @@ window.playAvatarAudio = (audioUrl) => {
 
     audio.play();
     isSpeaking = true;
-    currentAction = 'explaining'; // Tự động chuyển dáng thuyết trình khi nói
+    currentAction = 'explaining';
 
     audio.onended = () => {
         isSpeaking = false;
-        currentAction = 'idle'; // Nói xong quay về dáng đứng chờ
+        currentAction = 'idle';
         if (currentVrm) {
             currentVrm.expressionManager.setValue('aa', 0);
         }
@@ -104,7 +103,10 @@ const clock = new THREE.Clock();
 
 function animate() {
     requestAnimationFrame(animate);
-    const deltaTime = clock.getDelta();
+
+    // Tối ưu quan trọng: Giới hạn deltaTime tối đa 0.1s.
+    // Tránh việc tab bị ẩn (background), sau đó bật lại khiến delta quá lớn làm rách mô hình.
+    const deltaTime = Math.min(clock.getDelta(), 0.1);
     const time = clock.getElapsedTime();
 
     if (currentVrm) {
@@ -117,11 +119,9 @@ function animate() {
         const leftHand = currentVrm.humanoid.getNormalizedBoneNode('leftHand');
         const rightHand = currentVrm.humanoid.getNormalizedBoneNode('rightHand');
 
-        // Nhịp thở mặc định (áp dụng cho mọi trạng thái)
         currentVrm.scene.position.y = -0.2 + Math.sin(time * 2) * 0.015;
         if (spine) spine.rotation.x = Math.sin(time * 2) * 0.02;
 
-        // XỬ LÝ NHÉP MÔI (Luôn chạy nếu có âm thanh)
         let volume = 0;
         if (isSpeaking && analyser) {
             analyser.getByteFrequencyData(dataArray);
@@ -132,10 +132,7 @@ function animate() {
             currentVrm.expressionManager.setValue('aa', volume);
         }
 
-        // --- HỆ THỐNG TRẠNG THÁI (STATE MACHINE) CƠ THỂ ---
-
         if (currentAction === 'explaining' && isSpeaking) {
-            // 1. ĐANG THUYẾT TRÌNH (Dùng volume để cử động tay)
             if (head) {
                 head.rotation.x = Math.sin(time * 12) * 0.06 * volume;
                 head.rotation.y = Math.sin(time * 4) * 0.04 * volume;
@@ -144,9 +141,7 @@ function animate() {
                 rightUpperArm.rotation.z = 1.0 + (Math.sin(time * 5) * 0.1 * volume);
                 rightUpperArm.rotation.x = -0.4 * volume;
             }
-            if (rightLowerArm) {
-                rightLowerArm.rotation.z = 1.2 * volume + (Math.cos(time * 6) * 0.3 * volume);
-            }
+            if (rightLowerArm) { rightLowerArm.rotation.z = 1.2 * volume + (Math.cos(time * 6) * 0.3 * volume); }
             if (rightHand) {
                 rightHand.rotation.x = Math.sin(time * 10) * 0.4 * volume;
                 rightHand.rotation.y = Math.cos(time * 8) * 0.2 * volume;
@@ -155,49 +150,33 @@ function animate() {
                 leftUpperArm.rotation.z = -1.1;
                 leftUpperArm.rotation.x = -0.2 * volume;
             }
-            if (leftLowerArm) {
-                leftLowerArm.rotation.z = -0.6 * volume - (Math.sin(time * 3) * 0.1 * volume);
-            }
-            if (leftHand) {
-                leftHand.rotation.x = Math.sin(time * 4) * 0.1 * volume;
-            }
+            if (leftLowerArm) { leftLowerArm.rotation.z = -0.6 * volume - (Math.sin(time * 3) * 0.1 * volume); }
+            if (leftHand) { leftHand.rotation.x = Math.sin(time * 4) * 0.1 * volume; }
 
         } else if (currentAction === 'thinking') {
-            // 2. ĐANG SUY NGHĨ (Gõ phím tìm dữ liệu / Đưa tay lên cằm)
             if (head) {
-                head.rotation.x = -0.1; // Cúi nhẹ
-                head.rotation.y = Math.sin(time * 2) * 0.1; // Lắc lư đầu nhẹ
+                head.rotation.x = -0.1;
+                head.rotation.y = Math.sin(time * 2) * 0.1;
             }
-            // Tay phải đưa lên gần cằm
             if (rightUpperArm) { rightUpperArm.rotation.z = 1.2; rightUpperArm.rotation.x = -0.3; }
             if (rightLowerArm) { rightLowerArm.rotation.z = 1.8; rightLowerArm.rotation.x = -0.2; }
-
-            // Tay trái ôm hông
             if (leftUpperArm) { leftUpperArm.rotation.z = -1.1; leftUpperArm.rotation.x = 0; }
             if (leftLowerArm) { leftLowerArm.rotation.z = -0.5; leftLowerArm.rotation.x = -0.2; }
 
         } else if (currentAction === 'apologizing') {
-            // 3. XIN LỖI (Cúi đầu, tay để khép)
-            if (head) { head.rotation.x = 0.3; head.rotation.y = 0; } // Cúi gập cổ
-            if (spine) { spine.rotation.x = 0.15; } // Gập cả người
-
-            // Hai tay khép sát hông
+            if (head) { head.rotation.x = 0.3; head.rotation.y = 0; }
+            if (spine) { spine.rotation.x = 0.15; }
             if (rightUpperArm) { rightUpperArm.rotation.z = 1.1; rightUpperArm.rotation.x = 0; }
             if (rightLowerArm) { rightLowerArm.rotation.z = 0.2; }
             if (leftUpperArm) { leftUpperArm.rotation.z = -1.1; leftUpperArm.rotation.x = 0; }
             if (leftLowerArm) { leftLowerArm.rotation.z = -0.2; }
 
         } else {
-            // 4. ĐỨNG CHỜ (IDLE) - Mặc định
             if (head) {
                 head.rotation.x = 0;
                 head.rotation.y = Math.sin(time * 1.5) * 0.05;
             }
-
-            // Phục hồi lại trục xương sống nếu vừa đi từ trạng thái xin lỗi về
             if (spine) { spine.rotation.x = Math.sin(time * 2) * 0.02; }
-
-            // Tư thế VTuber: Hai tay hơi gập, để hờ trước bụng
             if (leftUpperArm) { leftUpperArm.rotation.z = -1.1; leftUpperArm.rotation.x = 0.1; }
             if (rightUpperArm) { rightUpperArm.rotation.z = 1.1; rightUpperArm.rotation.x = 0.1; }
             if (leftLowerArm) { leftLowerArm.rotation.z = -0.5; leftLowerArm.rotation.x = -0.3; }
@@ -205,7 +184,6 @@ function animate() {
             if (leftHand) { leftHand.rotation.x = 0.2; leftHand.rotation.y = 0; }
             if (rightHand) { rightHand.rotation.x = 0.2; rightHand.rotation.y = 0; }
 
-            // Chớp mắt ngẫu nhiên
             if (Math.random() > 0.98) {
                 currentVrm.expressionManager.setValue('blink', 1.0);
                 setTimeout(() => {
@@ -221,3 +199,12 @@ function animate() {
 }
 
 animate();
+
+// Tối ưu bộ nhớ khi người dùng dọn dẹp trang
+window.addEventListener('beforeunload', () => {
+    if (currentVrm) {
+        scene.remove(currentVrm.scene);
+        currentVrm = null;
+    }
+    renderer.dispose();
+});
