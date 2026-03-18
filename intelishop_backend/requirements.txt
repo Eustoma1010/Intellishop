@@ -11,3 +11,7 @@ edge-tts
 pillow
 django-import-export
 djangorestframework-simplejwt
+psycopg2-binary
+dj-database-url
+cloudinary
+django-cloudinary-storage

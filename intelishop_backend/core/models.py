@@ -35,7 +35,7 @@ class Product(models.Model):
     old_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name="Giá cũ ($)")
     is_hot = models.BooleanField(default=False, db_index=True, verbose_name="Là Deal Hot")
     # Tối ưu lưu trữ ảnh theo năm/tháng
-    image = models.ImageField(upload_to='product_images/%Y/%m/', null=True, blank=True, verbose_name="Ảnh sản phẩm")
+    image = models.ImageField(upload_to='product_images/%Y/%m/', max_length=500, null=True, blank=True, verbose_name="Ảnh sản phẩm")
 
     def __str__(self):
         return f"{self.name} - ${self.price}"
