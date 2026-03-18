@@ -22,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-FPT_API_KEY = os.getenv("FPT_API_KEY")
 
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-3-flash-preview')

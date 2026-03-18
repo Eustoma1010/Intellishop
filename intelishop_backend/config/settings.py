@@ -1,23 +1,24 @@
 import os
 from pathlib import Path
 from datetime import timedelta
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv()
 # ==============================================================================
 # BẢO MẬT & MÔI TRƯỜNG (ENTERPRISE STANDARD)
 # ==============================================================================
 # Đọc Secret Key từ biến môi trường, có fallback cho môi trường Dev
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-e=b)=m01ivdnt0sqbjef2$3^o5u+r8zt&)ul%s4x7*)15rc=qw')
-
+print(SECRET_KEY)
 # Bật/Tắt DEBUG dựa trên biến môi trường (Mặc định là False để an toàn)
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-
+print(DEBUG)
 # Lấy danh sách domain được phép truy cập từ biến môi trường (cách nhau bởi dấu phẩy)
 allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '*')
 ALLOWED_HOSTS = allowed_hosts_env.split(',') if allowed_hosts_env != '*' else ['*']
-
+print(allowed_hosts_env)
+print(ALLOWED_HOSTS)
 # ==============================================================================
 # ỨNG DỤNG & MIDDLEWARE
 # ==============================================================================
