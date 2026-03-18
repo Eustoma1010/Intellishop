@@ -131,8 +131,8 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        # Đổi thành CompressedStaticFilesStorage (Bỏ chữ Manifest đi)
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        # Đưa về bộ lưu trữ mặc định của Django để bỏ qua quá trình nén gây lỗi
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
@@ -155,5 +155,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 frontend_url = os.environ.get('FRONTEND_URL', 'https://intelishop-frontend.vercel.app')
 CORS_ALLOWED_ORIGINS = [frontend_url]
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
