@@ -1,0 +1,7 @@
+intelishop_backend/.venv/
+.env
+*.pyc
+__pycache__/
+db.sqlite3
+.DS_Store
+demo

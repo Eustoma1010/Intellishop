@@ -1,0 +1,13 @@
+Django>=5.0
+djangorestframework
+django-cors-headers
+gunicorn
+whitenoise
+python-dotenv
+openai
+faiss-cpu
+google-generativeai
+edge-tts
+pillow
+django-import-export
+djangorestframework-simplejwt

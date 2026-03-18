@@ -1,0 +1,825 @@
+    <!DOCTYPE html>
+    <html lang="vi" style="scroll-behavior: smooth;">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Intelishop - Thời trang cao cấp</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body class="relative">
+
+        <div class="fixed inset-0 pointer-events-none overflow-hidden">
+            <div class="absolute top-20 left-10 text-9xl opacity-10 rotate-12 float-animation">🛍️</div>
+            <div class="absolute bottom-20 right-10 text-9xl opacity-10 -rotate-12 float-animation" style="animation-delay: 1s;">📱</div>
+            <div class="absolute top-40 right-40 text-7xl opacity-10 float-animation" style="animation-delay: 2s;">💻</div>
+            <div class="absolute bottom-40 left-20 text-8xl opacity-10 float-animation" style="animation-delay: 1.5s;">👗</div>
+        </div>
+
+        <nav class="relative z-50 glass sticky top-0 border-b border-pink-200/30">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-12">
+                        <a href="#" onclick="showHome()" class="flex items-center space-x-2 group">
+                            <span class="text-4xl filter drop-shadow-lg group-hover:scale-110 transition">🦋</span>
+                            <span class="text-3xl font-black bg-gradient-to-r from-pink-700 to-purple-700 bg-clip-text text-transparent">
+                                INTELISHOP
+                            </span>
+                        </a>
+
+                        <div class="hidden lg:flex items-center space-x-8">
+                            <a href="#" onclick="showHome()" class="font-bold text-pink-800 hover:text-pink-600 transition">Trang chủ</a>
+                            <a href="#deal-hot-section" onclick="showHome()" class="font-bold text-pink-800 hover:text-pink-600 transition relative">
+                                Deal Hot Hôm Nay
+                                <span class="absolute -top-3 -right-6 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md animate-pulse">HOT</span>
+                            </a>
+                            <a href="#" class="font-bold text-pink-800 hover:text-pink-600 transition">Hỗ trợ</a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="hidden xl:flex items-center bg-white/50 rounded-full px-4 py-2 border border-pink-200">
+                            <i class="fa-solid fa-magnifying-glass text-pink-400 mr-2"></i>
+                            <input type="text" placeholder="Tìm kiếm sản phẩm..." class="bg-transparent outline-none text-sm w-48 placeholder-pink-300" id="search-input">
+                        </div>
+
+                        <button onclick="showCart()" class="relative group">
+                            <div class="bg-white/50 p-2 rounded-full group-hover:bg-white transition">
+                                <i class="fa-solid fa-bag-shopping text-2xl text-pink-700"></i>
+                            </div>
+                            <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full shadow-lg">0</span>
+                        </button>
+
+                        <div id="auth-buttons-container" class="flex space-x-2">
+                            <button onclick="showLogin()" class="hidden sm:block bg-white text-pink-700 px-5 py-2 rounded-full text-sm font-semibold border-2 border-pink-300 hover:bg-pink-50 transition shadow-md">
+                                <i class="fa-regular fa-user mr-1"></i>Đăng Nhập
+                            </button>
+                            <button onclick="showRegister()" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-xl transition transform hover:scale-105">
+                                Đăng Kí
+                            </button>
+                        </div>
+
+                        <div id="user-profile-container" class="hidden relative group cursor-pointer h-full flex items-center">
+                            <div class="flex items-center justify-center w-11 h-11 bg-white rounded-full border-2 border-pink-400 shadow-md hover:shadow-lg transition overflow-hidden">
+                                <i class="fa-solid fa-user text-pink-400 text-xl mt-1"></i>
+                            </div>
+
+                            <div class="absolute top-10 right-0 w-full h-6 bg-transparent z-40"></div>
+
+                            <div class="absolute right-0 top-14 w-56 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-pink-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-50 overflow-hidden">
+                                <a href="#" onclick="showAccount()" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 font-semibold transition border-b border-pink-50">
+                                    <i class="fa-regular fa-id-card mr-2 text-pink-500"></i> Tài khoản của tôi
+                                </a>
+                                <a href="#" onclick="showOrders()" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 font-semibold transition">
+                                    <i class="fa-solid fa-box-open mr-2 text-pink-500"></i> Đơn mua
+                                </a>
+                                <a href="#" onclick="logout()" class="block px-4 py-3 text-sm text-red-600 hover:bg-red-50 border-t border-pink-100 font-semibold transition">
+                                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Đăng xuất
+                                </a>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mx-auto px-4 py-8 relative z-10">
+
+            <div id="view-home" class="block">
+
+                <div class="glass-card p-8 mb-10 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10">
+                        <div class="absolute top-0 right-0 text-9xl">👗</div>
+                        <div class="absolute bottom-0 left-0 text-9xl">📱</div>
+                    </div>
+
+                    <div class="relative z-10 text-center">
+                        <h1 class="text-5xl lg:text-7xl font-black mb-4">
+                            <span class="bg-gradient-to-r from-pink-700 via-purple-700 to-pink-700 bg-clip-text text-transparent">
+                                INTELISHOP
+                            </span>
+                        </h1>
+                        <p class="text-xl text-pink-800 mb-6">Hệ thống thời trang cao cấp - Đa dạng sản phẩm - Chất lượng cao cấp</p>
+
+                        <div class="flex items-center justify-center space-x-8">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-pink-700">50K+</div>
+                                <div class="text-sm text-gray-600">Khách hàng</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-pink-700">100K+</div>
+                                <div class="text-sm text-gray-600">Sản phẩm</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-pink-700">4.9★</div>
+                                <div class="text-sm text-gray-600">Đánh giá</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="deal-hot-section" class="scroll-mt-32 mb-12">
+                    <h2 class="text-3xl font-black text-red-600 mb-6 flex items-center">
+                        <i class="fa-solid fa-fire text-4xl mr-3 animate-pulse"></i>
+                        DEAL HOT HÔM NAY
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="hot-deals-container">
+                        </div>
+                </div>
+
+                <div class="flex items-center justify-between border-t border-pink-200/50 pt-10 mb-6">
+                    <h2 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-700 to-purple-800 flex items-center">
+                        <i class="fa-solid fa-crown mr-3 text-pink-500"></i>
+                        HỆ THỐNG THƯƠNG HIỆU
+                    </h2>
+                    <div class="text-sm text-gray-500 font-medium">Khám phá các gian hàng chính hãng</div>
+                </div>
+
+                <div class="relative group" id="brands-carousel-wrapper">
+                    <button id="btn-scroll-left" onclick="scrollStoreTabs(-1)"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-20 w-12 h-12 bg-white/90 backdrop-blur shadow-[0_10px_20px_rgba(236,72,153,0.15)] border border-pink-100 rounded-full flex items-center justify-center text-pink-600 hover:bg-pink-500 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 disabled:opacity-0 disabled:cursor-not-allowed transform scale-90 group-hover:scale-100">
+                        <i class="fa-solid fa-chevron-left text-lg"></i>
+                    </button>
+
+                    <div class="store-grid flex overflow-x-auto gap-6 pb-6 pt-2 px-2 scroll-smooth hide-scrollbar snap-x snap-mandatory" id="store-tabs-container" onscroll="checkScrollButtons()">
+                        </div>
+
+                    <button id="btn-scroll-right" onclick="scrollStoreTabs(1)"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-20 w-12 h-12 bg-white/90 backdrop-blur shadow-[0_10px_20px_rgba(236,72,153,0.15)] border border-pink-100 rounded-full flex items-center justify-center text-pink-600 hover:bg-pink-500 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 disabled:opacity-0 disabled:cursor-not-allowed transform scale-90 group-hover:scale-100">
+                        <i class="fa-solid fa-chevron-right text-lg"></i>
+                    </button>
+                </div>
+
+            <div id="current-store-header" class="glass p-4 rounded-2xl mb-10 flex flex-col md:flex-row items-center justify-between shadow-sm">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <span id="store-icon-display" class="text-4xl mr-4 flex-shrink-0">👗</span>
+                        <div>
+                            <h3 id="store-name-display" class="text-2xl font-black text-pink-800 uppercase">Fashion Forward</h3>
+                            <p id="store-desc-display" class="text-sm text-gray-600 font-medium">Thời trang cao cấp - Phong cách mới nhất</p>
+                        </div>
+                    </div>
+                    <div id="store-stats-display" class="flex flex-wrap items-center gap-2">
+                        </div>
+                </div>
+                <div class="w-full mb-16 block">
+                    <h2 class="text-2xl font-bold text-pink-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-gem mr-3 text-pink-500 text-3xl"></i> SẢN PHẨM NỔI BẬT
+                    </h2>
+
+                    <div id="catalog-filter-container" class="flex overflow-x-auto gap-3 mb-8 hide-scrollbar py-2">
+                        </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full" id="product-list">
+                        </div>
+
+                    <div id="load-more-container" class="mt-10 flex justify-center w-full"></div>
+                </div>
+                <div class="w-full h-px bg-gradient-to-r from-transparent via-pink-300 to-transparent my-12"></div>
+
+                <div id="feedback-section" class="w-full bg-white/70 backdrop-blur-xl rounded-[2rem] p-8 sm:p-10 border border-pink-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-10 block">
+                    <div class="text-center mb-10">
+                        <span class="bg-pink-100 text-pink-600 px-4 py-1.5 rounded-full text-sm font-bold tracking-wider uppercase mb-4 inline-block">Feedback</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-gray-800 flex items-center justify-center">
+                            <span id="feedback-title">ĐÁNH GIÁ TỪ KHÁCH HÀNG</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full" id="feedback-list"></div>
+                </div>
+            </div>
+
+            <div id="view-cart" class="glass-card p-8 hide">
+                <h2 class="text-3xl font-bold text-pink-800 mb-6 flex items-center">
+                    <i class="fa-solid fa-bag-shopping mr-3"></i>
+                    GIỎ HÀNG CỦA BẠN
+                </h2>
+
+                <div id="cart-items" class="space-y-4 mb-6"></div>
+
+                <div class="border-t border-pink-200 pt-4">
+                    <div class="flex justify-end mb-2">
+                        <span class="text-lg text-gray-600 mr-4">Tạm tính:</span>
+                        <span id="cart-subtotal" class="text-xl font-bold text-pink-700">$0.00</span>
+                    </div>
+                    <div class="flex justify-end mb-2">
+                        <span class="text-lg text-gray-600 mr-4">Phí vận chuyển:</span>
+                        <span class="text-xl font-bold text-pink-700" id="shipping-fee">$7.99</span>
+                    </div>
+                    <div class="flex justify-end mb-6">
+                        <span class="text-2xl text-gray-800 mr-4">Tổng cộng:</span>
+                        <span id="cart-total" class="text-2xl font-black text-pink-800">$0.00</span>
+                    </div>
+
+                    <div class="flex justify-end space-x-4">
+                        <button onclick="showHome()" class="px-6 py-3 border-2 border-pink-300 rounded-full font-semibold hover:bg-white transition">
+                            Tiếp tục mua
+                        </button>
+                        <button onclick="proceedToCheckout()" class="px-8 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-full font-bold hover:shadow-xl transition">
+                            Thanh toán <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-checkout" class="glass-card p-8 hide">
+                <div class="step-indicator">
+                    <div class="step active" id="step1">1</div>
+                    <div class="step-line active" id="line1"></div>
+                    <div class="step" id="step2">2</div>
+                    <div class="step-line" id="line2"></div>
+                    <div class="step" id="step3">3</div>
+                </div>
+
+                <div id="checkout-step1">
+                    <h2 class="text-3xl font-bold text-pink-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-location-dot mr-3"></i>
+                        THÔNG TIN GIAO HÀNG
+                    </h2>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 space-y-6">
+                            <div class="bg-white/70 rounded-2xl p-6">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <input type="text" placeholder="Họ" id="first-name" class="border border-pink-200 rounded-xl px-4 py-3 focus:outline-none focus:border-pink-400">
+                                    <input type="text" placeholder="Tên" id="last-name" class="border border-pink-200 rounded-xl px-4 py-3 focus:outline-none focus:border-pink-400">
+                                    <input type="text" placeholder="Số điện thoại" id="phone" class="border border-pink-200 rounded-xl px-4 py-3 focus:outline-none focus:border-pink-400">
+                                    <input type="email" placeholder="Email" id="email" class="border border-pink-200 rounded-xl px-4 py-3 focus:outline-none focus:border-pink-400">
+                                    <input type="text" placeholder="Địa chỉ" id="address" class="border border-pink-200 rounded-xl px-4 py-3 col-span-2 focus:outline-none focus:border-pink-400">
+                                    <input type="text" placeholder="Thành phố" id="city" class="border border-pink-200 rounded-xl px-4 py-3 focus:outline-none focus:border-pink-400">
+                                    <input type="text" placeholder="Quận/Huyện" id="district" class="border border-pink-200 rounded-xl px-4 py-3 focus:outline-none focus:border-pink-400">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-1">
+                            <div class="bg-white/70 rounded-2xl p-6 sticky top-24">
+                                <h3 class="font-bold text-pink-700 mb-4">Đơn hàng của bạn</h3>
+                                <div id="checkout-summary-items" class="space-y-3 mb-4 max-h-60 overflow-y-auto"></div>
+
+                                <div class="border-t border-pink-200 pt-4 space-y-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Tạm tính:</span>
+                                        <span id="checkout-subtotal" class="font-semibold">$0.00</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Phí vận chuyển:</span>
+                                        <span class="font-semibold" id="checkout-shipping-fee">$7.99</span>
+                                    </div>
+                                    <div class="flex justify-between text-lg font-bold pt-2 border-t border-pink-200">
+                                        <span>Tổng:</span>
+                                        <span id="checkout-total" class="text-pink-700">$0.00</span>
+                                    </div>
+                                </div>
+
+                                <button onclick="nextStep(2)" class="w-full mt-6 bg-gradient-to-r from-pink-600 to-purple-600 text-white py-4 rounded-xl font-bold hover:shadow-xl transition">
+                                    Tiếp tục <i class="fa-solid fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="checkout-step2" class="hide">
+                    <h2 class="text-3xl font-bold text-pink-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-truck mr-3"></i>
+                        PHƯƠNG THỨC VẬN CHUYỂN
+                    </h2>
+
+                    <div class="space-y-4 mb-8">
+                        <label class="flex items-center justify-between p-4 bg-white/70 rounded-xl cursor-pointer hover:bg-white/90" onclick="selectShipping('standard')">
+                            <div class="flex items-center">
+                                <input type="radio" name="shipping" class="mr-3" checked>
+                                <div>
+                                    <span class="font-semibold">Giao hàng tiêu chuẩn</span>
+                                    <p class="text-sm text-gray-500">5-7 ngày làm việc</p>
+                                </div>
+                            </div>
+                            <span class="font-bold">$7.99</span>
+                        </label>
+
+                        <label class="flex items-center justify-between p-4 bg-white/70 rounded-xl cursor-pointer hover:bg-white/90" onclick="selectShipping('express')">
+                            <div class="flex items-center">
+                                <input type="radio" name="shipping" class="mr-3">
+                                <div>
+                                    <span class="font-semibold">Giao hàng nhanh</span>
+                                    <p class="text-sm text-gray-500">2-3 ngày làm việc</p>
+                                </div>
+                            </div>
+                            <span class="font-bold">$17.99</span>
+                        </label>
+
+                        <label class="flex items-center justify-between p-4 bg-white/70 rounded-xl cursor-pointer hover:bg-white/90" onclick="selectShipping('express-plus')">
+                            <div class="flex items-center">
+                                <input type="radio" name="shipping" class="mr-3">
+                                <div>
+                                    <span class="font-semibold">Giao hàng hỏa tốc</span>
+                                    <p class="text-sm text-gray-500">Trong ngày</p>
+                                </div>
+                            </div>
+                            <span class="font-bold">$29.99</span>
+                        </label>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button onclick="prevStep(1)" class="px-8 py-3 border-2 border-pink-300 rounded-full font-semibold hover:bg-white transition">
+                            <i class="fa-solid fa-arrow-left mr-2"></i>Quay lại
+                        </button>
+                        <button onclick="nextStep(3)" class="px-8 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-full font-bold hover:shadow-xl transition">
+                            Tiếp tục <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="checkout-step3" class="hide">
+                    <h2 class="text-3xl font-bold text-pink-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-credit-card mr-3"></i>
+                        THANH TOÁN
+                    </h2>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <div class="bg-white/70 rounded-2xl p-6">
+                                <h3 class="font-bold text-pink-700 mb-4">Phương thức thanh toán</h3>
+                                <div class="space-y-3">
+                                    <label class="flex items-center p-3 border border-pink-200 rounded-xl cursor-pointer hover:bg-white/50">
+                                        <input type="radio" name="payment" class="mr-3" checked>
+                                        <i class="fa-brands fa-cc-visa text-2xl mr-3 text-blue-600"></i>
+                                        <span>Credit / Debit Card</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-pink-200 rounded-xl cursor-pointer hover:bg-white/50">
+                                        <input type="radio" name="payment" class="mr-3">
+                                        <i class="fa-brands fa-paypal text-2xl mr-3 text-blue-800"></i>
+                                        <span>PayPal</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-pink-200 rounded-xl cursor-pointer hover:bg-white/50">
+                                        <input type="radio" name="payment" class="mr-3">
+                                        <i class="fa-solid fa-money-bill-wave text-2xl mr-3 text-green-600"></i>
+                                        <span>Thanh toán khi nhận hàng</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <div class="bg-white/70 rounded-2xl p-6 sticky top-24">
+                                <h3 class="font-bold text-pink-700 mb-4">Xác nhận đơn hàng</h3>
+                                <div id="order-confirmation-items" class="space-y-2 mb-4"></div>
+
+                                <div class="border-t border-pink-200 pt-4 space-y-2">
+                                    <div class="flex justify-between text-sm text-gray-600">
+                                        <span>Tạm tính:</span>
+                                        <span id="final-subtotal" class="font-semibold text-gray-800">$0.00</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm text-gray-600">
+                                        <span>Phí vận chuyển:</span>
+                                        <span id="final-shipping" class="font-semibold text-gray-800">$7.99</span>
+                                    </div>
+                                    <div class="flex justify-between items-center pt-3 mt-3 border-t border-pink-100">
+                                        <span class="font-bold text-gray-800">Tổng thanh toán:</span>
+                                        <span id="final-total" class="text-2xl font-black text-pink-700">$0.00</span>
+                                    </div>
+                                </div>
+
+                                <button onclick="placeOrder()" class="w-full mt-6 bg-gradient-to-r from-green-600 to-green-500 text-white py-4 rounded-xl font-bold hover:shadow-xl transition">
+                                    <i class="fa-solid fa-lock mr-2"></i>
+                                    XÁC NHẬN ĐẶT HÀNG
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-6">
+                        <button onclick="prevStep(2)" class="px-8 py-3 border-2 border-pink-300 rounded-full font-semibold hover:bg-white transition">
+                            <i class="fa-solid fa-arrow-left mr-2"></i>Quay lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-success" class="glass-card p-10 hide">
+                </div>
+
+            <div id="view-login" class="max-w-[1000px] mx-auto hide mt-10">
+                <div class="flex flex-col md:flex-row bg-white/40 backdrop-blur-md rounded-[30px] border border-white/50 shadow-2xl overflow-hidden">
+
+                    <div class="w-full md:w-1/2 p-8 lg:p-12">
+                        <header class="mb-8">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-3xl mb-4 mx-auto md:mx-0 shadow-sm">
+                                <i class="fa-solid fa-store"></i>
+                            </div>
+                            <h2 class="text-3xl font-black text-purple-800 text-center md:text-left mb-2">Đăng Nhập</h2>
+                            <p class="text-gray-500 text-center md:text-left">Mừng bạn quay trở lại Intelishop!</p>
+                        </header>
+
+                        <form id="login-form" class="space-y-5" onsubmit="handleLogin(event)">
+                            <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
+                                <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-regular fa-envelope"></i></div>
+                                <input type="email" id="login-email" placeholder="Email của bạn" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800 placeholder-gray-400">
+                            </div>
+
+                            <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
+                                <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-solid fa-lock"></i></div>
+                                <input type="password" id="login-password" placeholder="Mật khẩu" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800 placeholder-gray-400">
+                                <button type="button" onclick="togglePassword('login-password')" class="absolute right-4 text-gray-400 hover:text-pink-500"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+
+                            <div class="flex items-center justify-between text-sm">
+                                <label class="flex items-center text-gray-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-pink-500 focus:ring-pink-500"> Ghi nhớ tôi
+                                </label>
+                                <a href="#" class="text-pink-600 font-semibold hover:underline">Quên mật khẩu?</a>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3.5 rounded-xl font-bold text-lg hover:shadow-[0_8px_20px_rgba(219,39,119,0.3)] transition-all transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng Nhập
+                            </button>
+                        </form>
+
+                        <div class="mt-8 flex items-center justify-center space-x-4">
+                            <div class="h-px bg-pink-200 flex-1"></div>
+                            <span class="text-pink-400 text-sm font-medium bg-white/50 px-4 py-1 rounded-full">Hoặc đăng nhập với</span>
+                            <div class="h-px bg-pink-200 flex-1"></div>
+                        </div>
+
+                        <div class="flex gap-4 mt-6">
+                            <button class="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-pink-100 rounded-full text-gray-700 font-semibold hover:bg-pink-50 transition">
+                                <i class="fa-brands fa-google text-red-500"></i> Google
+                            </button>
+                            <button class="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-pink-100 rounded-full text-gray-700 font-semibold hover:bg-pink-50 transition">
+                                <i class="fa-brands fa-facebook-f text-blue-600"></i> Facebook
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-1/2 bg-gradient-to-br from-purple-50 to-pink-50 p-8 lg:p-12 border-t md:border-t-0 md:border-l border-white/50 flex flex-col justify-center relative overflow-hidden">
+                        <div class="absolute -right-20 -top-20 text-9xl opacity-10 rotate-12">✨</div>
+                        <h3 class="text-2xl font-black text-pink-700 mb-6 flex items-center gap-3">
+                            <i class="fa-solid fa-gift text-3xl"></i> Lợi ích thành viên
+                        </h3>
+                        <ul class="space-y-4 mb-10">
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <div class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-check text-xs"></i></div>
+                                <span>Tích lũy điểm thưởng cho mỗi đơn hàng</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <div class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-check text-xs"></i></div>
+                                <span>Ưu đãi thành viên lên đến <strong class="text-pink-600">20%</strong></span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-700">
+                                <div class="mt-1 w-5 h-5 rounded-full bg-green-100 text-green-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-check text-xs"></i></div>
+                                <span>Miễn phí vận chuyển cho đơn hàng đầu tiên</span>
+                            </li>
+                        </ul>
+                        <div class="text-center pt-8 border-t border-pink-200/50">
+                            <p class="text-gray-600 mb-4">Chưa có tài khoản?</p>
+                            <button onclick="showRegister()" class="w-full py-3 bg-white border-2 border-purple-300 text-purple-700 font-bold rounded-xl hover:bg-purple-50 transition shadow-sm">
+                                Tạo tài khoản ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-register" class="max-w-[1000px] mx-auto hide mt-10">
+                <div class="flex flex-col md:flex-row-reverse bg-white/40 backdrop-blur-md rounded-[30px] border border-white/50 shadow-2xl overflow-hidden">
+
+                    <div class="w-full md:w-1/2 p-8 lg:p-12">
+                        <header class="mb-6">
+                            <h2 class="text-3xl font-black text-purple-800 mb-2">Tạo Tài Khoản</h2>
+                            <p class="text-gray-500">Tham gia Intelishop để nhận nhiều ưu đãi!</p>
+                        </header>
+
+                        <form id="register-form" class="space-y-4" onsubmit="handleRegister(event)">
+                            <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
+                                <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-regular fa-user"></i></div>
+                                <input type="text" id="reg-name" placeholder="Họ và tên" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800">
+                            </div>
+
+                            <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
+                                <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-regular fa-envelope"></i></div>
+                                <input type="email" id="reg-email" placeholder="Email của bạn" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800">
+                            </div>
+
+                            <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
+                                <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-solid fa-phone"></i></div>
+                                <input type="tel" id="reg-phone" placeholder="Số điện thoại" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800">
+                            </div>
+
+                            <div>
+                                <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors mb-2">
+                                    <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-solid fa-lock"></i></div>
+                                    <input type="password" id="reg-password" placeholder="Mật khẩu" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800" oninput="checkPasswordStrength()">
+                                </div>
+                                <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden flex mb-1">
+                                    <div id="strength-bar-1" class="h-full w-1/3 bg-transparent transition-colors"></div>
+                                    <div id="strength-bar-2" class="h-full w-1/3 bg-transparent transition-colors"></div>
+                                    <div id="strength-bar-3" class="h-full w-1/3 bg-transparent transition-colors"></div>
+                                </div>
+                                <div class="flex justify-between text-[10px] font-semibold px-1">
+                                    <span id="strength-text-1" class="text-gray-400">Yếu</span>
+                                    <span id="strength-text-2" class="text-gray-400">Trung bình</span>
+                                    <span id="strength-text-3" class="text-gray-400">Mạnh</span>
+                                </div>
+                            </div>
+
+                            <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
+                                <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-solid fa-lock"></i></div>
+                                <input type="password" id="reg-password-confirm" placeholder="Xác nhận mật khẩu" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800" oninput="checkPasswordMatch()">
+                            </div>
+                            <p id="password-match-msg" class="text-xs text-red-500 hidden px-2">Mật khẩu không khớp!</p>
+
+                            <div class="flex items-center gap-6 pt-2">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="gender" value="male" class="w-4 h-4 text-blue-600 focus:ring-blue-500"> Nam
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="gender" value="female" class="w-4 h-4 text-pink-500 focus:ring-pink-500" checked> Nữ
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="gender" value="other" class="w-4 h-4 text-purple-500 focus:ring-purple-500"> Khác
+                                </label>
+                            </div>
+
+                            <div class="pt-2">
+                                <label class="flex items-start gap-2 cursor-pointer text-sm text-gray-600">
+                                    <input type="checkbox" required class="mt-1 rounded text-pink-500 focus:ring-pink-500">
+                                    <span>Tôi đồng ý với <a href="#" class="font-semibold text-pink-600 hover:underline">Điều khoản dịch vụ</a> và <a href="#" class="font-semibold text-pink-600 hover:underline">Chính sách bảo mật</a></span>
+                                </label>
+                            </div>
+
+                            <button type="submit" id="btn-register-submit" class="w-full mt-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3.5 rounded-xl font-bold text-lg hover:shadow-[0_8px_20px_rgba(219,39,119,0.3)] transition-all transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-user-plus"></i> Đăng Ký
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="w-full md:w-1/2 bg-gradient-to-br from-pink-50 to-purple-50 p-8 lg:p-12 border-t md:border-t-0 md:border-r border-white/50 flex flex-col justify-center items-center text-center relative overflow-hidden">
+                        <div class="absolute -left-10 -bottom-10 text-9xl opacity-10 -rotate-12">🛍️</div>
+                        <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-md mb-6 relative z-10">
+                            <i class="fa-regular fa-id-badge text-5xl text-pink-500"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-purple-800 mb-4 relative z-10">Đã có tài khoản?</h3>
+                        <p class="text-gray-600 mb-8 relative z-10">Đăng nhập ngay để tiếp tục mua sắm và theo dõi các đơn hàng của bạn.</p>
+
+                        <button onclick="showLogin()" class="w-full max-w-[250px] py-3 bg-white border-2 border-pink-300 text-pink-700 font-bold rounded-xl hover:bg-pink-50 transition shadow-sm relative z-10">
+                            Đăng nhập ngay
+                        </button>
+
+                        <div class="mt-10 w-full relative z-10">
+                            <p class="text-sm text-gray-500 mb-4">Hoặc đăng ký nhanh bằng</p>
+                            <div class="flex gap-4 justify-center">
+                                <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition text-red-500 border border-pink-100">
+                                    <i class="fa-brands fa-google text-xl"></i>
+                                </button>
+                                <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition text-blue-600 border border-pink-100">
+                                    <i class="fa-brands fa-facebook-f text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-account" class="max-w-3xl mx-auto glass-card p-10 hide mt-6">
+                <h2 class="text-3xl font-black text-pink-800 mb-8 border-b border-pink-200 pb-4"><i class="fa-regular fa-id-card mr-3 text-pink-500"></i> Hồ Sơ Của Tôi</h2>
+                <div class="flex flex-col md:flex-row gap-10">
+                    <div class="md:w-1/3 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-pink-200 pb-8 md:pb-0 md:pr-4">
+                        <div class="w-40 h-40 bg-white rounded-full flex items-center justify-center border-4 border-pink-100 shadow-xl mb-6 overflow-hidden">
+                            <i class="fa-solid fa-user text-6xl text-pink-300"></i>
+                        </div>
+                        <button class="px-6 py-2 bg-white border-2 border-pink-300 rounded-full text-sm font-bold text-pink-600 hover:bg-pink-50 transition shadow-sm">
+                            <i class="fa-solid fa-camera mr-2"></i> Chọn Ảnh
+                        </button>
+                    </div>
+                    <div class="md:w-2/3 space-y-5">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Họ và Tên</label>
+                            <input type="text" id="acc-name" readonly class="w-full border border-pink-200 rounded-xl px-5 py-3 bg-gray-50 text-gray-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                            <input type="email" id="acc-email" readonly class="w-full border border-pink-200 rounded-xl px-5 py-3 bg-gray-50 text-gray-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Số điện thoại</label>
+                            <input type="text" placeholder="Thêm số điện thoại để bảo mật tài khoản" class="w-full border border-pink-200 rounded-xl px-5 py-3 focus:outline-none focus:border-pink-400 bg-white shadow-inner">
+                        </div>
+                        <div class="pt-4">
+                            <button onclick="showNotification('Đã lưu thay đổi hồ sơ!')" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-3 rounded-xl font-bold hover:shadow-lg transition">
+                                Lưu Thay Đổi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-orders" class="glass-card p-10 hide">
+                <div id="no-order-msg" class="text-center py-20 hide bg-white/60 rounded-3xl border border-pink-100 shadow-sm">
+                    <div class="w-32 h-32 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                        <i class="fa-solid fa-clipboard-list text-6xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-700 mb-2">Chưa có đơn hàng</h3>
+                    <p class="text-gray-500 mb-8">Bạn chưa thực hiện giao dịch mua sắm nào.</p>
+                    <button onclick="showHome()" class="px-10 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full font-bold hover:shadow-lg transition transform hover:-translate-y-1">
+                        Trải nghiệm mua sắm ngay
+                    </button>
+                </div>
+
+                <div id="has-order-container" class="hide">
+                    <div class="text-center mb-10" id="order-success-msg">
+                        <div class="text-7xl mb-4 float-animation">🎉</div>
+                        <h2 class="text-4xl font-black text-pink-800 mb-2">ĐẶT HÀNG THÀNH CÔNG!</h2>
+                        <p class="text-lg text-gray-600">Cảm ơn bạn đã tin tưởng mua sắm tại Intelishop</p>
+                    </div>
+
+                    <div id="orders-list-container" class="space-y-6 max-w-4xl mx-auto mt-8"></div>
+
+                        <h3 class="font-bold text-lg text-gray-800 mb-6"><i class="fa-solid fa-route text-pink-500 mr-2"></i>Tình trạng đơn hàng</h3>
+
+                        <div class="relative py-4">
+                            <div class="absolute top-1/2 left-0 w-full h-2 bg-gray-200 rounded-full -translate-y-1/2"></div>
+                            <div class="absolute top-1/2 left-0 w-1/3 h-2 bg-gradient-to-r from-green-400 to-pink-500 rounded-full -translate-y-1/2 transition-all duration-1000"></div>
+
+                            <div class="relative flex justify-between">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg border-4 border-white z-10"><i class="fa-solid fa-check"></i></div>
+                                    <span class="mt-3 font-bold text-green-600 text-sm text-center">Đã xác nhận</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 bg-pink-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg border-4 border-white z-10 animate-bounce"><i class="fa-solid fa-box-open"></i></div>
+                                    <span class="mt-3 font-bold text-pink-600 text-sm text-center">Đang đóng gói</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center text-xl border-4 border-white z-10"><i class="fa-solid fa-truck-fast"></i></div>
+                                    <span class="mt-3 font-semibold text-gray-500 text-sm text-center">Đang giao</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center text-xl border-4 border-white z-10"><i class="fa-solid fa-house"></i></div>
+                                    <span class="mt-3 font-semibold text-gray-500 text-sm text-center">Hoàn thành</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-10 text-center">
+                            <button onclick="showHome()" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-10 py-4 rounded-full font-bold hover:shadow-xl transition transform hover:-translate-y-1">
+                                <i class="fa-solid fa-bag-shopping mr-2"></i> Tiếp tục mua sắm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+<!--        <div id="ai-chat-widget" class="fixed bottom-6 right-6 z-[100]">-->
+
+<!--            <div id="avatar-container" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] pointer-events-none z-[60]"></div>-->
+<!--            <button onclick="toggleChat()" id="chat-toggle-btn" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-transform relative z-50">-->
+<!--                <i class="fa-solid fa-robot"></i>-->
+<!--            </button>-->
+<!--        -->
+<!--            <div id="chat-window" class="hidden absolute bottom-20 right-0 w-[calc(100vw-3rem)] sm:w-96 bg-white/90 backdrop-blur-xl border border-pink-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col" style="height: 500px;">-->
+<!--                <div class="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 flex justify-between items-center shadow-md">-->
+<!--                    <div class="flex items-center space-x-3">-->
+<!--                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl backdrop-blur-sm">-->
+<!--                            <i class="fa-solid fa-wand-magic-sparkles"></i>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <div class="font-bold text-lg">Trợ lý AI</div>-->
+<!--                            <div class="text-xs text-pink-100 flex items-center">-->
+<!--                                <span class="w-2 h-2 bg-green-400 rounded-full mr-1 animate-pulse"></span> Đang trực tuyến-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <button onclick="toggleChat()" class="text-white hover:text-pink-200 transition"><i class="fa-solid fa-xmark text-xl"></i></button>-->
+<!--                </div>-->
+<!--        -->
+<!--                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gradient-to-b from-pink-50/50 to-white">-->
+<!--                    <div class="flex items-start space-x-2">-->
+<!--                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0"><i class="fa-solid fa-robot"></i></div>-->
+<!--                        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 max-w-[85%] border border-pink-100">-->
+<!--                            Chào bạn! Mình là trợ lý AI của Intelishop. Nhập chiều cao, cân nặng hoặc phong cách bạn thích, mình sẽ gợi ý món đồ phù hợp nhất nhé! ✨-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--        -->
+<!--                <div class="p-3 bg-white border-t border-pink-100 flex items-center">-->
+<!--                    <input type="text" id="chat-input" placeholder="Ví dụ: Mình cao 1m6, 50kg, thích phong cách năng động..." class="flex-1 bg-pink-50/50 border border-pink-100 rounded-full px-4 py-3 text-sm focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition" onkeypress="handleChatKeyPress(event)">-->
+<!--                    <button onclick="sendChatMessage()" class="ml-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white w-11 h-11 rounded-full flex items-center justify-center hover:shadow-lg transition transform hover:scale-105 shrink-0">-->
+<!--                        <i class="fa-solid fa-paper-plane"></i>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <button onclick="toggleAIPanel()" id="chat-toggle-btn" class="fixed bottom-6 right-6 bg-gradient-to-r from-pink-600 to-purple-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-transform z-[100]">
+            <i class="fa-solid fa-robot"></i>
+        </button>
+
+        <div id="ai-side-panel" class="fixed top-0 right-0 w-full sm:w-[400px] h-screen bg-white/95 backdrop-blur-xl border-l border-pink-200 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[100] flex flex-col">
+
+            <div class="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 flex justify-between items-center shadow-md shrink-0">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl backdrop-blur-sm">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-lg">Chuyên viên AI</div>
+                        <div class="text-xs text-pink-100 flex items-center">
+                            <span class="w-2 h-2 bg-green-400 rounded-full mr-1 animate-pulse"></span> Đang trực tuyến
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleAIPanel()" class="text-white hover:text-pink-200 transition">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+
+            <div id="avatar-container" class="h-1/2 w-full relative bg-gradient-to-b from-pink-50 to-white overflow-hidden flex items-center justify-center border-b border-pink-100">
+                </div>
+
+            <div id="chat-interface" class="h-1/2 flex flex-col bg-white shrink-0">
+                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4">
+                    <div class="flex items-start space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0"><i class="fa-solid fa-robot"></i></div>
+                        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 max-w-[85%] border border-pink-100">
+                            Chào bạn! Mình là chuyên viên tư vấn của Intelishop. Bạn cần tìm trang phục cho dịp nào ạ? ✨
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-white border-t border-pink-100 flex items-center shrink-0">
+                    <button id="mic-btn" onclick="toggleVoiceRecording()" class="mr-2 text-pink-500 w-11 h-11 rounded-full flex items-center justify-center hover:bg-pink-50 transition border border-pink-200 shrink-0">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+                    <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." class="flex-1 bg-pink-50/50 border border-pink-100 rounded-full px-4 py-3 text-sm focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition" onkeypress="handleChatKeyPress(event)">
+                    <button onclick="sendChatMessage()" class="ml-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white w-11 h-11 rounded-full flex items-center justify-center hover:shadow-lg transition transform hover:scale-105 shrink-0">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="glass mt-12 py-8 relative z-10">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="font-bold text-pink-800 mb-4 flex items-center">
+                            <span class="text-2xl mr-2">🦋</span>
+                            INTELISHOP
+                        </h3>
+                        <p class="text-sm text-gray-600">123-456-7890</p>
+                        <p class="text-sm text-gray-600">support@intelishop.com</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-pink-700 mb-3">Hệ thống cửa hàng</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>Fashion Forward</li>
+                            <li>Street Style</li>
+                            <li>Luxury Collection</li>
+                            <li>Apple Store</li>
+                            <li>Samsung Store</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-pink-700 mb-3">Hỗ trợ</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>Trung tâm hỗ trợ</li>
+                            <li>Chính sách đổi trả</li>
+                            <li>Hướng dẫn mua hàng</li>
+                            <li>Phương thức vận chuyển</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-pink-700 mb-3">Kết nối</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="#" class="text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-tiktok"></i></a>
+                            <a href="#" class="text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center text-sm text-gray-500 mt-8 pt-4 border-t border-pink-200">
+                    © 2026 Intelishop. All rights reserved. 5 Stores System.
+                </div>
+            </div>
+</footer>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://unpkg.com/three@0.154.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@0.154.0/examples/jsm/",
+                    "@pixiv/three-vrm": "https://unpkg.com/@pixiv/three-vrm@2.0.0/lib/three-vrm.module.js"
+                }
+            }
+        </script>
+
+        <script type="module" src="avatar.js"></script>
+        <script type="module" src="js/main.js"></script>
+    </body>
+</html>
