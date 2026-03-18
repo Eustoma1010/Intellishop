@@ -3,7 +3,7 @@ import dj_database_url
 from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
-
+from whitenoise.storage import CompressedManifestStaticFilesStorage
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
@@ -125,14 +125,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # ==============================================================================
 # CẤU HÌNH LƯU TRỮ (STORAGES) - XỬ LÝ STATIC VÀ MEDIA (CLOUDINARY)
 # ==============================================================================
+class MyWhiteNoiseStorage(CompressedManifestStaticFilesStorage):
+    manifest_strict = False
+
 STORAGES = {
-    # Default dùng để lưu trữ file Media (Ảnh upload) lên Cloudinary
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
-    # Staticfiles dùng Whitenoise để nén và cache CSS/JS
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        # Sử dụng class tùy chỉnh vừa tạo ở trên
+        "BACKEND": "config.settings.MyWhiteNoiseStorage",
     },
 }
 
@@ -155,5 +157,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 frontend_url = os.environ.get('FRONTEND_URL', 'https://intelishop-frontend.vercel.app')
 CORS_ALLOWED_ORIGINS = [frontend_url]
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "config.settings.MyWhiteNoiseStorage"
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
