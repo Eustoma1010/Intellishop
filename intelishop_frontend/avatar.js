@@ -1,12 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { VRMLoaderPlugin } from '@pixiv/three-vrm';
-
-const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-export const API_BASE_URL = isLocalhost
-    ? 'http://127.0.0.1:8000'
-    : 'https://intelishop-backend.onrender.com';
-console.log(API_BASE_URL)
+import { API_BASE_URL } from './js/config.js';
 
 const container = document.getElementById('avatar-container');
 const scene = new THREE.Scene();

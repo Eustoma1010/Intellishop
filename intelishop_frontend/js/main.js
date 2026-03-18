@@ -59,7 +59,7 @@ async function initApp() {
             App.isLoggedIn = true;
             App.currentUser = { name: "Khách hàng", email: "user@email.com" };
         }
-        console.log("🛠️ [DEBUG] Chuẩn bị gọi fetch data từ link:", `${API_BASE_URL}/api/data/`);
+
         // 2. Fetch data (Sử dụng cách thức fetch an toàn)
         const response = await fetch(`${API_BASE_URL}/api/data/`);
 

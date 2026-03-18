@@ -3,9 +3,10 @@
 // ==================================================
 // Tự động chuyển đổi API dựa trên môi trường chạy (Local vs Production)
 const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-export const API_BASE_URL = isLocalhost 
-    ? 'http://127.0.0.1:8000' 
+export const API_BASE_URL = isLocalhost
+    ? 'http://127.0.0.1:8000'
     : 'https://intelishop-backend.onrender.com';
+//export const API_BASE_URL = 'https://intelishop-backend.onrender.com';
 console.log(API_BASE_URL)
 // ==================================================
 // 2. HELPER FUNCTIONS (TIỆN ÍCH)
