@@ -125,16 +125,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # ==============================================================================
 # CẤU HÌNH LƯU TRỮ (STORAGES) - XỬ LÝ STATIC VÀ MEDIA (CLOUDINARY)
 # ==============================================================================
-class MyWhiteNoiseStorage(CompressedManifestStaticFilesStorage):
-    manifest_strict = False
 
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        # Sử dụng class tùy chỉnh vừa tạo ở trên
-        "BACKEND": "config.settings.MyWhiteNoiseStorage",
+        # Đổi thành CompressedStaticFilesStorage (Bỏ chữ Manifest đi)
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
 
@@ -157,5 +155,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 frontend_url = os.environ.get('FRONTEND_URL', 'https://intelishop-frontend.vercel.app')
 CORS_ALLOWED_ORIGINS = [frontend_url]
 
-STATICFILES_STORAGE = "config.settings.MyWhiteNoiseStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
