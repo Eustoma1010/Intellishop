@@ -154,3 +154,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Nếu CORS_ALLOW_ALL_ORIGINS = False, Django sẽ đọc mảng dưới đây:
 frontend_url = os.environ.get('FRONTEND_URL', 'https://intelishop-frontend.vercel.app')
 CORS_ALLOWED_ORIGINS = [frontend_url]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
