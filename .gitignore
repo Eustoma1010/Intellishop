@@ -5,3 +5,5 @@ __pycache__/
 db.sqlite3
 .DS_Store
 demo
+product_vectors.index
+sent_emails/
