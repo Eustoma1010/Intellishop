@@ -3,7 +3,6 @@ import dj_database_url
 from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
-from whitenoise.storage import CompressedManifestStaticFilesStorage
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
@@ -203,7 +202,6 @@ REST_AUTH = {
     'JWT_AUTH_REFRESH_COOKIE': 'intelishop-refresh-token',
 }
 
-from datetime import timedelta
 AUTH_USER_MODEL = 'core.User'
 # Tắt xác thực email mặc định của allauth để không bị lỗi gửi mail
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None

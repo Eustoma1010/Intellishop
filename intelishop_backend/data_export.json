@@ -1,0 +1,2327 @@
+[
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$HevX42aR2MTcRHTCXfcUco$zsw90EEi0NBONwUljMuW+J7i24P2tDX0RAyVugJVT2Y=",
+    "last_login": "2026-03-19T17:51:56Z",
+    "is_superuser": true,
+    "email": "admin@example.com",
+    "username": "",
+    "full_name": "Admin",
+    "role": "ADMIN",
+    "phone_number": null,
+    "address": "",
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": "",
+    "gender": null,
+    "intellishop_coin": 100,
+    "is_active": true,
+    "is_staff": true,
+    "date_joined": "2026-03-19T17:32:49Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$hvC8BGX6Lq5nLERh0lpnoy$baC/GGIVvRboxhqZktA4yQfWoNlcJAsilFXHlIaWzn8=",
+    "last_login": null,
+    "is_superuser": true,
+    "email": "admin.vn2026@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Quản trị viên mock dữ liệu",
+    "role": "ADMIN",
+    "phone_number": "0909123456",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 0,
+    "is_active": true,
+    "is_staff": true,
+    "date_joined": "2026-03-21T11:00:36.661Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$WBrEVF6oAyOaPvD9eCtgfb$csJDby0ILciqEI7yHGjg97lPK3wwSZuM4kqWD6268nk=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "tran.hai.long@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Trần Hải Long",
+    "role": "VENDOR",
+    "phone_number": "0981234567",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 0,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:37.540Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$j2fPoC0YpjBXf0vc7ydrGI$fw1cJhlwKCSrlWpez8wwsLn4vemj4h78zNnJqgN6P4M=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "pham.ngoc.lan@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Phạm Ngọc Lan",
+    "role": "VENDOR",
+    "phone_number": "0869123456",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 0,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:39.156Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$wmQhtDOGBAzCR438SGRx7M$0QqXX5ChV9RS+CPL5sHOski2Y0t1ggSdRyXXyQjtGPI=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "le.duc.minh@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Lê Đức Minh",
+    "role": "VENDOR",
+    "phone_number": "0388123456",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 0,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:40.481Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$EJh3t6a66F5KbEv6ntRYjE$wl3AP2dIrmF6oJbmMk03UhdQsYAewfgrt3hFVA89+Bg=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "nguyen.huu.thinh@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Nguyễn Hữu Thịnh",
+    "role": "SHIPPER",
+    "phone_number": "0399123456",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 0,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:41.361Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$ORkXwapO4STgprTwaMjw5e$MSXJXO7A+ppxqW6pFBCM8JrLKMt1iC+/ZZ89t1HEuZ0=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "doan.truc.my@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Đoàn Trúc My",
+    "role": "CUSTOMER",
+    "phone_number": "0913456789",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 50000,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:42.111Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$jSc4UkCXAZO2vG55O2TxMU$9Cq+vF3YxVNcSdIwDWGvf2qt9L96AzaUQw+iBtPa62s=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "hoang.viet.anh@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Hoàng Việt Anh",
+    "role": "CUSTOMER",
+    "phone_number": "0323456789",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 50000,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:43.111Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$ujZayOMcDGpJ2nXFcC74Tl$hUJ9V8X8qc9QiJqqcBgwq0vARqDzGaejjmPuOG/1BD8=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "vo.ngoc.bich@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Võ Ngọc Bích",
+    "role": "CUSTOMER",
+    "phone_number": "0887123456",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 50000,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:43.990Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$UXzDETp5uQIVAXSFtyKWmn$0Ht646gIpzuGCbBd0zNqTkgcQJADtN4PpjhM8bElk9A=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "phan.thanh.dat@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Phan Thành Đạt",
+    "role": "CUSTOMER",
+    "phone_number": "0976123456",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 50000,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:44.851Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$r1IL5RBybn6TLep0YimSfK$npmnOrvnu0qrUjJgkWzK8FFWB2ovqbk8wQaEF0QokUU=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "khach.chua.mua@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Lê Thị Chưa Mua",
+    "role": "CUSTOMER",
+    "phone_number": "0833456789",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 50000,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:47.101Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "!ugMai1p9R5AIHrFYybyL9QkzzgmhIZuaAsmY6mMc",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "google.only@vn2026.mock.intelishop.vn",
+    "username": "",
+    "full_name": "Nguyễn Google Only",
+    "role": "CUSTOMER",
+    "phone_number": "0347123456",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 0,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-21T11:00:47.971Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Hj8byFjpX4BohPESony63X$oZ553C1HuWe1mFfUu0Xowk5y1l5ElrstUQ9r3zg4xok=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "tuongvck24411@st.uel.edu.vn",
+    "username": "tuongvck24411@st.uel.edu.vn",
+    "full_name": "Võ Cát Tường",
+    "role": "CUSTOMER",
+    "phone_number": "0392006710",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": null,
+    "intellishop_coin": 0,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-22T03:06:09.241Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$1s8Ujp4xIxQI5U5h9LQkQF$5fu5I+o+5RsMXx9xplO7k1yaVJm0d7v6jXa602j1QbQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "thienphan370@gmail.com",
+    "username": "thienphan370@gmail.com",
+    "full_name": "Thiện Phan",
+    "role": "CUSTOMER",
+    "phone_number": "0392006710",
+    "address": null,
+    "avatar": "",
+    "birthday": null,
+    "birth_date": null,
+    "ai_personal_notes": null,
+    "gender": "other",
+    "intellishop_coin": 0,
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-22T06:21:51.607Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.category",
+  "pk": 4,
+  "fields": {
+    "name": "Áo Khoác",
+    "icon": null
+  }
+},
+{
+  "model": "core.category",
+  "pk": 5,
+  "fields": {
+    "name": "Áo Phông, Áo Nỉ, Áo Khoác Len",
+    "icon": null
+  }
+},
+{
+  "model": "core.category",
+  "pk": 6,
+  "fields": {
+    "name": "Quần",
+    "icon": null
+  }
+},
+{
+  "model": "core.category",
+  "pk": 7,
+  "fields": {
+    "name": "Phụ Kiện",
+    "icon": null
+  }
+},
+{
+  "model": "core.store",
+  "pk": 1,
+  "fields": {
+    "owner": null,
+    "name": "Uniqlo",
+    "icon": "media/store_icons/2026/03/images_xlfalm",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.store",
+  "pk": 2,
+  "fields": {
+    "owner": null,
+    "name": "ICONDENIM",
+    "icon": "media/store_icons/2026/03/xanh_xj1to2",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.store",
+  "pk": 3,
+  "fields": {
+    "owner": null,
+    "name": "Nike",
+    "icon": "media/store_icons/2026/03/nike_ejgqc9",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.store",
+  "pk": 4,
+  "fields": {
+    "owner": null,
+    "name": "Adidas",
+    "icon": "media/store_icons/2026/03/add_h5l8oe",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.store",
+  "pk": 5,
+  "fields": {
+    "owner": null,
+    "name": "PUMA",
+    "icon": "media/store_icons/2026/03/pm_j6veg7",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.store",
+  "pk": 6,
+  "fields": {
+    "owner": null,
+    "name": "COOLMATE",
+    "icon": "media/store_icons/2026/03/cm_v0fp6t",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.store",
+  "pk": 7,
+  "fields": {
+    "owner": null,
+    "name": "Biti's",
+    "icon": "media/store_icons/2026/03/bt_b447rq",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.store",
+  "pk": 8,
+  "fields": {
+    "owner": null,
+    "name": "GUCCI®",
+    "icon": "media/store_icons/2026/03/gc_h37vfj",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.store",
+  "pk": 9,
+  "fields": {
+    "owner": null,
+    "name": "PRADA",
+    "icon": "media/store_icons/2026/03/pr_iixrou",
+    "description": "",
+    "business_category": "",
+    "business_phone": "",
+    "store_address": "",
+    "city": "",
+    "business_license": "",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 1,
+  "fields": {
+    "store": 1,
+    "category": 4,
+    "name": "AIRism Vải lưới Hoodie chống tia cực tím",
+    "description": "",
+    "price": "900000.00",
+    "stock": 49,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ALRM_ksbt9j"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 2,
+  "fields": {
+    "store": 1,
+    "category": 6,
+    "name": "Quần Versatile",
+    "description": "",
+    "price": "800000.00",
+    "stock": 8,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/2_mnsnzy"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 3,
+  "fields": {
+    "store": 1,
+    "category": 5,
+    "name": "Áo Cardigan chống tia cực tím cổ tròn | Kẻ sọc",
+    "description": "",
+    "price": "800000.00",
+    "stock": 58,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "1000000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/3_j3cewb"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 4,
+  "fields": {
+    "store": 1,
+    "category": 7,
+    "name": "Mũ chống tia cực tím Jean-Michel Basquiat",
+    "description": "",
+    "price": "400000.00",
+    "stock": 12,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/4_tcuibd"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 5,
+  "fields": {
+    "store": 1,
+    "category": 4,
+    "name": "Dây kéo Hoodie chống tia cực tím DRY-EX",
+    "description": "",
+    "price": "1000000.00",
+    "stock": 79,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/5_n12qmj"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 6,
+  "fields": {
+    "store": 9,
+    "category": 4,
+    "name": "Áo mưa Re-Nylon",
+    "description": "",
+    "price": "55000000.00",
+    "stock": 90,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/6_dau07p"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 7,
+  "fields": {
+    "store": 9,
+    "category": 7,
+    "name": "Ba lô Re-Nylon",
+    "description": "",
+    "price": "60000000.00",
+    "stock": 15,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/7_s5fro5"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 8,
+  "fields": {
+    "store": 9,
+    "category": 4,
+    "name": "Áo khoác denim",
+    "description": "",
+    "price": "65000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/11_pfssis"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 9,
+  "fields": {
+    "store": 9,
+    "category": 5,
+    "name": "Áo polo lông cừu cotton dài tay",
+    "description": "",
+    "price": "50000000.00",
+    "stock": 90,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/1_zxnedo"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 10,
+  "fields": {
+    "store": 9,
+    "category": 5,
+    "name": "Áo ngực georgette ca rô",
+    "description": "",
+    "price": "20000000.00",
+    "stock": 105,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "23000000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/2_QrXyHFH_vl2hiy"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 11,
+  "fields": {
+    "store": 9,
+    "category": 6,
+    "name": "Quần mohair trẻ em",
+    "description": "",
+    "price": "80000000.00",
+    "stock": 15,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/3_7GM57I1_dbjmkr"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 12,
+  "fields": {
+    "store": 9,
+    "category": 6,
+    "name": "Quần jean vải nhung",
+    "description": "",
+    "price": "70000000.00",
+    "stock": 55,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/4_ogWi2xy_a03yhs"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 13,
+  "fields": {
+    "store": 9,
+    "category": 7,
+    "name": "Logo Nhẫn trang sức",
+    "description": "",
+    "price": "30000000.00",
+    "stock": 60,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/5_di2FAMh_ynnzmb"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 14,
+  "fields": {
+    "store": 9,
+    "category": 7,
+    "name": "Giày lười da chải",
+    "description": "",
+    "price": "35000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/6_VLZdwqs_hm405s"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 15,
+  "fields": {
+    "store": 1,
+    "category": 6,
+    "name": "Quần Nỉ Ống Cong",
+    "description": "",
+    "price": "800000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/8_upkso7"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 16,
+  "fields": {
+    "store": 2,
+    "category": 4,
+    "name": "Áo Khoác Jean Nam ICONDENIM Form Regular",
+    "description": "",
+    "price": "500000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "650000.00",
+    "is_hot": false,
+    "image": "media/product_images/2026/03/jean_q0wnxy"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 17,
+  "fields": {
+    "store": 2,
+    "category": 4,
+    "name": "Áo Khoác Bomber Nam ICONDENIM",
+    "description": "",
+    "price": "550000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/bomber_a070pr"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 18,
+  "fields": {
+    "store": 2,
+    "category": 5,
+    "name": "Áo Thun Nam ICONDENIM Cổ Tròn Basic",
+    "description": "",
+    "price": "250000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/thun_d2qrhx"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 19,
+  "fields": {
+    "store": 2,
+    "category": 5,
+    "name": "Áo Polo Nam ICONDENIM Phối Viền",
+    "description": "",
+    "price": "350000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/polo_zernha"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 20,
+  "fields": {
+    "store": 2,
+    "category": 5,
+    "name": "Áo Nỉ Sweatshirt Nam ICONDENIM",
+    "description": "",
+    "price": "450000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/1_jp17gm"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 21,
+  "fields": {
+    "store": 2,
+    "category": 6,
+    "name": "Quần Jean Nam ICONDENIM Dáng Slimfit",
+    "description": "",
+    "price": "590000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/2_vzbpl5"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 22,
+  "fields": {
+    "store": 2,
+    "category": 6,
+    "name": "Quần Tây Nam ICONDENIM Kẻ Sọc",
+    "description": "",
+    "price": "490000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/3_ecrqt8"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 23,
+  "fields": {
+    "store": 2,
+    "category": 6,
+    "name": "Quần Short Khaki Nam ICONDENIM",
+    "description": "",
+    "price": "350000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/4_bjvki0"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 24,
+  "fields": {
+    "store": 2,
+    "category": 7,
+    "name": "Thắt Lưng Nam Da Bò ICONDENIM",
+    "description": "",
+    "price": "290000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/5_h4wben"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 25,
+  "fields": {
+    "store": 2,
+    "category": 7,
+    "name": "Ví Da Nam Cầm Tay ICONDENIM",
+    "description": "",
+    "price": "320000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/10_rbbbzg"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 26,
+  "fields": {
+    "store": 3,
+    "category": 4,
+    "name": "Áo Khoác Thể Thao Nam Nike Windrunner",
+    "description": "",
+    "price": "2500000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/win_yo7i69"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 27,
+  "fields": {
+    "store": 3,
+    "category": 4,
+    "name": "Áo Khoác Chạy Bộ Nữ Nike Essential",
+    "description": "",
+    "price": "2100000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "150000.00",
+    "is_hot": false,
+    "image": "media/product_images/2026/03/essen_c1af7e"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 28,
+  "fields": {
+    "store": 3,
+    "category": 5,
+    "name": "Áo Thun Thể Thao Nam Nike Dri-FIT",
+    "description": "",
+    "price": "800000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/dt_mdpaqd"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 29,
+  "fields": {
+    "store": 3,
+    "category": 5,
+    "name": "Áo Thun Nữ Nike Sportswear Club",
+    "description": "",
+    "price": "700000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/spot_qlmwu8"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 30,
+  "fields": {
+    "store": 3,
+    "category": 5,
+    "name": "Áo Nỉ Nam Nike Sportswear Club Fleece",
+    "description": "",
+    "price": "1400000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/FZ0813-063-1_eba982"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 31,
+  "fields": {
+    "store": 3,
+    "category": 6,
+    "name": "Quần Jogger Nam Nike Sportswear",
+    "description": "",
+    "price": "1000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "1600000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/club_yqpJgvH_rqvgnd"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 32,
+  "fields": {
+    "store": 3,
+    "category": 6,
+    "name": "Quần Short Chạy Bộ Nam Nike Flex",
+    "description": "",
+    "price": "950000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/1_7xQ6CNX_dapdzg"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 33,
+  "fields": {
+    "store": 3,
+    "category": 6,
+    "name": "Quần Legging Thể Thao Nữ Nike Pro",
+    "description": "",
+    "price": "900000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "1100000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/pro_fylq4d"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 34,
+  "fields": {
+    "store": 3,
+    "category": 7,
+    "name": "Mũ Lưỡi Trai Thể Thao Nike Heritage86",
+    "description": "",
+    "price": "550000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/00_jyg35d"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 35,
+  "fields": {
+    "store": 3,
+    "category": 7,
+    "name": "Balo Thể Thao Nike Heritage",
+    "description": "",
+    "price": "850000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/11_xvrlbt"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 36,
+  "fields": {
+    "store": 4,
+    "category": 4,
+    "name": "Áo Khoác Gió Nam Adidas Adicolor Classics",
+    "description": "",
+    "price": "2200000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Ao_Track_Jacket_SST_Classics_Adicolor_Mau_tim_IR9889_01_laydown_vvsxlk"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 37,
+  "fields": {
+    "store": 4,
+    "category": 4,
+    "name": "Áo Khoác Nỉ Thể Thao Nam Adidas ZNE",
+    "description": "",
+    "price": "2000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "2800000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/1_JhJS1cU_ad98oj"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 38,
+  "fields": {
+    "store": 4,
+    "category": 5,
+    "name": "Áo Thun Nam Adidas 3-Stripes",
+    "description": "",
+    "price": "750000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Ao_Thun_3_Soc_Essentials_trang_GL3733_01_laydown_oetrul"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 39,
+  "fields": {
+    "store": 4,
+    "category": 5,
+    "name": "Áo Polo Nam Adidas Essentials",
+    "description": "",
+    "price": "900000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Ao_POLO_NGAN_TAY_SOFT_PIQUE_Be_KB4823_21_model_fevrop"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 40,
+  "fields": {
+    "store": 4,
+    "category": 5,
+    "name": "Áo Hoodie Nam Adidas Trefoil",
+    "description": "",
+    "price": "1800000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Ao_Hoodie_Trefoil_Essentials_Be_IR7785_01_laydown_UpZUZoI_co8vdq"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 41,
+  "fields": {
+    "store": 4,
+    "category": 6,
+    "name": "Quần Dài Thể Thao Nam Adidas Tiro",
+    "description": "",
+    "price": "1450000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Quan_Det_He_3_Soc_Ngan_Tiro_DJen_IX3515_21_model_pb2usm"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 42,
+  "fields": {
+    "store": 4,
+    "category": 6,
+    "name": "Quần Short Nam Adidas Aeroready",
+    "description": "",
+    "price": "800000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ready_vwcqrw"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 43,
+  "fields": {
+    "store": 4,
+    "category": 6,
+    "name": "Quần Bó Thể Thao Nữ Adidas Optime",
+    "description": "",
+    "price": "1000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "1200000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/Quan_Leggings_Ngan_3_Soc_Optime_Workout_nau_JZ1099_21_model_Kcf02QK_uxo1lf"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 44,
+  "fields": {
+    "store": 4,
+    "category": 7,
+    "name": "Tất Cổ Ngắn Adidas (Set 3 Đôi)",
+    "description": "",
+    "price": "350000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Bo_3_DJoi_Tat_Co_Ngan_Mong_Nhe_trang_HT3468_03_standard_l6wnt2"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 45,
+  "fields": {
+    "store": 4,
+    "category": 7,
+    "name": "Túi Đeo Chéo Adidas Essential",
+    "description": "",
+    "price": "500000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Tui_DJeo_Cheo_Essentials_mau_xanh_la_IW9803_01_standard_pzldke"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 46,
+  "fields": {
+    "store": 5,
+    "category": 4,
+    "name": "Áo Khoác Nam PUMA T7 Track",
+    "description": "",
+    "price": "1900000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Áo-khoác-thể-thao-nam-Iconic-T7-Track_kp8hhs"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 47,
+  "fields": {
+    "store": 5,
+    "category": 4,
+    "name": "Áo Khoác Chống Nước PUMA Run",
+    "description": "",
+    "price": "1500000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "2300000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/Áo-khoác-chạy-bộ-họa-tiết-Lightspeed-ULTRAWEAVE-cho-nam_wyoghw"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 48,
+  "fields": {
+    "store": 5,
+    "category": 5,
+    "name": "Áo Thun Nam PUMA Classics Logo",
+    "description": "",
+    "price": "650000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Áo-thun-nam-Classics-Logo_ixa5vm"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 49,
+  "fields": {
+    "store": 5,
+    "category": 5,
+    "name": "Áo Thun Nữ PUMA ESS+ Embroidery",
+    "description": "",
+    "price": "600000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Áo-thun-nữ-ESS-METALLIC_fucp6l"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 50,
+  "fields": {
+    "store": 5,
+    "category": 5,
+    "name": "Áo Hoodie Nam PUMA Power",
+    "description": "",
+    "price": "1500000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Áo-Hoodie-Đồ-Họa-McLAREN-RACING-Nam_pnkies"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 51,
+  "fields": {
+    "store": 5,
+    "category": 6,
+    "name": "Quần Thể Thao Nam PUMA Iconic T7",
+    "description": "",
+    "price": "1700000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Quần-thể-thao-nam-ICONIC-T7_zh77wo"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 52,
+  "fields": {
+    "store": 5,
+    "category": 6,
+    "name": "Quần Short Chạy Bộ Nam PUMA",
+    "description": "",
+    "price": "750000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Quần-short-chạy-bộ-nam-PUMA-x-SAYSKY_tza9zs"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 53,
+  "fields": {
+    "store": 5,
+    "category": 6,
+    "name": "Quần Legging Nữ PUMA Fit",
+    "description": "",
+    "price": "1000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/8-cho-nữ_lfs5wd"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 54,
+  "fields": {
+    "store": 5,
+    "category": 7,
+    "name": "Mũ Thể Thao PUMA Metal Cat",
+    "description": "",
+    "price": "300000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "450000.00",
+    "is_hot": false,
+    "image": "media/product_images/2026/03/Mũ-bóng-chày-ESS-Metal-PUMA-Cat_fjdkwc"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 55,
+  "fields": {
+    "store": 5,
+    "category": 7,
+    "name": "Balo PUMA Phase Backpack",
+    "description": "",
+    "price": "600000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/PUMA-PHASE-Backpack-Set_vxzvh6"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 56,
+  "fields": {
+    "store": 6,
+    "category": 4,
+    "name": "Áo Khoác Gió Nam Coolmate Daily",
+    "description": "",
+    "price": "399000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ao-khoac-windbreaker-nylon-ribstop-thumb-1_z9eyjj"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 57,
+  "fields": {
+    "store": 6,
+    "category": 4,
+    "name": "Áo Khoác Chống Tia UV Coolmate",
+    "description": "",
+    "price": "459000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ao-khoac-nam-co-mu-daily-wear-truot-nuoc-chong-uv-99-trang-1_myurnt"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 58,
+  "fields": {
+    "store": 6,
+    "category": 5,
+    "name": "Áo Thun Nam Cotton Compact Coolmate",
+    "description": "",
+    "price": "199000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ao-thun-nam-cotton-compact-chong-nhan-den-1_xptmlm"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 59,
+  "fields": {
+    "store": 6,
+    "category": 5,
+    "name": "Áo Polo Nam Coolmate Vải Cafe",
+    "description": "",
+    "price": "299000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ao-polo-nam-cafe-den-1_84_byjm2x"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 60,
+  "fields": {
+    "store": 6,
+    "category": 5,
+    "name": "Áo Dài Tay Nam Thu Đông Coolmate",
+    "description": "",
+    "price": "200000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "259000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/ao-dai-tay-tt-nam-logo-active-slim-2-_1-xanh-navy_qnaunk"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 61,
+  "fields": {
+    "store": 6,
+    "category": 6,
+    "name": "Quần Short Thể Thao Nam Coolmate",
+    "description": "",
+    "price": "199000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/quan-shorts-nam-chay-bo-ultra-fast-free-run-ii-exdry-nhanh-kho-den-1_zuzrcj"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 62,
+  "fields": {
+    "store": 6,
+    "category": 6,
+    "name": "Quần Dài Nam Kaki Excool Coolmate",
+    "description": "",
+    "price": "499000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/quan-dai-nam-kaki-excool-xam-den_5_hdfzye"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 63,
+  "fields": {
+    "store": 6,
+    "category": 6,
+    "name": "Quần Lót Nam Trunk Coolmate (Set 3)",
+    "description": "",
+    "price": "259000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/03-quan-lot-nam-trunk-cotton-compact-co-gian-v1-mix-mau-1_iqg7wp"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 64,
+  "fields": {
+    "store": 6,
+    "category": 7,
+    "name": "Thắt Lưng Nam Khóa Tự Động Coolmate",
+    "description": "",
+    "price": "299000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/that-lung-nam-coolmate-da-bo-mill-khoa-gai-tu-dong-den-1_38_ejFfJgh_m0bqwx"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 65,
+  "fields": {
+    "store": 6,
+    "category": 7,
+    "name": "Tất Cổ Trung Nam Coolmate (Set 5 Đôi)",
+    "description": "",
+    "price": "150000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/combo-5-doi-tat-nam-co-trung-basics-1-_1-xam_uryydo"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 66,
+  "fields": {
+    "store": 7,
+    "category": 4,
+    "name": "Áo Khoác Thể Thao Biti's Hunter",
+    "description": "",
+    "price": "650000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ao_gio_cam-1_f2ffb579a1584ac7ad8cb8a5c39f441a_master_i2ovv4"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 68,
+  "fields": {
+    "store": 7,
+    "category": 5,
+    "name": "Áo Thun Nam Biti's Hunter Basic",
+    "description": "",
+    "price": "250000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ao_den_stepforwards-1_62630b2f43934a26bb9449d21a151f82_master_rjo24g"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 69,
+  "fields": {
+    "store": 7,
+    "category": 5,
+    "name": "Áo Thun Nữ Biti's Hunter",
+    "description": "",
+    "price": "250000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ao_trang_stepforwards-2_95a7566fd17442fc9bb0245c2c1035fc_master_oxfzxx"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 70,
+  "fields": {
+    "store": 7,
+    "category": 6,
+    "name": "Quần Short Thể Thao Nam Biti's Hunter",
+    "description": "",
+    "price": "290000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/quan_short_du_nhan_den-1_d39d385236e64c1d8143b6e302f26914_master_ehvw7a"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 71,
+  "fields": {
+    "store": 7,
+    "category": 7,
+    "name": "Giày Thể Thao Nam Biti's Hunter X",
+    "description": "",
+    "price": "1000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "1199000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/hsm013900nau__2__32d69984aae34556ba81248a47d41cc5_master_brtld2"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 72,
+  "fields": {
+    "store": 7,
+    "category": 7,
+    "name": "Giày Thể Thao Nữ Biti's Hunter Core",
+    "description": "",
+    "price": "899000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/hsw015500hol__8__d04c8fc23c7f4a96b7ff8749b3d82c04_master_kaewch"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 73,
+  "fields": {
+    "store": 7,
+    "category": 7,
+    "name": "Dép Quai Ngang Nam Biti's",
+    "description": "",
+    "price": "150000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/bem003901reu__1__d67c42ce528a4f11831387a02eed143f_1024x1024_c4eap8"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 74,
+  "fields": {
+    "store": 7,
+    "category": 7,
+    "name": "Balo Thể Thao Biti's Hunter X",
+    "description": "",
+    "price": "450000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/hbbm01598den__2__ae161b2849e746de8ed9b5be58d4428d_yl6tjh"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 75,
+  "fields": {
+    "store": 7,
+    "category": 7,
+    "name": "Nón Lưỡi Trai Biti's Hunter",
+    "description": "",
+    "price": "120000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/non_trang_855947534bdb4ee4bf12e5c64243ae79_master_w2ss0q"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 76,
+  "fields": {
+    "store": 8,
+    "category": 4,
+    "name": "Áo Khoác Bomber Nam Gucci GG",
+    "description": "",
+    "price": "65000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/ao-khoac-nam-gucci-jumbo-gg-canvas-17439318-mau-be-nau-size-44-6938ed620_NCWF6QC_mqjg5q"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 77,
+  "fields": {
+    "store": 8,
+    "category": 4,
+    "name": "Áo Khoác Gió Nữ Gucci Interlocking G",
+    "description": "",
+    "price": "45000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/800-800_a7213d49-cdd0-44c0-9d90-497819e8db7e_rmnjcj"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 78,
+  "fields": {
+    "store": 8,
+    "category": 5,
+    "name": "Áo Thun Nam Gucci In Logo Vintage",
+    "description": "",
+    "price": "12000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/shopping_it5bqp"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 79,
+  "fields": {
+    "store": 8,
+    "category": 5,
+    "name": "Áo Polo Nam Gucci Viền Web",
+    "description": "",
+    "price": "15000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/1_kwknnk"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 80,
+  "fields": {
+    "store": 8,
+    "category": 5,
+    "name": "Áo Len Cardigan Nữ Gucci",
+    "description": "",
+    "price": "35000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/2_boowoh"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 81,
+  "fields": {
+    "store": 8,
+    "category": 6,
+    "name": "Quần Tây Nam Gucci Wool",
+    "description": "",
+    "price": "25000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/shopping_1_ehmwid"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 82,
+  "fields": {
+    "store": 8,
+    "category": 6,
+    "name": "Quần Short Nam Gucci GG Canvas",
+    "description": "",
+    "price": "18000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/3_rx2rqz"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 83,
+  "fields": {
+    "store": 8,
+    "category": 6,
+    "name": "Quần Jeans Nữ Gucci Thêu Logo",
+    "description": "",
+    "price": "15000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": "22000000.00",
+    "is_hot": true,
+    "image": "media/product_images/2026/03/shopping_2_zscijy"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 84,
+  "fields": {
+    "store": 8,
+    "category": 7,
+    "name": "Thắt Lưng Da Nam Gucci Mặt Chữ G Móc Khóa",
+    "description": "",
+    "price": "13000000.00",
+    "stock": 0,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/4_peklvt"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 85,
+  "fields": {
+    "store": 8,
+    "category": 7,
+    "name": "Kính Mát Unisex Gucci Aviator",
+    "description": "",
+    "price": "10000000.00",
+    "stock": 92,
+    "status": "in_stock",
+    "moderation_status": "ACTIVE",
+    "is_deleted": false,
+    "old_price": null,
+    "is_hot": false,
+    "image": "media/product_images/2026/03/7_wxwdvp"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 14,
+  "fields": {
+    "order_code": "#IS3602",
+    "user": null,
+    "vendor": null,
+    "shipper": null,
+    "customer_name": "Thiện Phan Phước Quốc Thiện",
+    "customer_email": "thienphan370@gmail.com",
+    "customer_phone": "0392006710",
+    "shipping_address": "ádfasdfsad, 1",
+    "total_amount": "1633000.00",
+    "status": "PENDING",
+    "payment_method": "ONLINE_MOCK",
+    "note": "Đơn vị giao hàng ưu tiên: KAMTECH",
+    "shipping_fee": "18000.00",
+    "shop_voucher_discount": "0.00",
+    "intellishop_voucher_discount": "0.00",
+    "coin_used": 0,
+    "insurance_fee": "15000.00",
+    "created_at": "2026-03-22T00:32:59.692Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 15,
+  "fields": {
+    "order_code": "#IS1989",
+    "user": null,
+    "vendor": null,
+    "shipper": null,
+    "customer_name": "Tường Võ Cát",
+    "customer_email": "tuongvck24411@st.uel.edu.vn",
+    "customer_phone": "0392006710",
+    "shipping_address": "KTX KHU B, Đ. Mạc Đĩnh Chi, Khu phố Tân Hòa, Dĩ An, Bình Dương, Việt Nam, q, Dĩ An",
+    "total_amount": "1843000.00",
+    "status": "PENDING",
+    "payment_method": "ONLINE_MOCK",
+    "note": "sdagafg\nĐơn vị giao hàng ưu tiên: FastShip VN",
+    "shipping_fee": "28000.00",
+    "shop_voucher_discount": "0.00",
+    "intellishop_voucher_discount": "0.00",
+    "coin_used": 0,
+    "insurance_fee": "15000.00",
+    "created_at": "2026-03-22T01:20:00.785Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 16,
+  "fields": {
+    "order_code": "#IS9981",
+    "user": null,
+    "vendor": null,
+    "shipper": null,
+    "customer_name": "Tường Võ Cát",
+    "customer_email": "tuongvck24411@st.uel.edu.vn",
+    "customer_phone": "0392006710",
+    "shipping_address": "KTX KHU B, Đ. Mạc Đĩnh Chi, Khu phố Tân Hòa, Dĩ An, Bình Dương, Việt Nam, q, Dĩ An",
+    "total_amount": "1733000.00",
+    "status": "PENDING",
+    "payment_method": "ONLINE_MOCK",
+    "note": "sdagafg\nĐơn vị giao hàng ưu tiên: KAMTECH",
+    "shipping_fee": "18000.00",
+    "shop_voucher_discount": "0.00",
+    "intellishop_voucher_discount": "0.00",
+    "coin_used": 0,
+    "insurance_fee": "15000.00",
+    "created_at": "2026-03-22T01:20:17.346Z"
+  }
+},
+{
+  "model": "core.orderitem",
+  "pk": 22,
+  "fields": {
+    "order": 14,
+    "product": 2,
+    "product_name": "Quần Versatile",
+    "variant": "",
+    "price": "800000.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "core.orderitem",
+  "pk": 23,
+  "fields": {
+    "order": 14,
+    "product": 3,
+    "product_name": "Áo Cardigan chống tia cực tím cổ tròn | Kẻ sọc",
+    "variant": "",
+    "price": "800000.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "core.orderitem",
+  "pk": 24,
+  "fields": {
+    "order": 15,
+    "product": 5,
+    "product_name": "Dây kéo Hoodie chống tia cực tím DRY-EX",
+    "variant": "",
+    "price": "1000000.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "core.orderitem",
+  "pk": 25,
+  "fields": {
+    "order": 15,
+    "product": 3,
+    "product_name": "Áo Cardigan chống tia cực tím cổ tròn | Kẻ sọc",
+    "variant": "",
+    "price": "800000.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "core.orderitem",
+  "pk": 26,
+  "fields": {
+    "order": 16,
+    "product": 1,
+    "product_name": "AIRism Vải lưới Hoodie chống tia cực tím",
+    "variant": "",
+    "price": "900000.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "core.orderitem",
+  "pk": 27,
+  "fields": {
+    "order": 16,
+    "product": 2,
+    "product_name": "Quần Versatile",
+    "variant": "",
+    "price": "800000.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "core.address",
+  "pk": 12,
+  "fields": {
+    "user": [
+      "doan.truc.my@vn2026.mock.intelishop.vn"
+    ],
+    "receiver_name": "Đoàn Trúc My",
+    "receiver_phone": "0913456789",
+    "full_address": "12 Đường số 8, Phường Linh Chiểu, TP Thủ Đức, TP Hồ Chí Minh",
+    "is_default": true,
+    "created_at": "2026-03-21T11:00:48.011Z",
+    "updated_at": "2026-03-21T11:00:48.011Z"
+  }
+},
+{
+  "model": "core.address",
+  "pk": 13,
+  "fields": {
+    "user": [
+      "doan.truc.my@vn2026.mock.intelishop.vn"
+    ],
+    "receiver_name": "Đoàn Trúc My",
+    "receiver_phone": "0913456789",
+    "full_address": "KTX Khu B ĐHQG, Phường Đông Hòa, TP Dĩ An, Bình Dương",
+    "is_default": false,
+    "created_at": "2026-03-21T11:00:48.011Z",
+    "updated_at": "2026-03-21T11:00:48.011Z"
+  }
+},
+{
+  "model": "core.address",
+  "pk": 14,
+  "fields": {
+    "user": [
+      "hoang.viet.anh@vn2026.mock.intelishop.vn"
+    ],
+    "receiver_name": "Hoàng Việt Anh",
+    "receiver_phone": "0323456789",
+    "full_address": "45 Hoàng Quốc Việt, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội",
+    "is_default": true,
+    "created_at": "2026-03-21T11:00:48.011Z",
+    "updated_at": "2026-03-21T11:00:48.011Z"
+  }
+},
+{
+  "model": "core.address",
+  "pk": 15,
+  "fields": {
+    "user": [
+      "vo.ngoc.bich@vn2026.mock.intelishop.vn"
+    ],
+    "receiver_name": "Võ Ngọc Bích",
+    "receiver_phone": "0887123456",
+    "full_address": "18 Nguyễn Văn Linh, Phường Nam Dương, Quận Hải Châu, Đà Nẵng",
+    "is_default": true,
+    "created_at": "2026-03-21T11:00:48.021Z",
+    "updated_at": "2026-03-21T11:00:48.021Z"
+  }
+},
+{
+  "model": "core.address",
+  "pk": 16,
+  "fields": {
+    "user": [
+      "phan.thanh.dat@vn2026.mock.intelishop.vn"
+    ],
+    "receiver_name": "Phan Thành Đạt",
+    "receiver_phone": "0976123456",
+    "full_address": "301 Cách Mạng Tháng 8, Phường 12, Quận 10, TP Hồ Chí Minh",
+    "is_default": true,
+    "created_at": "2026-03-21T11:00:48.021Z",
+    "updated_at": "2026-03-21T11:00:48.021Z"
+  }
+},
+{
+  "model": "core.address",
+  "pk": 18,
+  "fields": {
+    "user": [
+      "khach.chua.mua@vn2026.mock.intelishop.vn"
+    ],
+    "receiver_name": "Lê Thị Chưa Mua",
+    "receiver_phone": "0833456789",
+    "full_address": "25 Trần Phú, Phường Điện Biên, Quận Ba Đình, Hà Nội",
+    "is_default": true,
+    "created_at": "2026-03-21T11:00:48.021Z",
+    "updated_at": "2026-03-21T11:00:48.021Z"
+  }
+},
+{
+  "model": "core.address",
+  "pk": 19,
+  "fields": {
+    "user": [
+      "google.only@vn2026.mock.intelishop.vn"
+    ],
+    "receiver_name": "Nguyễn Google Only",
+    "receiver_phone": "0347123456",
+    "full_address": "99 Phạm Văn Đồng, Phường Cổ Nhuế 1, Quận Bắc Từ Liêm, Hà Nội",
+    "is_default": true,
+    "created_at": "2026-03-21T11:00:48.021Z",
+    "updated_at": "2026-03-21T11:00:48.021Z"
+  }
+},
+{
+  "model": "core.emailotpchallenge",
+  "pk": 17,
+  "fields": {
+    "user": [
+      "tuongvck24411@st.uel.edu.vn"
+    ],
+    "email": "tuongvck24411@st.uel.edu.vn",
+    "purpose": "register_activation",
+    "otp_code": "522827",
+    "expires_at": "2026-03-22T03:16:11.529Z",
+    "is_used": true,
+    "attempts": 0,
+    "created_at": "2026-03-22T03:06:11.529Z"
+  }
+},
+{
+  "model": "core.shipperprofile",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "nguyen.huu.thinh@vn2026.mock.intelishop.vn"
+    ],
+    "company_name": "FastShip VN",
+    "contact_email": "nguyen.huu.thinh@vn2026.mock.intelishop.vn",
+    "phone_number": "0399123456",
+    "is_active": true,
+    "created_at": "2026-03-21T11:00:47.981Z",
+    "updated_at": "2026-03-21T11:00:47.981Z"
+  }
+},
+{
+  "model": "sites.site",
+  "fields": {
+    "domain": "example.com",
+    "name": "example.com"
+  }
+}
+]
