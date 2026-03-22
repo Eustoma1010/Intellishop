@@ -1,0 +1,85 @@
+🚀 QUICK DEPLOYMENT GUIDE - RENDER POSTGRESQL
+
+═══════════════════════════════════════════════════════════════
+
+⚡ QUICK START (3 Steps)
+
+STEP 1: Export Data from Local SQLite
+  cd intelishop_backend
+  python manage.py dumpdata --indent 2 > intelishop_export.json
+
+STEP 2: Update .env to PostgreSQL
+  # Change this line in .env:
+  DATABASE_URL=postgresql://intelishop_db_user:OrXzSZ44iPHDJaZgucYAHeH0zx9W80p0@dpg-d6t3emfgi27c73de98t0-a.singapore-postgres.render.com/intelishop_db
+
+STEP 3: Reset & Deploy
+  1. Go to Render Dashboard
+  2. Find PostgreSQL database
+  3. Click "Reset Database"
+  4. Run: git push origin main
+  5. Render auto-deploys
+  6. Migrations run automatically
+  7. Load data: heroku run python manage.py loaddata intelishop_export.json
+
+✅ Done! Your data is now on PostgreSQL.
+
+═══════════════════════════════════════════════════════════════
+
+📋 WHAT YOU HAVE
+
+Local Database (SQLite):
+  ✅ Users: tuongvck24411@st.uel.edu.vn (Admin)
+  ✅ Users: thienphan370@gmail.com (Regular)
+  ✅ Stores: 9 (Nike, Adidas, PUMA, etc.)
+  ✅ Products: 84 (clothing, shoes, accessories)
+  ✅ Orders: 2 (with order items)
+  ✅ Categories: 4
+
+All data ready to deploy!
+
+═══════════════════════════════════════════════════════════════
+
+🔑 LOGIN CREDENTIALS
+
+Admin Panel: http://127.0.0.1:8000/admin/
+
+  Email: tuongvck24411@st.uel.edu.vn
+  Password: TempPassword123! (change before production!)
+
+Alternative User:
+
+  Email: thienphan370@gmail.com
+  Password: TempPassword123! (change before production!)
+
+═══════════════════════════════════════════════════════════════
+
+📊 DATABASE STATISTICS
+
+Current State (SQLite):
+  - Tables: 32 (all Django + custom models)
+  - Users: 3 (1 admin + 2 from backup + 1 test)
+  - Products: 84
+  - Stores: 9
+  - Orders: 2
+  - Size: ~50 MB
+
+Ready to export & migrate to PostgreSQL!
+
+═══════════════════════════════════════════════════════════════
+
+✨ DONE!
+
+Your Intelishop database has been restored from backup.
+
+You can now:
+  ✅ Test locally at http://127.0.0.1:8000
+  ✅ Access admin at http://127.0.0.1:8000/admin/
+  ✅ Deploy to Render via: git push origin main
+  ✅ Load data on production
+
+Questions? Check:
+  - DATABASE_RESTORE_COMPLETE.txt (detailed guide)
+  - DATABASE_RESTORE_GUIDE.md (step-by-step)
+
+═══════════════════════════════════════════════════════════════
+

@@ -6,7 +6,16 @@ from dotenv import load_dotenv
 from whitenoise.storage import CompressedManifestStaticFilesStorage
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv()
+load_dotenv(BASE_DIR / '.env')
+
+
+def env_bool(name, default=False):
+    return os.environ.get(name, str(default)).strip().lower() in ('1', 'true', 'yes', 'on')
+
+
+def env_csv(name, default=''):
+    raw = os.environ.get(name, default)
+    return [item.strip() for item in str(raw).split(',') if item.strip()]
 
 # ==============================================================================
 # BẢO MẬT & MÔI TRƯỜNG (ENTERPRISE STANDARD)
@@ -41,6 +50,15 @@ INSTALLED_APPS = [
     'import_export',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken',
+    'django.contrib.sites',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     # Ứng dụng nội bộ
     'core',
@@ -56,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -148,12 +167,64 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ==============================================================================
 # CẤU HÌNH CORS (Bảo mật tên miền)
 # ==============================================================================
-# Cho phép tất cả trên cả dev và production như yêu cầu của bạn
-CORS_ALLOW_ALL_ORIGINS = True
-
-# Nếu CORS_ALLOW_ALL_ORIGINS = False, Django sẽ đọc mảng dưới đây:
 frontend_url = os.environ.get('FRONTEND_URL', 'https://intelishop-frontend.vercel.app')
-CORS_ALLOWED_ORIGINS = [frontend_url]
+default_cors_origins = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+    'http://127.0.0.1:63342',
+    'http://localhost:63342',
+    'http://127.0.0.1:5500',
+    'http://localhost:5500',
+    'http://127.0.0.1:5173',
+    'http://localhost:5173',
+    frontend_url,
+]
+
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = env_csv('CORS_ALLOWED_ORIGINS', ','.join(default_cors_origins))
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = env_csv('CSRF_TRUSTED_ORIGINS', ','.join(CORS_ALLOWED_ORIGINS))
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+SITE_ID = 1
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'intelishop-auth',
+    'JWT_AUTH_REFRESH_COOKIE': 'intelishop-refresh-token',
+}
+
+from datetime import timedelta
+AUTH_USER_MODEL = 'core.User'
+# Tắt xác thực email mặc định của allauth để không bị lỗi gửi mail
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+# OTP / Email
+OTP_EXPIRE_MINUTES = int(os.environ.get('OTP_EXPIRE_MINUTES', '10'))
+OTP_MAX_ATTEMPTS = int(os.environ.get('OTP_MAX_ATTEMPTS', '5'))
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'no-reply@intellishop.local')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = env_bool('EMAIL_USE_TLS', True)
+EMAIL_USE_SSL = env_bool('EMAIL_USE_SSL', False)
+EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', '30'))
+EMAIL_FILE_PATH = os.environ.get('EMAIL_FILE_PATH', str(BASE_DIR / 'sent_emails'))
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND') or (
+    'django.core.mail.backends.smtp.EmailBackend'
+    if EMAIL_HOST else 'django.core.mail.backends.console.EmailBackend'
+)
+OTP_DEBUG_RETURN_CODE = env_bool('OTP_DEBUG_RETURN_CODE', DEBUG)
