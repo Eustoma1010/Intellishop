@@ -1,4 +1,4 @@
-            * {
+* {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
@@ -221,6 +221,56 @@
                 scroll-margin-top: 8rem;
             }
 
+            .hot-deal-card {
+                flex: 0 0 auto;
+            }
+
+            .hot-deal-card:hover img {
+                transform: scale(1.05);
+            }
+
+            .footer-shell {
+                border-top-left-radius: 32px;
+                border-top-right-radius: 32px;
+                box-shadow: 0 -10px 30px rgba(236, 72, 153, 0.08);
+            }
+
+            .footer-social {
+                width: 46px;
+                height: 46px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 9999px;
+                background: rgba(255, 255, 255, 0.85);
+                border: 1px solid rgba(236, 72, 153, 0.15);
+                transition: all 0.25s ease;
+            }
+
+            .footer-social:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(236, 72, 153, 0.18);
+            }
+
+            #shipping-providers-list button {
+                box-shadow: 0 8px 24px rgba(236, 72, 153, 0.06);
+            }
+
+            #shipping-providers-list button:hover {
+                transform: translateY(-2px);
+            }
+
+            @media (max-width: 640px) {
+                .step-line {
+                    width: 60px;
+                }
+
+                .footer-shell {
+                    border-top-left-radius: 24px;
+                    border-top-right-radius: 24px;
+                }
+            }
+
             /* CSS THÊM CHO FORM ĐĂNG NHẬP/ĐĂNG KÝ VÀ DROPDOWN */
             .auth-input {
                 width: 100%;
@@ -246,4 +296,783 @@
             }
             input[type="checkbox"], input[type="radio"] {
               accent-color: #ec4899; /* Tailwind Pink 500 */
+            }
+
+            /* Chatbot layout: compact half VR + half chat, expanded 3-column workspace */
+            :root {
+                --ai-blue: #db2777;
+                --ai-blue-600: #a21caf;
+                --ai-blue-soft: #fdf2f8;
+                --ai-border: #f2d3e6;
+                --ai-surface: #fff7fb;
+                --ai-text-strong: #831843;
+                --ai-text-muted: #9d174d;
+            }
+
+            #chat-toggle-btn {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                background: linear-gradient(180deg, #ffffff, #fff1f8) !important;
+                border: 1px solid var(--ai-border) !important;
+                color: var(--ai-text-strong) !important;
+                box-shadow: 0 10px 28px rgba(190, 24, 93, 0.16) !important;
+            }
+
+            #chat-toggle-btn:hover {
+                box-shadow: 0 14px 34px rgba(190, 24, 93, 0.22) !important;
+                transform: translateY(-1px);
+            }
+
+            #ai-side-panel {
+                transform-origin: bottom right;
+                transition: transform 260ms ease, opacity 260ms ease;
+                opacity: 1;
+                border: 1px solid var(--ai-border) !important;
+                box-shadow: 0 28px 70px rgba(190, 24, 93, 0.22), 0 8px 20px rgba(190, 24, 93, 0.1) !important;
+            }
+
+            #ai-side-panel.translate-x-full {
+                transform: translateY(10px) scale(0.985);
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            #chat-interface {
+                background: var(--ai-surface);
+            }
+
+            #chat-interface > .p-3 {
+                border-top: 1px solid var(--ai-border);
+                background: rgba(255, 255, 255, 0.95);
+            }
+
+            #chat-input {
+                border-color: #f0cfe2 !important;
+                background: #ffffff !important;
+                color: var(--ai-text-strong) !important;
+            }
+
+            #chat-input:focus {
+                border-color: var(--ai-blue) !important;
+                box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.16) !important;
+            }
+
+            #mic-btn {
+                color: var(--ai-blue) !important;
+                border-color: #f3c7de !important;
+            }
+
+            #mic-btn:hover {
+                background: var(--ai-blue-soft) !important;
+            }
+
+            #chat-interface button[onclick="sendChatMessage()"] {
+                background: linear-gradient(135deg, #ec4899, #a855f7) !important;
+                color: #fff !important;
+                border: none !important;
+                box-shadow: 0 8px 16px rgba(236, 72, 153, 0.32) !important;
+            }
+
+            #chat-interface button[onclick="sendChatMessage()"]:hover {
+                background: linear-gradient(135deg, #db2777, #9333ea) !important;
+                box-shadow: 0 10px 20px rgba(219, 39, 119, 0.34) !important;
+            }
+
+            #ai-panel-workspace {
+                display: grid;
+                min-height: 0;
+                height: 100%;
+                grid-template-columns: 1fr;
+                grid-template-rows: 44% 56%;
+            }
+
+            /* Context column hidden in compact */
+            #ai-context-column {
+                display: none;
+            }
+
+            #ai-vr-column {
+                min-height: 0;
+                border-bottom: 1px solid var(--ai-border);
+            }
+
+            #chat-interface {
+                min-height: 0;
+            }
+
+            /* ── Expanded mode: 3 columns ── */
+            #ai-side-panel.ai-mode-expanded #ai-panel-workspace {
+                grid-template-columns: minmax(300px, 1.05fr) minmax(360px, 1.1fr) minmax(280px, 0.85fr);
+                grid-template-rows: 1fr;
+            }
+
+            #ai-side-panel.ai-mode-expanded #ai-vr-column {
+                border-bottom: none;
+                border-right: 1px solid var(--ai-border);
+            }
+
+            #ai-side-panel.ai-mode-expanded #chat-interface {
+                border-right: none;
+            }
+
+            #ai-side-panel.ai-mode-expanded #ai-context-column {
+                display: flex;
+                flex-direction: column;
+                min-height: 0;
+                overflow: hidden;
+            }
+
+            #ai-side-panel.ai-mode-compact #ai-product-detail-panel {
+                display: none !important;
+            }
+
+            #ai-product-detail-content {
+                overflow-y: auto;
+            }
+
+            .ai-product-detail-grid {
+                display: grid;
+                grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.3fr);
+                gap: 0.8rem;
+            }
+
+            .ai-product-detail-media {
+                min-height: 132px;
+            }
+
+            .ai-product-detail-image {
+                width: 100%;
+                height: 100%;
+                min-height: 132px;
+                max-height: 180px;
+                object-fit: cover;
+                border-radius: 0.85rem;
+                border: 1px solid #f3d6e7;
+            }
+
+            .ai-product-detail-category {
+                font-size: 0.68rem;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: #be185d;
+                font-weight: 800;
+                margin-bottom: 0.2rem;
+            }
+
+            .ai-product-detail-name {
+                font-size: 0.95rem;
+                line-height: 1.3;
+                font-weight: 800;
+                color: #0f172a;
+                margin-bottom: 0.32rem;
+            }
+
+            .ai-product-detail-price {
+                font-size: 1.05rem;
+                font-weight: 900;
+                color: #db2777;
+                margin-bottom: 0.35rem;
+            }
+
+            .ai-product-detail-store,
+            .ai-product-detail-stock,
+            .ai-product-detail-description {
+                font-size: 0.77rem;
+                color: #475569;
+                line-height: 1.45;
+                margin-bottom: 0.3rem;
+            }
+
+            .ai-product-detail-stock.is-in-stock {
+                color: #059669;
+                font-weight: 700;
+            }
+
+            .ai-product-detail-stock.is-out-stock {
+                color: #dc2626;
+                font-weight: 700;
+            }
+
+            .ai-product-detail-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.45rem;
+                margin-top: 0.4rem;
+            }
+
+            .ai-product-detail-actions .ai-card-btn[disabled] {
+                opacity: 0.55;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+            #ai-side-panel.ai-mode-compact #chat-messages {
+                background: rgba(255, 255, 255, 0.88);
+            }
+
+            #ai-suggested-products {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+                gap: 0.65rem;
+                align-content: start;
+            }
+
+            #ai-side-panel.ai-mode-expanded #ai-suggested-products {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-auto-rows: auto;
+                gap: 0.75rem;
+                align-content: start;
+            }
+
+            #ai-side-panel.ai-mode-expanded .ai-suggestion-mini-shop {
+                border-radius: 0.85rem;
+                border: 1px solid #f1bfd9;
+                background: #fff;
+                box-shadow: 0 6px 14px rgba(236, 72, 153, 0.12);
+            }
+
+            #ai-side-panel.ai-mode-expanded .ai-suggestion-mini-shop .ai-suggestion-img-wrap {
+                aspect-ratio: 1 / 1;
+            }
+
+            #ai-side-panel.ai-mode-expanded .ai-suggestion-shop-card {
+                display: flex;
+                flex-direction: column;
+                min-height: 100%;
+            }
+
+            #ai-side-panel.ai-mode-expanded .ai-suggestion-shop-card .ai-suggestion-img-wrap {
+                background: #fff;
+                border-bottom: 1px solid #f6deeb;
+            }
+
+            .ai-mini-stock-pill {
+                position: absolute;
+                left: 0.4rem;
+                bottom: 0.4rem;
+                font-size: 0.62rem;
+                font-weight: 700;
+                padding: 0.12rem 0.4rem;
+                border-radius: 9999px;
+                color: #fff;
+                z-index: 2;
+            }
+
+            .ai-mini-stock-pill.is-in-stock {
+                background: #10b981;
+            }
+
+            .ai-mini-stock-pill.is-out-stock {
+                background: #ef4444;
+            }
+
+            .ai-mini-content {
+                padding-bottom: 0.55rem;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .ai-mini-meta {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.15rem 0.4rem;
+                border-radius: 9999px;
+                font-size: 0.63rem;
+                font-weight: 700;
+                color: #be185d;
+                background: #fdf2f8;
+                border: 1px solid #f1bfd9;
+                white-space: nowrap;
+            }
+
+            .ai-mini-meta-store {
+                color: #6b21a8;
+                border-color: #e9d5ff;
+                background: #faf5ff;
+            }
+
+            .ai-mini-desc {
+                font-size: 0.68rem;
+                line-height: 1.35;
+                color: #6b7280;
+                min-height: 1.8rem;
+                margin-bottom: 0.35rem;
+            }
+
+            .ai-mini-stars {
+                font-size: 0.66rem;
+                color: #f59e0b;
+                letter-spacing: 0.05em;
+                line-height: 1;
+            }
+
+            .ai-mini-store-row {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                margin-bottom: 0.45rem;
+            }
+
+            .ai-mini-store-logo {
+                width: 1.7rem;
+                height: 1.7rem;
+                flex-shrink: 0;
+            }
+
+            .ai-mini-stock {
+                font-size: 0.64rem;
+                font-weight: 700;
+                padding: 0.1rem 0.35rem;
+                border-radius: 9999px;
+                border: 1px solid;
+                white-space: nowrap;
+                width: fit-content;
+            }
+
+            .ai-mini-stock.is-in-stock {
+                color: #047857;
+                background: #ecfdf5;
+                border-color: #a7f3d0;
+            }
+
+            .ai-mini-stock.is-out-stock {
+                color: #b91c1c;
+                background: #fef2f2;
+                border-color: #fecaca;
+            }
+
+            .ai-suggestion-card {
+                border-radius: 0.95rem;
+                border: 1px solid #dbe4f1;
+                background: rgba(255, 255, 255, 0.88);
+                transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+                overflow: hidden;
+            }
+
+            .ai-suggestion-card:hover {
+                border-color: #efb9d7;
+                transform: translateY(-1px);
+                box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+                background: rgba(255, 255, 255, 0.98);
+            }
+
+            .ai-suggestion-img-wrap {
+                position: relative;
+                width: 100%;
+                aspect-ratio: 16 / 11;
+                background: linear-gradient(135deg, #fff7fb, #fdf2f8);
+                border-bottom: 1px solid #f6deeb;
+                overflow: hidden;
+            }
+
+            .ai-suggestion-img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                transition: transform 0.25s ease;
+            }
+
+            .ai-suggestion-card:hover .ai-suggestion-img {
+                transform: scale(1.03);
+            }
+
+            .ai-discount-badge {
+                position: absolute;
+                top: 0.45rem;
+                left: 0.45rem;
+                padding: 0.15rem 0.45rem;
+                border-radius: 9999px;
+                font-size: 0.68rem;
+                font-weight: 800;
+                color: #fff;
+                background: linear-gradient(135deg, #ef4444, #dc2626);
+                box-shadow: 0 4px 10px rgba(220, 38, 38, 0.28);
+            }
+
+            .ai-card-btn {
+                height: 30px;
+                border-radius: 0.6rem;
+                font-size: 0.72rem;
+                font-weight: 700;
+                transition: all 0.18s ease;
+                border: 1px solid transparent;
+            }
+
+            .ai-card-btn-ghost {
+                color: #be185d;
+                border-color: #f1bfd9;
+                background: #fff;
+            }
+
+            .ai-card-btn-ghost:hover {
+                background: #fff4fa;
+                border-color: #eaa7ca;
+            }
+
+            .ai-card-btn-primary {
+                color: #fff;
+                background: linear-gradient(135deg, #ec4899, #a855f7);
+                box-shadow: 0 4px 12px rgba(236, 72, 153, 0.24);
+            }
+
+            .ai-card-btn-primary:hover {
+                filter: brightness(0.97);
+                box-shadow: 0 6px 16px rgba(219, 39, 119, 0.32);
+            }
+
+            .ai-chip {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: #be185d;
+                background: #fdf2f8;
+                border: 1px solid #f1bfd9;
+                padding: 0.25rem 0.6rem;
+                border-radius: 9999px;
+            }
+
+            .ai-inline-product-strip {
+                margin-top: 0.55rem;
+                border: 1px solid #f3d6e7;
+                border-radius: 0.9rem;
+                padding: 0.45rem;
+                background: rgba(255,255,255,0.9);
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                max-width: 360px;
+            }
+
+            .ai-inline-thumb {
+                width: 56px;
+                height: 56px;
+                border-radius: 0.55rem;
+                border: 1px solid #f3d6e7;
+                object-fit: cover;
+                background: #f8fafc;
+            }
+
+            .ai-inline-overflow {
+                width: 56px;
+                height: 56px;
+                border-radius: 0.55rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #ec4899, #a855f7);
+                color: #fff;
+                font-weight: 700;
+                font-size: 1rem;
+            }
+
+            .ai-inline-cta {
+                border: 1px solid #f1bfd9;
+                border-radius: 0.7rem;
+                padding: 0.75rem 0.9rem;
+                color: #be185d;
+                font-weight: 600;
+                background: #fdf2f8;
+                white-space: nowrap;
+            }
+
+            #ai-side-panel.ai-mode-expanded {
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                border-left: none;
+                background: linear-gradient(180deg, rgba(248,250,252,0.99), rgba(255,255,255,0.99)) !important;
+            }
+
+            #ai-side-panel.ai-mode-compact {
+                top: 72px !important;
+                right: 16px !important;
+                left: auto !important;
+                width: min(980px, calc(100vw - 24px)) !important;
+                height: min(760px, calc(100vh - 88px)) !important;
+            }
+
+            .assistant-mode-btn {
+                opacity: 0.75;
+                transition: transform 0.2s ease, opacity 0.2s ease;
+            }
+
+            .assistant-mode-btn:hover {
+                transform: translateY(-1px);
+                opacity: 1;
+            }
+
+            .assistant-mode-active {
+                opacity: 1;
+            }
+
+            .assistant-mode-active span:first-child {
+                box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+            }
+
+            .bot-feedback-row {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+                margin-top: 0.35rem;
+                color: #64748b;
+                opacity: 0.7;
+            }
+
+            .bot-feedback-row button {
+                width: 28px;
+                height: 28px;
+                border-radius: 8px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid transparent;
+                background: transparent;
+                transition: all 0.2s ease;
+            }
+
+            .bot-feedback-row button:hover {
+                background: #fdf2f8;
+                border-color: #f1bfd9;
+                color: #be185d;
+                opacity: 1;
+            }
+
+            .bot-feedback-row button.is-active {
+                background: #fdf2f8;
+                border-color: #e79cc2;
+                color: #be185d;
+                opacity: 1;
+            }
+
+            #ai-side-panel.ai-mode-compact #ai-context-column {
+                display: none !important;
+            }
+
+            @media (max-width: 1024px) {
+                /* On small screens in expanded mode: stack vertically (VR → chat → suggestions) */
+                #ai-side-panel.ai-mode-expanded #ai-panel-workspace {
+                    grid-template-columns: 1fr;
+                    grid-template-rows: minmax(260px, 38%) minmax(220px, 34%) minmax(220px, 28%);
+                }
+
+                #ai-side-panel.ai-mode-expanded #ai-vr-column {
+                    border-right: none;
+                    border-bottom: 1px solid var(--ai-border);
+                }
+
+                #ai-side-panel.ai-mode-expanded #chat-interface {
+                    border-right: none;
+                    border-bottom: 1px solid var(--ai-border);
+                }
+
+                #ai-side-panel.ai-mode-expanded #ai-context-column {
+                    display: flex;
+                    border-left: none;
+                }
+
+                #ai-side-panel.ai-mode-compact {
+                    top: 66px !important;
+                    right: 8px !important;
+                    left: auto !important;
+                    width: calc(100vw - 16px) !important;
+                    height: min(700px, calc(100vh - 74px)) !important;
+                }
+
+                #ai-suggested-products {
+                    /* Let flex-1 handle sizing on mobile */
+                }
+
+                #ai-side-panel.ai-mode-expanded #ai-suggested-products {
+                    grid-template-columns: 1fr;
+                }
+
+                .ai-product-detail-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                #ai-product-detail-content {
+                    /* handled by parent max-height */
+                }
+            }
+
+            /* AI Suggestion Card Redesign */
+            .ai-suggestion-card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                /* Override incompatible styles if any */
+                background: #fff;
+                border: 1px solid #f1f5f9;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+
+            .ai-suggestion-img-wrap {
+                height: 150px;
+                width: 100%;
+                position: relative;
+                background: #f8fafc;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                border-bottom: 1px solid #f1f5f9;
+            }
+
+            /* Force override inline aspect-ratio if present */
+            .ai-suggestion-img-wrap {
+                aspect-ratio: auto !important;
+            }
+
+            .ai-suggestion-img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                transition: transform 0.3s ease;
+                padding: 8px;
+            }
+
+            .ai-suggestion-card:hover .ai-suggestion-img {
+                transform: scale(1.08);
+            }
+
+            .ai-suggestion-placeholder {
+                font-size: 2rem;
+                color: #cbd5e1;
+            }
+
+            .ai-stock-badge {
+                position: absolute;
+                bottom: 6px;
+                left: 6px;
+                font-size: 0.65rem;
+                padding: 2px 8px;
+                border-radius: 99px;
+                font-weight: 600;
+                color: white;
+                z-index: 10;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .ai-stock-badge.in-stock { background: #10b981; }
+            .ai-stock-badge.out-of-stock { background: #ef4444; }
+
+            .ai-suggestion-content {
+                padding: 10px 12px;
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                gap: 4px;
+            }
+
+            .ai-suggestion-title {
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: #334155;
+                line-height: 1.35;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                margin: 0;
+                height: 2.7em; /* approx 2 lines */
+            }
+
+            .ai-suggestion-store {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-top: 4px;
+            }
+            .ai-suggestion-store .ai-mini-store-logo {
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                font-size: 8px; /* for text logo */
+            }
+            .ai-suggestion-store-name {
+                font-size: 0.7rem;
+                color: #64748b;
+                font-weight: 500;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 120px;
+            }
+
+            .ai-suggestion-price {
+                font-size: 0.95rem;
+                font-weight: 700;
+                color: #db2777;
+                margin-top: auto;
+                padding-top: 6px;
+            }
+
+            .ai-suggestion-actions {
+                display: flex;
+                gap: 6px;
+                margin-top: 8px;
+            }
+
+            .action-btn {
+                border: 1px solid;
+                border-radius: 6px;
+                padding: 5px 0;
+                font-size: 0.7rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+            }
+
+            .detail-btn {
+                flex: 1;
+                background: #fff;
+                border-color: #e2e8f0;
+                color: #475569;
+            }
+            .detail-btn:hover {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+                color: #0f172a;
+            }
+
+            .cart-btn {
+                width: 32px;
+                background: #fdf2f8;
+                border-color: #fbcfe8;
+                color: #db2777;
+            }
+            .cart-btn:hover {
+                background: #db2777;
+                border-color: #db2777;
+                color: #fff;
+            }
+            .cart-btn[disabled] {
+                opacity: 0.6;
+                cursor: not-allowed;
+                background: #f1f5f9;
+                border-color: #e2e8f0;
+                color: #cbd5e1;
+            }
+
+            /* Custom Scrollbar */
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: #ec4899;
+                border-radius: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #be185d;
             }

@@ -1,6 +1,9 @@
 import { API_BASE_URL, App, $, formatVND } from './config.js';
 import { hideAllViews, showLogin, showNotification } from './ui.js';
 
+const ADMIN_REQUEST_TIMEOUT_MS = 15000;
+const ADMIN_GET_RETRY_COUNT = 1;
+
 const adminState = {
     activeTab: 'accounts',
 };
@@ -10,13 +13,100 @@ function isAdmin() {
     return role === 'ADMIN';
 }
 
-async function fetchApiJson(url, options = {}) {
-    const response = await fetch(url, options);
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok || data?.success === false) {
-        throw new Error(data?.message || `Yeu cau that bai (${response.status})`);
+function getAuthHeaders() {
+    const headers = {};
+    const token = localStorage.getItem('access_token');
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
     }
-    return data;
+    return headers;
+}
+
+function mapHttpError(status, fallbackMessage) {
+    if (status === 401) return 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.';
+    if (status === 403) return 'Bạn không có quyền thực hiện thao tác này.';
+    if (status === 404) return 'Không tìm thấy dữ liệu hoặc API.';
+    if (status >= 500) return 'Máy chủ đang lỗi tạm thời. Vui lòng thử lại sau ít phút.';
+    return fallbackMessage;
+}
+
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function parseResponsePayload(response) {
+    const contentType = (response.headers.get('content-type') || '').toLowerCase();
+    if (contentType.includes('application/json')) {
+        return response.json().catch(() => ({}));
+    }
+
+    const text = await response.text().catch(() => '');
+    if (!text) return {};
+    try {
+        return JSON.parse(text);
+    } catch (_error) {
+        return { message: text };
+    }
+}
+
+async function fetchApiJson(url, options = {}) {
+    const method = (options.method || 'GET').toUpperCase();
+    const maxAttempts = method === 'GET' ? ADMIN_GET_RETRY_COUNT + 1 : 1;
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), ADMIN_REQUEST_TIMEOUT_MS);
+
+        try {
+            const mergedHeaders = {
+                Accept: 'application/json',
+                ...getAuthHeaders(),
+                ...(options.headers || {}),
+            };
+
+            const response = await fetch(url, {
+                ...options,
+                headers: mergedHeaders,
+                credentials: 'include',
+                signal: controller.signal,
+            });
+
+            window.clearTimeout(timeout);
+            const data = await parseResponsePayload(response);
+
+            if (!response.ok || data?.success === false) {
+                const apiMessage = data?.message || data?.detail || '';
+                const normalizedMessage = mapHttpError(response.status, apiMessage || `Yêu cầu thất bại (${response.status})`);
+                const error = new Error(normalizedMessage);
+                error.status = response.status;
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            window.clearTimeout(timeout);
+            const isAbort = error?.name === 'AbortError';
+            const status = error?.status || 0;
+            const shouldRetry = method === 'GET' && attempt < maxAttempts && (isAbort || status >= 500 || status === 0);
+
+            if (!shouldRetry) {
+                if (isAbort) {
+                    throw new Error('Kết nối máy chủ quá lâu. Vui lòng thử lại.');
+                }
+                if (status === 401) {
+                    showNotification('Phiên đăng nhập admin đã hết hạn.', 'error');
+                    showLogin();
+                }
+                throw error;
+            }
+
+            lastError = error;
+            await sleep(350 * attempt);
+        }
+    }
+
+    throw lastError || new Error('Không thể kết nối máy chủ.');
 }
 
 function getAdminEmail() {
@@ -25,12 +115,12 @@ function getAdminEmail() {
 
 function ensureAdmin() {
     if (!App.isLoggedIn || !App.currentUser?.email) {
-        showNotification('Vui long dang nhap tai khoan admin.', 'error');
+        showNotification('Vui lòng đăng nhập tài khoản admin.', 'error');
         showLogin();
         return false;
     }
     if (!isAdmin()) {
-        showNotification('Ban khong co quyen truy cap trung tam quan tri.', 'error');
+        showNotification('Bạn không có quyền truy cập trung tâm quản trị.', 'error');
         return false;
     }
     return true;
@@ -62,14 +152,14 @@ function renderUsers(users = []) {
     const tbody = $('admin-users-table-body');
     if (!tbody) return;
     if (!users.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="py-4 px-2 text-gray-500 text-center">Khong co tai khoan phu hop.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="py-4 px-2 text-gray-500 text-center">Không có tài khoản phù hợp.</td></tr>';
         return;
     }
 
     tbody.innerHTML = users.map((u) => {
-        const activeText = u.is_active ? 'Hoat dong' : 'Tam khoa';
+        const activeText = u.is_active ? 'Hoạt động' : 'Tạm khóa';
         const activeClass = u.is_active ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100';
-        const actionLabel = u.is_active ? 'Khoa' : 'Mo khoa';
+        const actionLabel = u.is_active ? 'Khóa' : 'Mở khóa';
         const nextActive = !u.is_active;
         return `
             <tr class="border-b border-pink-50">
@@ -90,7 +180,7 @@ function renderPendingProducts(products = []) {
     const tbody = $('admin-pending-products-body');
     if (!tbody) return;
     if (!products.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="py-4 px-2 text-gray-500 text-center">Khong co san pham cho duyet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="py-4 px-2 text-gray-500 text-center">Không có sản phẩm chờ duyệt.</td></tr>';
         return;
     }
 
@@ -101,8 +191,8 @@ function renderPendingProducts(products = []) {
             <td class="py-2 px-2">${p.store_name || '-'}</td>
             <td class="py-2 px-2">${formatVND(p.price)}</td>
             <td class="py-2 px-2">
-                <button onclick="adminModerateProduct(${p.id}, 'approve')" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Duyet</button>
-                <button onclick="adminModerateProduct(${p.id}, 'reject')" class="ml-1 px-2 py-1 rounded bg-red-600 text-white text-xs font-semibold">Tu choi</button>
+                <button onclick="adminModerateProduct(${p.id}, 'approve')" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Duyệt</button>
+                <button onclick="adminModerateProduct(${p.id}, 'reject')" class="ml-1 px-2 py-1 rounded bg-red-600 text-white text-xs font-semibold">Từ chối</button>
             </td>
         </tr>
     `).join('');
@@ -112,7 +202,7 @@ function renderVendorApps(apps = []) {
     const tbody = $('admin-vendor-apps-body');
     if (!tbody) return;
     if (!apps.length) {
-        tbody.innerHTML = '<tr><td colspan="4" class="py-4 px-2 text-gray-500 text-center">Khong co don dang ky vendor.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="py-4 px-2 text-gray-500 text-center">Không có đơn đăng ký người bán.</td></tr>';
         return;
     }
 
@@ -122,8 +212,8 @@ function renderVendorApps(apps = []) {
             <td class="py-2 px-2">${app.store_name}</td>
             <td class="py-2 px-2">${app.user_email}</td>
             <td class="py-2 px-2">
-                <button onclick="adminHandleVendorApplication(${app.id}, 'approve')" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Duyet</button>
-                <button onclick="adminHandleVendorApplication(${app.id}, 'reject')" class="ml-1 px-2 py-1 rounded bg-red-600 text-white text-xs font-semibold">Tu choi</button>
+                <button onclick="adminHandleVendorApplication(${app.id}, 'approve')" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Duyệt</button>
+                <button onclick="adminHandleVendorApplication(${app.id}, 'reject')" class="ml-1 px-2 py-1 rounded bg-red-600 text-white text-xs font-semibold">Từ chối</button>
             </td>
         </tr>
     `).join('');
@@ -133,7 +223,7 @@ function renderShipperApps(apps = []) {
     const tbody = $('admin-shipper-apps-body');
     if (!tbody) return;
     if (!apps.length) {
-        tbody.innerHTML = '<tr><td colspan="4" class="py-4 px-2 text-gray-500 text-center">Khong co don dang ky shipper.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="py-4 px-2 text-gray-500 text-center">Không có đơn đăng ký shipper.</td></tr>';
         return;
     }
 
@@ -143,8 +233,8 @@ function renderShipperApps(apps = []) {
             <td class="py-2 px-2">${app.company_name}</td>
             <td class="py-2 px-2">${app.user_email}</td>
             <td class="py-2 px-2">
-                <button onclick="adminHandleShipperApplication(${app.id}, 'approve')" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Duyet</button>
-                <button onclick="adminHandleShipperApplication(${app.id}, 'reject')" class="ml-1 px-2 py-1 rounded bg-red-600 text-white text-xs font-semibold">Tu choi</button>
+                <button onclick="adminHandleShipperApplication(${app.id}, 'approve')" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Duyệt</button>
+                <button onclick="adminHandleShipperApplication(${app.id}, 'reject')" class="ml-1 px-2 py-1 rounded bg-red-600 text-white text-xs font-semibold">Từ chối</button>
             </td>
         </tr>
     `).join('');
@@ -154,7 +244,7 @@ function renderSupportTickets(tickets = []) {
     const tbody = $('admin-support-tickets-body');
     if (!tbody) return;
     if (!tickets.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="py-4 px-2 text-gray-500 text-center">Khong co ticket nao.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="py-4 px-2 text-gray-500 text-center">Không có ticket nào.</td></tr>';
         return;
     }
 
@@ -172,10 +262,10 @@ function renderSupportTickets(tickets = []) {
                 <td class="py-2 px-2">${ticket.content}</td>
                 <td class="py-2 px-2"><span class="px-2 py-1 rounded-full text-xs font-semibold ${statusClass}">${ticket.status}</span></td>
                 <td class="py-2 px-2 space-y-2">
-                    <textarea id="admin-ticket-reply-${ticket.id}" rows="2" class="w-full border border-pink-200 rounded px-2 py-1 text-xs" placeholder="Nhap phan hoi..."></textarea>
+                    <textarea id="admin-ticket-reply-${ticket.id}" rows="2" class="w-full border border-pink-200 rounded px-2 py-1 text-xs" placeholder="Nhập phản hồi..."></textarea>
                     <div class="flex gap-1">
-                        <button onclick="adminReplyTicket(${ticket.id}, 'IN_PROGRESS')" class="px-2 py-1 rounded bg-purple-600 text-white text-xs font-semibold">Dang xu ly</button>
-                        <button onclick="adminReplyTicket(${ticket.id}, 'RESOLVED')" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Da giai quyet</button>
+                        <button onclick="adminReplyTicket(${ticket.id}, 'IN_PROGRESS')" class="px-2 py-1 rounded bg-purple-600 text-white text-xs font-semibold">Đang xử lý</button>
+                        <button onclick="adminReplyTicket(${ticket.id}, 'RESOLVED')" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Đã giải quyết</button>
                     </div>
                 </td>
             </tr>
@@ -195,7 +285,7 @@ function renderReport(data = {}) {
         const orders = data.line_chart?.orders || [];
         const tickets = data.line_chart?.support_tickets || [];
         if (!labels.length) {
-            seriesBody.innerHTML = '<tr><td colspan="3" class="py-4 px-2 text-center text-gray-500">Chua co du lieu 7 ngay.</td></tr>';
+            seriesBody.innerHTML = '<tr><td colspan="3" class="py-4 px-2 text-center text-gray-500">Chưa có dữ liệu 7 ngày.</td></tr>';
         } else {
             seriesBody.innerHTML = labels.map((label, idx) => `
                 <tr class="border-b border-pink-50">
@@ -212,7 +302,7 @@ function renderSystemReviews(reviews = []) {
     const tbody = $('admin-system-reviews-body');
     if (!tbody) return;
     if (!reviews.length) {
-        tbody.innerHTML = '<tr><td colspan="4" class="py-4 px-2 text-center text-gray-500">Chua co phan hoi he thong.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="py-4 px-2 text-center text-gray-500">Chưa có phản hồi hệ thống.</td></tr>';
         return;
     }
 
@@ -235,7 +325,7 @@ export async function loadAdminUsers() {
         const data = await fetchApiJson(`${API_BASE_URL}/api/admin/users/?email=${email}&q=${q}&role=${role}`);
         renderUsers(data.users || []);
     } catch (error) {
-        showNotification(error.message || 'Khong tai duoc danh sach tai khoan.', 'error');
+        showNotification(error.message || 'Không tải được danh sách tài khoản.', 'error');
     }
 }
 
@@ -248,7 +338,7 @@ async function loadAdminPendingApprovals() {
         renderVendorApps(data.vendor_applications || []);
         renderShipperApps(data.shipper_applications || []);
     } catch (error) {
-        showNotification(error.message || 'Khong tai duoc du lieu phe duyet.', 'error');
+        showNotification(error.message || 'Không tải được dữ liệu phê duyệt.', 'error');
     }
 }
 
@@ -261,7 +351,7 @@ export async function loadAdminSupportTickets() {
         const data = await fetchApiJson(`${API_BASE_URL}/api/support/tickets/?email=${email}&status=${status}&sender_role=${senderRole}`);
         renderSupportTickets(data.tickets || []);
     } catch (error) {
-        showNotification(error.message || 'Khong tai duoc danh sach ticket.', 'error');
+        showNotification(error.message || 'Không tải được danh sách ticket.', 'error');
     }
 }
 
@@ -276,7 +366,7 @@ async function loadAdminReports() {
         renderReport(reportData || {});
         renderSystemReviews(reviewData.reviews || []);
     } catch (error) {
-        showNotification(error.message || 'Khong tai duoc bao cao he thong.', 'error');
+        showNotification(error.message || 'Không tải được báo cáo hệ thống.', 'error');
     }
 }
 
@@ -288,10 +378,10 @@ export async function adminToggleUserActive(userId, isActive) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: getAdminEmail(), user_id: userId, is_active: isActive }),
         });
-        showNotification('Da cap nhat trang thai tai khoan.');
+        showNotification('Đã cập nhật trạng thái tài khoản.');
         await loadAdminUsers();
     } catch (error) {
-        showNotification(error.message || 'Khong the cap nhat tai khoan.', 'error');
+        showNotification(error.message || 'Không thể cập nhật tài khoản.', 'error');
     }
 }
 
@@ -303,10 +393,10 @@ export async function adminHandleVendorApplication(applicationId, action) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: getAdminEmail(), application_id: applicationId, action }),
         });
-        showNotification('Da xu ly don dang ky nguoi ban.');
+        showNotification('Đã xử lý đơn đăng ký người bán.');
         await loadAdminPendingApprovals();
     } catch (error) {
-        showNotification(error.message || 'Khong the xu ly don vendor.', 'error');
+        showNotification(error.message || 'Không thể xử lý đơn vendor.', 'error');
     }
 }
 
@@ -318,10 +408,10 @@ export async function adminHandleShipperApplication(applicationId, action) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: getAdminEmail(), application_id: applicationId, action }),
         });
-        showNotification('Da xu ly don dang ky van chuyen.');
+        showNotification('Đã xử lý đơn đăng ký vận chuyển.');
         await loadAdminPendingApprovals();
     } catch (error) {
-        showNotification(error.message || 'Khong the xu ly don shipper.', 'error');
+        showNotification(error.message || 'Không thể xử lý đơn shipper.', 'error');
     }
 }
 
@@ -333,10 +423,10 @@ export async function adminModerateProduct(productId, action) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: getAdminEmail(), product_id: productId, action }),
         });
-        showNotification('Da cap nhat kiem duyet san pham.');
+        showNotification('Đã cập nhật kiểm duyệt sản phẩm.');
         await loadAdminPendingApprovals();
     } catch (error) {
-        showNotification(error.message || 'Khong the kiem duyet san pham.', 'error');
+        showNotification(error.message || 'Không thể kiểm duyệt sản phẩm.', 'error');
     }
 }
 
@@ -354,10 +444,10 @@ export async function adminReplyTicket(ticketId, nextStatus) {
                 send_email: true,
             }),
         });
-        showNotification('Da phan hoi ticket.');
+        showNotification('Đã phản hồi ticket.');
         await loadAdminSupportTickets();
     } catch (error) {
-        showNotification(error.message || 'Khong the phan hoi ticket.', 'error');
+        showNotification(error.message || 'Không thể phản hồi ticket.', 'error');
     }
 }
 
@@ -383,6 +473,7 @@ export async function openAdminDashboard(defaultTab = 'accounts') {
     await loadAdminTab(defaultTab);
 }
 
+
 window.openAdminDashboard = openAdminDashboard;
 window.loadAdminTab = loadAdminTab;
 window.loadAdminUsers = loadAdminUsers;
@@ -392,5 +483,3 @@ window.adminHandleVendorApplication = adminHandleVendorApplication;
 window.adminHandleShipperApplication = adminHandleShipperApplication;
 window.adminModerateProduct = adminModerateProduct;
 window.adminReplyTicket = adminReplyTicket;
-
-
