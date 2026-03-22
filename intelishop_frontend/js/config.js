@@ -2,23 +2,36 @@
 // 1. CẤU HÌNH MÔI TRƯỜNG & KẾT NỐI API
 // ==================================================
 // Tự động chuyển đổi API dựa trên môi trường chạy (Local vs Production)
-const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-export const API_BASE_URL = isLocalhost
-    ? 'http://127.0.0.1:8000'
-    : 'https://intelishop-backend.onrender.com';
+const { protocol, hostname, port, origin } = window.location;
+const isLanHost = /^192\.168\./.test(hostname) || /^10\./.test(hostname) || /^172\.(1[6-9]|2\d|3[0-1])\./.test(hostname);
+const isLocalLikeHost = ['127.0.0.1', 'localhost', '0.0.0.0'].includes(hostname) || isLanHost || protocol === 'file:';
+
+// Nếu frontend chạy cùng origin backend Django (:8000) thì ưu tiên same-origin.
+// Nếu không nhưng đang ở môi trường local thì fallback về localhost:8000.
+export const API_BASE_URL = port === '8000'
+    ? origin
+    : (isLocalLikeHost ? 'http://127.0.0.1:8000' : 'https://intelishop-backend.onrender.com');
+
+const runtimeGoogleClientId = (window.__INTELLISHOP_GOOGLE_CLIENT_ID || '').trim();
+const metaGoogleClientId = (document.querySelector('meta[name="google-client-id"]')?.content || '').trim();
+export const GOOGLE_CLIENT_ID = runtimeGoogleClientId || metaGoogleClientId || '717682002366-8ivvapiplm9m674j4c67ti5sbt9245rl.apps.googleusercontent.com';
+
 //export const API_BASE_URL = 'https://intelishop-backend.onrender.com';
-console.log(API_BASE_URL)
+console.log('[Intellishop] API_BASE_URL:', API_BASE_URL);
+console.log('[Intellishop] APP_ORIGIN:', origin);
 // ==================================================
 // 2. HELPER FUNCTIONS (TIỆN ÍCH)
 // ==================================================
 // Tối ưu hàm lấy Element: Tích hợp cảnh báo rủi ro (Defensive Programming)
 export const $ = (id) => {
     const el = document.getElementById(id);
-    if (!el && isLocalhost) {
+    if (!el && isLocalLikeHost) {
         console.warn(`[Cảnh báo UI]: Không tìm thấy phần tử có ID '${id}' trên giao diện.`);
     }
     return el;
 };
+
+export const formatVND = (value) => `${Math.round(Number(value) || 0).toLocaleString('en-US')}₫`;
 
 // ==================================================
 // 3. TRẠNG THÁI ỨNG DỤNG (GLOBAL STATE)
@@ -30,6 +43,8 @@ export const App = {
     hotDeals: [],
     categories: [],         
     currentCategory: 'all',
+    storeReviews: {},
+    currentProductDetail: null,
 
     // Cấu hình phân trang / Hiển thị
     currentStore: 1,
@@ -38,13 +53,55 @@ export const App = {
 
     // Giỏ hàng & Thanh toán
     cart: [],
-    selectedShipping: 'standard',
-    shippingFees: { standard: 7.99, express: 17.99, 'express-plus': 29.99 },
+    addresses: [],
+    wishlist: [],
+    searchQuery: '',
+    selectedAddressId: null,
+    checkout: {
+        shopVoucherDiscount: 0,
+        intellishopVoucherDiscount: 0,
+        coinUsed: 0,
+        insuranceFee: 0,
+    },
+    shippingProviders: [],
+    selectedShipping: null,
     hasActiveOrder: false,
+
+    // Vendor Center
+    vendor: {
+        store: null,
+        products: [],
+        vouchers: [],
+        report: null,
+        activeTab: 'products',
+        uiBound: false,
+        productEditingId: null,
+        voucherEditingId: null,
+        filters: {
+            productQuery: '',
+            productStatus: 'all',
+            productInStockOnly: false,
+            productSort: 'newest',
+            voucherQuery: '',
+            voucherStatus: 'all',
+            voucherSort: 'newest',
+        },
+    },
+
+    // Chatbot UI state
+    ai: {
+        activeAssistant: 'shopping',
+        drafts: {
+            shopping: '',
+        },
+        history: {
+            shopping: [],
+        },
+    },
 
     // Trạng thái người dùng
     isLoggedIn: false,
-    currentUser: { name: "Khách hàng", email: "user@email.com" },
+    currentUser: { name: "Khách hàng", email: "user@email.com", intellishop_coin: 0, role: 'CUSTOMER', can_vendor: false, can_shipper: false },
 };
 
 // ==================================================

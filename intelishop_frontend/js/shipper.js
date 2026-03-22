@@ -1,5 +1,7 @@
-import { API_BASE_URL, App, $ } from './config.js';
+import { API_BASE_URL, App, $, formatVND } from './config.js';
+import { requestJson } from './api.js';
 import { hideAllViews, showLogin, showNotification } from './ui.js';
+
 
 const statusClassMap = {
     READY_FOR_PICKUP: 'bg-amber-100 text-amber-700',
@@ -12,25 +14,31 @@ const statusClassMap = {
 const shipperState = {
     loading: false,
     orders: [],
+    uiBound: false,
+    filters: {
+        query: '',
+        status: 'all',
+    },
 };
 
 async function fetchApiJson(url, options = {}) {
-    const response = await fetch(url, options);
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok || data?.success === false) {
-        throw new Error(data?.message || `Yeu cau that bai (${response.status})`);
-    }
-    return data;
+    return requestJson(url, options, {
+        retryGet: 1,
+        onUnauthorized: () => {
+            showNotification('Phiên đăng nhập shipper đã hết hạn. Vui lòng đăng nhập lại.', 'error');
+            showLogin();
+        },
+    });
 }
 
 function ensureShipperLoggedIn() {
     if (!App.isLoggedIn || !App.currentUser?.email) {
-        showNotification('Vui long dang nhap truoc.', 'error');
+        showNotification('Vui lòng đăng nhập trước.', 'error');
         showLogin();
         return false;
     }
     if (!App.currentUser?.can_shipper && App.currentUser?.role !== 'SHIPPER') {
-        showNotification('Tai khoan chua co quyen van chuyen.', 'error');
+        showNotification('Tài khoản chưa có quyền vận chuyển.', 'error');
         return false;
     }
     return true;
@@ -38,29 +46,67 @@ function ensureShipperLoggedIn() {
 
 function renderShipperStats(stats = {}) {
     if ($('shipper-stat-pending')) $('shipper-stat-pending').innerText = String(stats.pending_delivery || 0);
+    if ($('shipper-stat-ready')) $('shipper-stat-ready').innerText = String(stats.ready_for_pickup || 0);
+    if ($('shipper-stat-assigned')) $('shipper-stat-assigned').innerText = String(stats.assigned_active || 0);
     if ($('shipper-stat-delivering')) $('shipper-stat-delivering').innerText = String(stats.delivering || 0);
     if ($('shipper-stat-delivered')) $('shipper-stat-delivered').innerText = String(stats.delivered || 0);
     if ($('shipper-stat-failed')) $('shipper-stat-failed').innerText = String(stats.failed || 0);
 }
 
+function renderShipperProfile(shipper = {}) {
+    if ($('shipper-dashboard-company-name')) $('shipper-dashboard-company-name').innerText = shipper.company_name || 'Đơn vị vận chuyển';
+    if ($('shipper-dashboard-company-contact')) {
+        const contactParts = [shipper.contact_email, shipper.phone_number].filter(Boolean);
+        $('shipper-dashboard-company-contact').innerText = contactParts.length
+            ? contactParts.join(' • ')
+            : 'Chưa cập nhật email hoặc số điện thoại liên hệ.';
+    }
+}
+
+function getFilteredShipperOrders(orders = []) {
+    const query = (shipperState.filters.query || '').trim().toLowerCase();
+    const status = shipperState.filters.status || 'all';
+    return orders.filter((order) => {
+        const matchStatus = status === 'all' || order.status === status;
+        const haystack = [
+            order.order_code,
+            order.customer_name,
+            order.shipping_address,
+            order.status_label,
+            order.store_name,
+            order.vendor_name,
+            order.shipper_company_name,
+        ]
+            .filter(Boolean)
+            .join(' ')
+            .toLowerCase();
+        const matchQuery = !query || haystack.includes(query);
+        return matchStatus && matchQuery;
+    });
+}
+
 function renderShipperOrdersTable(orders = []) {
     const tbody = $('shipper-orders-table-body');
     if (!tbody) return;
-    if (!orders.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="py-5 text-center text-gray-500">Chua co don hang nao.</td></tr>';
+    const rows = getFilteredShipperOrders(orders);
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="py-5 text-center text-gray-500">Chưa có đơn hàng nào phù hợp.</td></tr>';
         return;
     }
 
-    tbody.innerHTML = orders.map((order) => {
+    tbody.innerHTML = rows.map((order) => {
         const badgeClass = statusClassMap[order.status] || 'bg-gray-100 text-gray-700';
 
         let actionHtml = `<button onclick="openShipperOrderDetail(${order.id})" class="px-2 py-1 rounded bg-purple-100 text-purple-700 text-xs font-semibold">Xem</button>`;
         if (order.can_accept) {
-            actionHtml = `<button onclick="acceptShipperOrder(${order.id})" class="px-2 py-1 rounded bg-purple-600 text-white text-xs font-semibold">Nhan don</button>`;
+            actionHtml = `
+                <button onclick="acceptShipperOrder(${order.id})" class="px-2 py-1 rounded bg-purple-600 text-white text-xs font-semibold">Nhận đơn</button>
+                <button onclick="openShipperOrderDetail(${order.id})" class="ml-2 px-2 py-1 rounded bg-purple-100 text-purple-700 text-xs font-semibold">Xem</button>
+            `;
         } else if (order.can_mark_delivered || order.can_mark_failed) {
             actionHtml = `
-                <button onclick="markShipperOrderDelivered(${order.id})" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Da giao</button>
-                <button onclick="markShipperOrderFailed(${order.id})" class="ml-2 px-2 py-1 rounded bg-red-600 text-white text-xs font-semibold">That bai</button>
+                <button onclick="markShipperOrderDelivered(${order.id})" class="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold">Đã giao</button>
+                <button onclick="markShipperOrderFailed(${order.id})" class="ml-2 px-2 py-1 rounded bg-red-600 text-white text-xs font-semibold">Thất bại</button>
                 <button onclick="openShipperOrderDetail(${order.id})" class="ml-2 px-2 py-1 rounded bg-purple-100 text-purple-700 text-xs font-semibold">Xem</button>
             `;
         }
@@ -68,13 +114,44 @@ function renderShipperOrdersTable(orders = []) {
         return `
             <tr class="border-b border-pink-50">
                 <td class="py-3 px-2 font-semibold">${order.order_code}</td>
-                <td class="py-3 px-2">${order.customer_name}</td>
+                <td class="py-3 px-2">
+                    <div class="font-semibold text-gray-800">${order.store_name || 'Chưa rõ shop'}</div>
+                    <div class="text-xs text-gray-500">${order.vendor_name || 'Chưa có người bán phụ trách'}</div>
+                </td>
+                <td class="py-3 px-2">
+                    <div class="font-medium text-gray-800">${order.customer_name}</div>
+                    <div class="text-xs text-gray-500">${order.customer_phone || 'Chưa có SĐT'}</div>
+                </td>
                 <td class="py-3 px-2 text-gray-600">${order.shipping_address}</td>
+                <td class="py-3 px-2 text-gray-700">
+                    <div class="font-bold text-pink-700">${formatVND(order.total_amount)}</div>
+                    <div class="text-xs text-gray-500">${order.item_count || 0} sản phẩm</div>
+                </td>
                 <td class="py-3 px-2"><span class="px-2 py-1 rounded-full text-xs font-semibold ${badgeClass}">${order.status_label || order.status}</span></td>
                 <td class="py-3 px-2">${actionHtml}</td>
             </tr>
         `;
     }).join('');
+}
+
+function bindShipperDashboardUI() {
+    if (shipperState.uiBound) return;
+    const searchInput = $('shipper-orders-search');
+    const statusSelect = $('shipper-orders-status-filter');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (event) => {
+            shipperState.filters.query = event.target.value || '';
+            renderShipperOrdersTable(shipperState.orders);
+        });
+    }
+    if (statusSelect) {
+        statusSelect.addEventListener('change', (event) => {
+            shipperState.filters.status = event.target.value || 'all';
+            renderShipperOrdersTable(shipperState.orders);
+        });
+    }
+    shipperState.uiBound = true;
 }
 
 export async function loadShipperDashboard() {
@@ -85,10 +162,11 @@ export async function loadShipperDashboard() {
         const email = encodeURIComponent(App.currentUser.email || '');
         const data = await fetchApiJson(`${API_BASE_URL}/api/shipper/dashboard/?email=${email}`);
         shipperState.orders = data.orders || [];
+        renderShipperProfile(data.shipper || {});
         renderShipperStats(data.stats || {});
         renderShipperOrdersTable(shipperState.orders);
     } catch (error) {
-        showNotification(error.message || 'Khong tai duoc dashboard shipper.', 'error');
+        showNotification(error.message || 'Không tải được dashboard shipper.', 'error');
     } finally {
         shipperState.loading = false;
     }
@@ -96,9 +174,12 @@ export async function loadShipperDashboard() {
 
 export async function showShipperDashboard() {
     if (!ensureShipperLoggedIn()) return;
+    bindShipperDashboardUI();
     hideAllViews();
     const view = $('view-shipper-dashboard');
     if (view) view.classList.remove('hide');
+    if ($('shipper-orders-search')) $('shipper-orders-search').value = shipperState.filters.query || '';
+    if ($('shipper-orders-status-filter')) $('shipper-orders-status-filter').value = shipperState.filters.status || 'all';
     await loadShipperDashboard();
 }
 
@@ -109,10 +190,10 @@ export async function acceptShipperOrder(orderId) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: App.currentUser.email }),
         });
-        showNotification('Da nhan don thanh cong.');
+        showNotification('Đã nhận đơn thành công.');
         await loadShipperDashboard();
     } catch (error) {
-        showNotification(error.message || 'Khong the nhan don.', 'error');
+        showNotification(error.message || 'Không thể nhận đơn.', 'error');
     }
 }
 
@@ -123,10 +204,10 @@ async function updateShipperOrderStatus(orderId, status) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: App.currentUser.email, status }),
         });
-        showNotification('Da cap nhat trang thai don hang.');
+        showNotification('Đã cập nhật trạng thái đơn hàng.');
         await loadShipperDashboard();
     } catch (error) {
-        showNotification(error.message || 'Khong the cap nhat trang thai.', 'error');
+        showNotification(error.message || 'Không thể cập nhật trạng thái.', 'error');
     }
 }
 
@@ -144,22 +225,39 @@ export async function openShipperOrderDetail(orderId) {
         const data = await fetchApiJson(`${API_BASE_URL}/api/shipper/orders/${orderId}/detail/?email=${email}`);
         const order = data.order;
         const detailHtml = `
-            <p><b>Ma don:</b> ${order.order_code}</p>
-            <p><b>Khach hang:</b> ${order.customer_name}</p>
-            <p><b>So dien thoai:</b> ${order.customer_phone}</p>
-            <p><b>Email:</b> ${order.customer_email}</p>
-            <p><b>Dia chi giao:</b> ${order.shipping_address}</p>
-            <p><b>Trang thai:</b> ${order.status_label}</p>
-            <p><b>Thanh toan:</b> ${order.payment_method}</p>
-            <div class="pt-2 border-t border-pink-100 mt-2">
-                <p class="font-semibold mb-1">San pham:</p>
-                ${(order.items || []).map((item) => `<div>- ${item.product_name} ${item.variant ? `(${item.variant})` : ''} x${item.quantity}</div>`).join('') || '<div>Khong co du lieu.</div>'}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <p><b>Mã đơn:</b> ${order.order_code}</p>
+                <p><b>Trạng thái:</b> ${order.status_label}</p>
+                <p><b>Khách hàng:</b> ${order.customer_name}</p>
+                <p><b>Số điện thoại:</b> ${order.customer_phone}</p>
+                <p><b>Email:</b> ${order.customer_email}</p>
+                <p><b>Thanh toán:</b> ${order.payment_method}</p>
+                <p><b>Shop:</b> ${(order.store_names || []).join(', ') || 'Chưa rõ'}</p>
+                <p><b>Người bán phụ trách:</b> ${order.vendor_name || 'Chưa có'}</p>
+                <p><b>Đơn vị giao:</b> ${order.shipper_company_name || 'Chưa nhận đơn'}</p>
+                <p><b>Tổng tiền:</b> ${formatVND(order.total_amount)}</p>
+            </div>
+            <div class="pt-3 mt-3 border-t border-pink-100 space-y-2">
+                <p><b>Địa chỉ giao:</b> ${order.shipping_address}</p>
+                ${order.note ? `<p><b>Ghi chú:</b> ${order.note}</p>` : ''}
+            </div>
+            <div class="pt-3 border-t border-pink-100 mt-3">
+                <p class="font-semibold mb-2">Sản phẩm:</p>
+                ${(order.items || []).map((item) => `
+                    <div class="flex items-center justify-between gap-3 py-2 border-b border-pink-50 last:border-0">
+                        <div>
+                            <div class="font-medium text-gray-800">${item.product_name}</div>
+                            <div class="text-xs text-gray-500">${item.variant ? `${item.variant} • ` : ''}SL: ${item.quantity}</div>
+                        </div>
+                        <div class="font-semibold text-pink-700">${formatVND(item.price)}</div>
+                    </div>
+                `).join('') || '<div>Không có dữ liệu.</div>'}
             </div>
         `;
         if ($('shipper-order-detail-content')) $('shipper-order-detail-content').innerHTML = detailHtml;
         $('shipper-order-detail-modal')?.classList.remove('hidden');
     } catch (error) {
-        showNotification(error.message || 'Khong tai duoc chi tiet don hang.', 'error');
+        showNotification(error.message || 'Không tải được chi tiết đơn hàng.', 'error');
     }
 }
 

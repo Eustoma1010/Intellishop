@@ -13,12 +13,31 @@ function getAuthHeaders() {
     return headers;
 }
 
-function mapHttpError(status, fallbackMessage) {
-    if (status === 401) return 'Phien dang nhap da het han. Vui long dang nhap lai.';
-    if (status === 403) return 'Ban khong co quyen thuc hien thao tac nay.';
-    if (status === 404) return 'Khong tim thay du lieu hoac API.';
-    if (status >= 500) return 'Server dang loi tam thoi. Vui long thu lai sau it phut.';
-    return fallbackMessage;
+function resolveCredentialsMode(url, includeCredentials, explicitCredentials) {
+    if (explicitCredentials) return explicitCredentials;
+    if (includeCredentials === true) return 'include';
+    if (includeCredentials === false) return 'omit';
+
+    try {
+        const targetUrl = new URL(url, window.location.origin);
+        return targetUrl.origin === window.location.origin ? 'same-origin' : 'omit';
+    } catch (_error) {
+        return 'omit';
+    }
+}
+
+function mapHttpError(status, serverMessage) {
+    // Nếu server có trả về message cụ thể (và không phải lỗi hệ thống 500), hãy dùng nó.
+    // Ví dụ: Login sai pass trả về 401 + "Sai mật khẩu" -> Hiển thị "Sai mật khẩu".
+    if (serverMessage && status < 500) {
+        return serverMessage;
+    }
+
+    if (status === 401) return 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.';
+    if (status === 403) return 'Bạn không có quyền thực hiện thao tác này.';
+    if (status === 404) return 'Không tìm thấy dữ liệu hoặc API.';
+    if (status >= 500) return 'Máy chủ đang lỗi tạm thời. Vui lòng thử lại sau ít phút.';
+    return serverMessage || `Yêu cầu thất bại (${status})`;
 }
 
 async function parseResponsePayload(response) {
@@ -41,7 +60,7 @@ export async function requestJson(url, options = {}, config = {}) {
         timeoutMs = DEFAULT_TIMEOUT_MS,
         retryGet = 1,
         attachAuth = true,
-        includeCredentials = true,
+        includeCredentials = null,
         onUnauthorized = null,
     } = config;
 
@@ -63,7 +82,7 @@ export async function requestJson(url, options = {}, config = {}) {
             const response = await fetch(url, {
                 ...options,
                 headers,
-                credentials: includeCredentials ? 'include' : options.credentials,
+                credentials: resolveCredentialsMode(url, includeCredentials, options.credentials),
                 signal: controller.signal,
             });
 
@@ -72,7 +91,8 @@ export async function requestJson(url, options = {}, config = {}) {
 
             if (!response.ok || data?.success === false) {
                 const apiMessage = data?.message || data?.detail || '';
-                const normalizedMessage = mapHttpError(response.status, apiMessage || `Yeu cau that bai (${response.status})`);
+                // Pass apiMessage as the second argument (previously fallbackMessage)
+                const normalizedMessage = mapHttpError(response.status, apiMessage);
                 const error = new Error(normalizedMessage);
                 error.status = response.status;
                 throw error;
@@ -87,7 +107,7 @@ export async function requestJson(url, options = {}, config = {}) {
 
             if (!shouldRetry) {
                 if (isAbort) {
-                    throw new Error('Ket noi server qua lau. Vui long thu lai.');
+                    throw new Error('Kết nối máy chủ quá lâu. Vui lòng thử lại.');
                 }
                 if (status === 401 && typeof onUnauthorized === 'function') {
                     onUnauthorized();
@@ -100,6 +120,5 @@ export async function requestJson(url, options = {}, config = {}) {
         }
     }
 
-    throw lastError || new Error('Khong the ket noi server.');
+    throw lastError || new Error('Không thể kết nối máy chủ.');
 }
-

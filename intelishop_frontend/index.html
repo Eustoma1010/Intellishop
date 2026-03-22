@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Intelishop - Thời trang cao cấp</title>
+        <title>Intellishop - Thời trang cao cấp</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,14 +18,24 @@
             <div class="absolute bottom-40 left-20 text-8xl opacity-10 float-animation" style="animation-delay: 1.5s;">👗</div>
         </div>
 
-        <nav class="relative z-50 glass sticky top-0 border-b border-pink-200/30">
+        <!-- Z-INDEX HIERARCHY:
+             z-0    : footer, background decorations
+             z-[1]  : main content
+             z-[10] : nav (sticky, above content)
+             z-[50] : nav dropdown (local to nav)
+             z-[90] : AI panel backdrop
+             z-[100]: AI panel + toggle button
+             z-[200]: ALL popup modals (product, vendor, voucher, shipper)
+        -->
+
+        <nav class="relative z-[10] glass sticky top-0 border-b border-pink-200/30">
             <div class="container mx-auto px-6 py-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-12">
                         <a href="#" onclick="showHome()" class="flex items-center space-x-2 group">
                             <span class="text-4xl filter drop-shadow-lg group-hover:scale-110 transition">🦋</span>
                             <span class="text-3xl font-black bg-gradient-to-r from-pink-700 to-purple-700 bg-clip-text text-transparent">
-                                INTELISHOP
+                                INTELLISHOP
                             </span>
                         </a>
 
@@ -46,9 +56,9 @@
                         </div>
 
                         <button onclick="showCart()" class="relative group">
-                            <div class="bg-white/50 p-2 rounded-full group-hover:bg-white transition">
+                            <span class="bg-white/50 p-2 rounded-full group-hover:bg-white transition inline-flex">
                                 <i class="fa-solid fa-bag-shopping text-2xl text-pink-700"></i>
-                            </div>
+                            </span>
                             <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full shadow-lg">0</span>
                         </button>
 
@@ -62,18 +72,28 @@
                         </div>
 
                         <div id="user-profile-container" class="hidden relative group cursor-pointer h-full flex items-center">
+                            <span id="user-role-badge" class="absolute -top-2 -left-3 text-[10px] px-2 py-0.5 rounded-full bg-pink-600 text-white font-bold">CUSTOMER</span>
                             <div class="flex items-center justify-center w-11 h-11 bg-white rounded-full border-2 border-pink-400 shadow-md hover:shadow-lg transition overflow-hidden">
                                 <i class="fa-solid fa-user text-pink-400 text-xl mt-1"></i>
                             </div>
 
-                            <div class="absolute top-10 right-0 w-full h-6 bg-transparent z-40"></div>
+                            <div class="absolute top-10 right-0 w-full h-6 bg-transparent z-[50]"></div>
 
-                            <div class="absolute right-0 top-14 w-56 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-pink-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-50 overflow-hidden">
+                            <div class="absolute right-0 top-14 w-56 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-pink-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-[50] overflow-hidden">
                                 <a href="#" onclick="showAccount()" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 font-semibold transition border-b border-pink-50">
                                     <i class="fa-regular fa-id-card mr-2 text-pink-500"></i> Tài khoản của tôi
                                 </a>
                                 <a href="#" onclick="showOrders()" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 font-semibold transition">
                                     <i class="fa-solid fa-box-open mr-2 text-pink-500"></i> Đơn mua
+                                </a>
+                                <a href="#" id="nav-vendor-link" onclick="showVendorApply()" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 font-semibold transition border-t border-pink-50">
+                                    <i class="fa-solid fa-store mr-2 text-pink-500"></i> Quản lý gian hàng
+                                </a>
+                                <a href="#" id="nav-shipper-link" onclick="showShipperApply()" class="block px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 font-semibold transition">
+                                    <i class="fa-solid fa-truck mr-2 text-pink-500"></i> Đăng ký vận chuyển
+                                </a>
+                                <a href="#" id="nav-admin-link" onclick="showAdminDashboard()" class="hidden block px-4 py-3 text-sm text-purple-700 hover:bg-purple-50 font-semibold transition border-t border-pink-50">
+                                    <i class="fa-solid fa-shield-halved mr-2 text-purple-500"></i> Trung tâm quản trị
                                 </a>
                                 <a href="#" onclick="logout()" class="block px-4 py-3 text-sm text-red-600 hover:bg-red-50 border-t border-pink-100 font-semibold transition">
                                     <i class="fa-solid fa-right-from-bracket mr-2"></i> Đăng xuất
@@ -85,7 +105,7 @@
             </div>
         </nav>
 
-        <main class="container mx-auto px-4 py-8 relative z-10">
+        <main class="container mx-auto px-4 py-8 relative z-[1]">
 
             <div id="view-home" class="block">
 
@@ -98,7 +118,7 @@
                     <div class="relative z-10 text-center">
                         <h1 class="text-5xl lg:text-7xl font-black mb-4">
                             <span class="bg-gradient-to-r from-pink-700 via-purple-700 to-pink-700 bg-clip-text text-transparent">
-                                INTELISHOP
+                                INTELLISHOP
                             </span>
                         </h1>
                         <p class="text-xl text-pink-800 mb-6">Hệ thống thời trang cao cấp - Đa dạng sản phẩm - Chất lượng cao cấp</p>
@@ -121,12 +141,21 @@
                 </div>
 
                 <div id="deal-hot-section" class="scroll-mt-32 mb-12">
-                    <h2 class="text-3xl font-black text-red-600 mb-6 flex items-center">
-                        <i class="fa-solid fa-fire text-4xl mr-3 animate-pulse"></i>
-                        DEAL HOT HÔM NAY
-                    </h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="hot-deals-container">
+                    <div class="flex items-center justify-between gap-4 mb-6">
+                        <h2 class="text-3xl font-black text-red-600 flex items-center">
+                            <i class="fa-solid fa-fire text-4xl mr-3 animate-pulse"></i>
+                            DEAL HOT HÔM NAY
+                        </h2>
+                        <div class="hidden sm:flex items-center gap-2">
+                            <button id="btn-hotdeal-left" onclick="scrollHotDeals(-1)" class="w-11 h-11 rounded-full bg-white/90 border border-red-100 text-red-500 shadow-sm hover:bg-red-500 hover:text-white transition disabled:opacity-40 disabled:cursor-not-allowed">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <button id="btn-hotdeal-right" onclick="scrollHotDeals(1)" class="w-11 h-11 rounded-full bg-white/90 border border-red-100 text-red-500 shadow-sm hover:bg-red-500 hover:text-white transition disabled:opacity-40 disabled:cursor-not-allowed">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
                         </div>
+                    </div>
+                    <div id="hot-deals-container" class="flex overflow-x-auto gap-6 pb-4 hide-scrollbar snap-x snap-mandatory scroll-smooth" onscroll="checkHotDealScrollButtons()"></div>
                 </div>
 
                 <div class="flex items-center justify-between border-t border-pink-200/50 pt-10 mb-6">
@@ -168,8 +197,10 @@
                         <i class="fa-solid fa-gem mr-3 text-pink-500 text-3xl"></i> SẢN PHẨM NỔI BẬT
                     </h2>
 
-                    <div id="catalog-filter-container" class="flex overflow-x-auto gap-3 mb-8 hide-scrollbar py-2">
+                    <div id="catalog-filter-container" class="flex overflow-x-auto gap-3 mb-4 hide-scrollbar py-2">
                         </div>
+
+                    <div id="search-results-header" class="hidden mb-4"></div>
 
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full" id="product-list">
                         </div>
@@ -187,6 +218,25 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full" id="feedback-list"></div>
+                    <div class="mt-6 bg-white/80 border border-pink-100 rounded-2xl p-4">
+                        <h4 class="font-bold text-pink-700 mb-3"><i class="fa-solid fa-star mr-2"></i>Đánh giá shop này</h4>
+                        <form id="store-review-form" onsubmit="submitStoreReview(event)" class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <label for="store-review-rating" class="text-sm text-gray-700 font-semibold">Số sao:</label>
+                                <select id="store-review-rating" class="border border-pink-200 rounded-lg px-3 py-2 bg-white text-sm">
+                                    <option value="5">5 sao - Tuyệt vời</option>
+                                    <option value="4">4 sao - Tốt</option>
+                                    <option value="3">3 sao - Ổn</option>
+                                    <option value="2">2 sao - Chưa tốt</option>
+                                    <option value="1">1 sao - Tệ</option>
+                                </select>
+                            </div>
+                            <textarea id="store-review-comment" rows="3" placeholder="Nhận xét của bạn về cửa hàng" class="w-full border border-pink-200 rounded-xl px-4 py-3"></textarea>
+                            <div class="flex justify-end">
+                                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold">Gửi đánh giá</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -201,15 +251,19 @@
                 <div class="border-t border-pink-200 pt-4">
                     <div class="flex justify-end mb-2">
                         <span class="text-lg text-gray-600 mr-4">Tạm tính:</span>
-                        <span id="cart-subtotal" class="text-xl font-bold text-pink-700">$0.00</span>
+                        <span id="cart-subtotal" class="text-xl font-bold text-pink-700">0₫</span>
                     </div>
                     <div class="flex justify-end mb-2">
                         <span class="text-lg text-gray-600 mr-4">Phí vận chuyển:</span>
-                        <span class="text-xl font-bold text-pink-700" id="shipping-fee">$7.99</span>
+                        <span class="text-xl font-bold text-pink-700" id="shipping-fee">0₫</span>
+                    </div>
+                    <div class="flex justify-end mb-2">
+                        <span class="text-lg text-gray-600 mr-4">Đơn vị giao hàng:</span>
+                        <span id="cart-shipping-provider" class="text-sm md:text-base font-semibold text-pink-700 text-right">Chưa chọn</span>
                     </div>
                     <div class="flex justify-end mb-6">
                         <span class="text-2xl text-gray-800 mr-4">Tổng cộng:</span>
-                        <span id="cart-total" class="text-2xl font-black text-pink-800">$0.00</span>
+                        <span id="cart-total" class="text-2xl font-black text-pink-800">0₫</span>
                     </div>
 
                     <div class="flex justify-end space-x-4">
@@ -241,6 +295,20 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="lg:col-span-2 space-y-6">
                             <div class="bg-white/70 rounded-2xl p-6">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
+                                    <div>
+                                        <h3 class="font-bold text-pink-700">Chọn địa chỉ giao hàng</h3>
+                                        <p class="text-sm text-gray-500">Dùng địa chỉ đã lưu hoặc nhập thủ công ngay bên dưới.</p>
+                                    </div>
+                                    <button id="checkout-clear-address-btn" type="button" class="px-4 py-2 rounded-xl border border-pink-200 text-pink-600 text-sm font-semibold hover:bg-pink-50 transition">
+                                        Nhập địa chỉ khác
+                                    </button>
+                                </div>
+                                <div class="mb-5">
+                                    <select id="checkout-address-select" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400">
+                                        <option value="">Nhập địa chỉ thủ công</option>
+                                    </select>
+                                </div>
                                 <div class="grid grid-cols-2 gap-4">
                                     <input type="text" placeholder="Họ" id="first-name" class="border border-pink-200 rounded-xl px-4 py-3 focus:outline-none focus:border-pink-400">
                                     <input type="text" placeholder="Tên" id="last-name" class="border border-pink-200 rounded-xl px-4 py-3 focus:outline-none focus:border-pink-400">
@@ -261,15 +329,19 @@
                                 <div class="border-t border-pink-200 pt-4 space-y-2">
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Tạm tính:</span>
-                                        <span id="checkout-subtotal" class="font-semibold">$0.00</span>
+                                        <span id="checkout-subtotal" class="font-semibold">0₫</span>
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Phí vận chuyển:</span>
-                                        <span class="font-semibold" id="checkout-shipping-fee">$7.99</span>
+                                        <span class="font-semibold" id="checkout-shipping-fee">0₫</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Đơn vị giao hàng:</span>
+                                        <span class="font-semibold text-right text-sm" id="checkout-shipping-provider-name">Chưa chọn</span>
                                     </div>
                                     <div class="flex justify-between text-lg font-bold pt-2 border-t border-pink-200">
                                         <span>Tổng:</span>
-                                        <span id="checkout-total" class="text-pink-700">$0.00</span>
+                                        <span id="checkout-total" class="text-pink-700">0₫</span>
                                     </div>
                                 </div>
 
@@ -287,39 +359,18 @@
                         PHƯƠNG THỨC VẬN CHUYỂN
                     </h2>
 
-                    <div class="space-y-4 mb-8">
-                        <label class="flex items-center justify-between p-4 bg-white/70 rounded-xl cursor-pointer hover:bg-white/90" onclick="selectShipping('standard')">
-                            <div class="flex items-center">
-                                <input type="radio" name="shipping" class="mr-3" checked>
-                                <div>
-                                    <span class="font-semibold">Giao hàng tiêu chuẩn</span>
-                                    <p class="text-sm text-gray-500">5-7 ngày làm việc</p>
-                                </div>
-                            </div>
-                            <span class="font-bold">$7.99</span>
-                        </label>
-
-                        <label class="flex items-center justify-between p-4 bg-white/70 rounded-xl cursor-pointer hover:bg-white/90" onclick="selectShipping('express')">
-                            <div class="flex items-center">
-                                <input type="radio" name="shipping" class="mr-3">
-                                <div>
-                                    <span class="font-semibold">Giao hàng nhanh</span>
-                                    <p class="text-sm text-gray-500">2-3 ngày làm việc</p>
-                                </div>
-                            </div>
-                            <span class="font-bold">$17.99</span>
-                        </label>
-
-                        <label class="flex items-center justify-between p-4 bg-white/70 rounded-xl cursor-pointer hover:bg-white/90" onclick="selectShipping('express-plus')">
-                            <div class="flex items-center">
-                                <input type="radio" name="shipping" class="mr-3">
-                                <div>
-                                    <span class="font-semibold">Giao hàng hỏa tốc</span>
-                                    <p class="text-sm text-gray-500">Trong ngày</p>
-                                </div>
-                            </div>
-                            <span class="font-bold">$29.99</span>
-                        </label>
+                    <div class="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-6 mb-8">
+                        <div>
+                            <div id="shipping-providers-list" class="space-y-4"></div>
+                        </div>
+                        <div class="bg-white/70 rounded-2xl p-6 border border-pink-100 h-max">
+                            <h3 class="font-bold text-pink-700 mb-4">Lưu ý giao hàng</h3>
+                            <ul class="space-y-3 text-sm text-gray-600">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i><span>Phí giao hàng được tính theo đối tác vận chuyển bạn chọn.</span></li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i><span>Shop sẽ bàn giao cho đơn vị vận chuyển sau khi xác nhận đơn.</span></li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i><span>Thời gian dự kiến có thể thay đổi theo khu vực nhận hàng.</span></li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="flex justify-between">
@@ -344,20 +395,33 @@
                                 <h3 class="font-bold text-pink-700 mb-4">Phương thức thanh toán</h3>
                                 <div class="space-y-3">
                                     <label class="flex items-center p-3 border border-pink-200 rounded-xl cursor-pointer hover:bg-white/50">
-                                        <input type="radio" name="payment" class="mr-3" checked>
+                                        <input type="radio" name="payment" value="ONLINE_MOCK" class="mr-3" checked>
                                         <i class="fa-brands fa-cc-visa text-2xl mr-3 text-blue-600"></i>
-                                        <span>Credit / Debit Card</span>
+                                        <span>Thanh toán mô phỏng (Card)</span>
                                     </label>
                                     <label class="flex items-center p-3 border border-pink-200 rounded-xl cursor-pointer hover:bg-white/50">
-                                        <input type="radio" name="payment" class="mr-3">
+                                        <input type="radio" name="payment" value="ONLINE_MOCK" class="mr-3">
                                         <i class="fa-brands fa-paypal text-2xl mr-3 text-blue-800"></i>
-                                        <span>PayPal</span>
+                                        <span>Thanh toán mô phỏng (Ví)</span>
                                     </label>
                                     <label class="flex items-center p-3 border border-pink-200 rounded-xl cursor-pointer hover:bg-white/50">
-                                        <input type="radio" name="payment" class="mr-3">
+                                        <input type="radio" name="payment" value="COD" class="mr-3">
                                         <i class="fa-solid fa-money-bill-wave text-2xl mr-3 text-green-600"></i>
                                         <span>Thanh toán khi nhận hàng</span>
                                     </label>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/70 rounded-2xl p-6">
+                                <h3 class="font-bold text-pink-700 mb-3">Ưu đãi & ghi chú</h3>
+                                <div class="space-y-3">
+                                    <input id="shop-voucher-discount" type="number" min="0" step="1000" placeholder="Voucher của Shop" class="w-full border border-pink-200 rounded-xl px-4 py-2">
+                                    <input id="intelishop-voucher-discount" type="number" min="0" step="1000" placeholder="Voucher IntelliShop" class="w-full border border-pink-200 rounded-xl px-4 py-2">
+                                    <input id="coin-used" type="number" min="0" step="1" placeholder="IntelliShop Xu muốn dùng" class="w-full border border-pink-200 rounded-xl px-4 py-2">
+                                    <label class="flex items-center gap-2 text-sm text-gray-700">
+                                        <input id="fashion-insurance" type="checkbox"> Thêm Bảo hiểm Thời trang (+15,000₫)
+                                    </label>
+                                    <textarea id="order-note" rows="3" placeholder="Ghi chú cho shop" class="w-full border border-pink-200 rounded-xl px-4 py-2"></textarea>
                                 </div>
                             </div>
 
@@ -371,15 +435,31 @@
                                 <div class="border-t border-pink-200 pt-4 space-y-2">
                                     <div class="flex justify-between text-sm text-gray-600">
                                         <span>Tạm tính:</span>
-                                        <span id="final-subtotal" class="font-semibold text-gray-800">$0.00</span>
+                                        <span id="final-subtotal" class="font-semibold text-gray-800">0₫</span>
                                     </div>
                                     <div class="flex justify-between text-sm text-gray-600">
-                                        <span>Phí vận chuyển:</span>
-                                        <span id="final-shipping" class="font-semibold text-gray-800">$7.99</span>
+                                        <span>Voucher Shop:</span>
+                                        <span id="final-shop-voucher" class="font-semibold text-gray-800">-0₫</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm text-gray-600">
+                                        <span>Voucher IntelliShop:</span>
+                                        <span id="final-system-voucher" class="font-semibold text-gray-800">-0₫</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm text-gray-600">
+                                        <span>IntelliShop Xu:</span>
+                                        <span id="final-coins-used" class="font-semibold text-gray-800">-0₫</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm text-gray-600">
+                                        <span>Bảo hiểm:</span>
+                                        <span id="final-insurance" class="font-semibold text-gray-800">0₫</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm text-gray-600">
+                                        <span id="final-shipping-provider-label">Đơn vị giao hàng:</span>
+                                        <span id="final-shipping" class="font-semibold text-gray-800">0₫</span>
                                     </div>
                                     <div class="flex justify-between items-center pt-3 mt-3 border-t border-pink-100">
                                         <span class="font-bold text-gray-800">Tổng thanh toán:</span>
-                                        <span id="final-total" class="text-2xl font-black text-pink-700">$0.00</span>
+                                        <span id="final-total" class="text-2xl font-black text-pink-700">0₫</span>
                                     </div>
                                 </div>
 
@@ -397,6 +477,7 @@
                         </button>
                     </div>
                 </div>
+
             </div>
 
             <div id="view-success" class="glass-card p-10 hide">
@@ -411,7 +492,7 @@
                                 <i class="fa-solid fa-store"></i>
                             </div>
                             <h2 class="text-3xl font-black text-purple-800 text-center md:text-left mb-2">Đăng Nhập</h2>
-                            <p class="text-gray-500 text-center md:text-left">Mừng bạn quay trở lại Intelishop!</p>
+                            <p class="text-gray-500 text-center md:text-left">Mừng bạn quay trở lại Intellishop!</p>
                         </header>
 
                         <form id="login-form" class="space-y-5" onsubmit="handleLogin(event)">
@@ -430,27 +511,21 @@
                                 <label class="flex items-center text-gray-600 cursor-pointer">
                                     <input type="checkbox" class="mr-2 rounded text-pink-500 focus:ring-pink-500"> Ghi nhớ tôi
                                 </label>
-                                <a href="#" class="text-pink-600 font-semibold hover:underline">Quên mật khẩu?</a>
+                                <a href="#" onclick="showForgotPassword(); return false;" class="text-pink-600 font-semibold hover:underline">Quên mật khẩu?</a>
                             </div>
 
-                            <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3.5 rounded-xl font-bold text-lg hover:shadow-[0_8px_20px_rgba(219,39,119,0.3)] transition-all transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                            <button type="submit" id="btn-login-submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3.5 rounded-xl font-bold text-lg hover:shadow-[0_8px_20px_rgba(219,39,119,0.3)] transition-all transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
                                 <i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng Nhập
                             </button>
                         </form>
 
                         <div class="mt-8 flex items-center justify-center space-x-4">
                             <div class="h-px bg-pink-200 flex-1"></div>
-                            <span class="text-pink-400 text-sm font-medium bg-white/50 px-4 py-1 rounded-full">Hoặc đăng nhập với</span>
+                            <span class="text-pink-400 text-sm font-medium bg-white/50 px-4 py-1 rounded-full">Hoặc đăng nhập với Google</span>
                             <div class="h-px bg-pink-200 flex-1"></div>
                         </div>
-
-                        <div class="flex gap-4 mt-6">
-                            <button class="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-pink-100 rounded-full text-gray-700 font-semibold hover:bg-pink-50 transition">
-                                <i class="fa-brands fa-google text-red-500"></i> Google
-                            </button>
-                            <button class="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-pink-100 rounded-full text-gray-700 font-semibold hover:bg-pink-50 transition">
-                                <i class="fa-brands fa-facebook-f text-blue-600"></i> Facebook
-                            </button>
+                        <div class="mt-6">
+                            <div id="google-login-btn" class="flex justify-center"></div>
                         </div>
                     </div>
 
@@ -482,31 +557,40 @@
                     </div>
                 </div>
             </div>
-
             <div id="view-register" class="max-w-[1000px] mx-auto hide mt-10">
                 <div class="flex flex-col md:flex-row-reverse bg-white/40 backdrop-blur-md rounded-[30px] border border-white/50 shadow-2xl overflow-hidden">
 
                     <div class="w-full md:w-1/2 p-8 lg:p-12">
-                        <header class="mb-6">
-                            <h2 class="text-3xl font-black text-purple-800 mb-2">Tạo Tài Khoản</h2>
-                            <p class="text-gray-500">Tham gia Intelishop để nhận nhiều ưu đãi!</p>
-                        </header>
+                        <div id="register-form-panel">
+                            <header class="mb-6">
+                                <div class="flex items-center justify-between gap-3">
+                                    <h2 id="register-title" class="text-3xl font-black text-purple-800 mb-2">Tạo Tài Khoản</h2>
+                                    <span id="social-register-badge" class="hidden px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-600 border border-red-100">
+                                        <i class="fa-brands fa-google mr-1"></i> Google
+                                    </span>
+                                </div>
+                                <p id="register-subtitle" class="text-gray-500">Tham gia Intellishop để nhận nhiều ưu đãi!</p>
+                                <p id="social-register-hint" class="hidden mt-2 text-sm text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2"></p>
+                            </header>
 
-                        <form id="register-form" class="space-y-4" onsubmit="handleRegister(event)">
+                            <form id="register-form" class="space-y-4" onsubmit="handleRegister(event)">
                             <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
                                 <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-regular fa-user"></i></div>
                                 <input type="text" id="reg-name" placeholder="Họ và tên" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800">
+                                <div id="reg-name-provider-icon" class="hidden pr-4 text-red-500"><i class="fa-brands fa-google"></i></div>
                             </div>
 
                             <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
                                 <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-regular fa-envelope"></i></div>
                                 <input type="email" id="reg-email" placeholder="Email của bạn" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800">
+                                <div id="reg-email-provider-icon" class="hidden pr-4 text-red-500"><i class="fa-brands fa-google"></i></div>
                             </div>
 
                             <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors">
                                 <div class="w-12 flex justify-center text-pink-500 opacity-70"><i class="fa-solid fa-phone"></i></div>
-                                <input type="tel" id="reg-phone" placeholder="Số điện thoại" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800">
+                                <input type="text" id="reg-phone" placeholder="Số điện thoại" required class="w-full py-3 pr-4 bg-transparent outline-none text-gray-800">
                             </div>
+
 
                             <div>
                                 <div class="relative flex items-center bg-white/70 border border-pink-500/30 rounded-xl overflow-hidden focus-within:border-pink-500 transition-colors mb-2">
@@ -531,17 +615,7 @@
                             </div>
                             <p id="password-match-msg" class="text-xs text-red-500 hidden px-2">Mật khẩu không khớp!</p>
 
-                            <div class="flex items-center gap-6 pt-2">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="gender" value="male" class="w-4 h-4 text-blue-600 focus:ring-blue-500"> Nam
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="gender" value="female" class="w-4 h-4 text-pink-500 focus:ring-pink-500" checked> Nữ
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="gender" value="other" class="w-4 h-4 text-purple-500 focus:ring-purple-500"> Khác
-                                </label>
-                            </div>
+                            <p class="text-xs text-gray-500 px-1">Tài khoản mới mặc định là <b>Khách hàng (CUSTOMER)</b>. Bạn có thể nộp đơn trở thành Người bán/Đơn vị vận chuyển sau khi đăng nhập.</p>
 
                             <div class="pt-2">
                                 <label class="flex items-start gap-2 cursor-pointer text-sm text-gray-600">
@@ -550,10 +624,12 @@
                                 </label>
                             </div>
 
-                            <button type="submit" id="btn-register-submit" class="w-full mt-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3.5 rounded-xl font-bold text-lg hover:shadow-[0_8px_20px_rgba(219,39,119,0.3)] transition-all transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
-                                <i class="fa-solid fa-user-plus"></i> Đăng Ký
-                            </button>
-                        </form>
+                                <button type="submit" id="btn-register-submit" class="w-full mt-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3.5 rounded-xl font-bold text-lg hover:shadow-[0_8px_20px_rgba(219,39,119,0.3)] transition-all transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                                    <i class="fa-solid fa-user-plus"></i> Đăng Ký
+                                </button>
+                            </form>
+                        </div>
+
                     </div>
 
                     <div class="w-full md:w-1/2 bg-gradient-to-br from-pink-50 to-purple-50 p-8 lg:p-12 border-t md:border-t-0 md:border-r border-white/50 flex flex-col justify-center items-center text-center relative overflow-hidden">
@@ -569,51 +645,477 @@
                         </button>
 
                         <div class="mt-10 w-full relative z-10">
-                            <p class="text-sm text-gray-500 mb-4">Hoặc đăng ký nhanh bằng</p>
-                            <div class="flex gap-4 justify-center">
-                                <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition text-red-500 border border-pink-100">
-                                    <i class="fa-brands fa-google text-xl"></i>
-                                </button>
-                                <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition text-blue-600 border border-pink-100">
-                                    <i class="fa-brands fa-facebook-f text-xl"></i>
-                                </button>
-                            </div>
+                            <p class="text-sm text-gray-500 mb-4">Hoặc đăng ký nhanh bằng Google</p>
+                            <div id="google-register-btn" class="flex justify-center"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="view-account" class="max-w-3xl mx-auto glass-card p-10 hide mt-6">
+            <div id="view-verify-register" class="max-w-[560px] mx-auto glass-card p-8 hide mt-8">
+                <h2 class="text-2xl font-black text-purple-800 mb-2">Xác thực email đăng ký</h2>
+                <p class="text-sm text-gray-600 mb-6">Nhập mã OTP 6 số đã gửi về email để kích hoạt tài khoản.</p>
+                <div id="register-otp-debug" class="hidden mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800"></div>
+                <form onsubmit="handleVerifyRegisterOtp(event)" class="space-y-4">
+                    <input id="verify-reg-email" type="email" placeholder="Email" required class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                    <input id="verify-reg-otp" type="text" maxlength="6" placeholder="Mã OTP" required class="w-full border border-pink-200 rounded-xl px-4 py-3 tracking-[0.3em] text-center font-semibold">
+                    <button id="btn-verify-reg-submit" type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold">Xác thực OTP</button>
+                </form>
+                <div class="mt-4 flex items-center justify-between text-sm">
+                    <button onclick="resendRegisterOtp()" class="text-pink-600 font-semibold hover:underline">Gửi lại OTP</button>
+                    <button onclick="showLogin()" class="text-gray-500 hover:text-pink-600">Về đăng nhập</button>
+                </div>
+            </div>
+
+            <div id="view-forgot-password" class="max-w-[560px] mx-auto glass-card p-8 hide mt-8">
+                <h2 class="text-2xl font-black text-purple-800 mb-2">Quên mật khẩu</h2>
+                <p class="text-sm text-gray-600 mb-6">Nhập email để nhận OTP đặt lại mật khẩu.</p>
+                <div id="forgot-otp-debug" class="hidden mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800"></div>
+
+                <div id="forgot-step-send">
+                    <form onsubmit="handleForgotPasswordSendOtp(event)" class="space-y-4">
+                        <input id="forgot-email" type="email" placeholder="Email" required class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                        <button id="btn-forgot-send" type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold">Gửi OTP</button>
+                    </form>
+                </div>
+
+                <div id="forgot-step-reset" class="hidden mt-5">
+                    <form onsubmit="handleForgotPasswordReset(event)" class="space-y-4">
+                        <input id="forgot-otp" type="text" maxlength="6" placeholder="Mã OTP" required class="w-full border border-pink-200 rounded-xl px-4 py-3 tracking-[0.3em] text-center font-semibold">
+                        <input id="forgot-new-password" type="password" placeholder="Mật khẩu mới" required class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                        <button id="btn-forgot-reset" type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-pink-600 to-red-500 text-white font-bold">Đặt lại mật khẩu</button>
+                    </form>
+                </div>
+
+                <div class="mt-4 text-sm flex items-center justify-between">
+                    <button onclick="showLogin()" class="text-gray-500 hover:text-pink-600">Về đăng nhập</button>
+                </div>
+            </div>
+
+            <div id="view-account" class="max-w-5xl mx-auto glass-card p-8 hide mt-6">
                 <h2 class="text-3xl font-black text-pink-800 mb-8 border-b border-pink-200 pb-4"><i class="fa-regular fa-id-card mr-3 text-pink-500"></i> Hồ Sơ Của Tôi</h2>
-                <div class="flex flex-col md:flex-row gap-10">
-                    <div class="md:w-1/3 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-pink-200 pb-8 md:pb-0 md:pr-4">
-                        <div class="w-40 h-40 bg-white rounded-full flex items-center justify-center border-4 border-pink-100 shadow-xl mb-6 overflow-hidden">
-                            <i class="fa-solid fa-user text-6xl text-pink-300"></i>
-                        </div>
-                        <button class="px-6 py-2 bg-white border-2 border-pink-300 rounded-full text-sm font-bold text-pink-600 hover:bg-pink-50 transition shadow-sm">
-                            <i class="fa-solid fa-camera mr-2"></i> Chọn Ảnh
-                        </button>
-                    </div>
-                    <div class="md:w-2/3 space-y-5">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-5">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Họ và Tên</label>
-                            <input type="text" id="acc-name" readonly class="w-full border border-pink-200 rounded-xl px-5 py-3 bg-gray-50 text-gray-600 focus:outline-none">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Họ và tên</label>
+                            <input type="text" id="acc-name" class="w-full border border-pink-200 rounded-xl px-5 py-3 bg-white focus:outline-none focus:border-pink-400">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
                             <input type="email" id="acc-email" readonly class="w-full border border-pink-200 rounded-xl px-5 py-3 bg-gray-50 text-gray-600 focus:outline-none">
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Số điện thoại</label>
+                                <input type="text" id="acc-phone" class="w-full border border-pink-200 rounded-xl px-5 py-3 bg-white focus:outline-none focus:border-pink-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Giới tính</label>
+                                <select id="acc-gender" class="w-full border border-pink-200 rounded-xl px-5 py-3 bg-white focus:outline-none focus:border-pink-400">
+                                    <option value="other">Khác</option>
+                                    <option value="male">Nam</option>
+                                    <option value="female">Nữ</option>
+                                </select>
+                            </div>
+                        </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Số điện thoại</label>
-                            <input type="text" placeholder="Thêm số điện thoại để bảo mật tài khoản" class="w-full border border-pink-200 rounded-xl px-5 py-3 focus:outline-none focus:border-pink-400 bg-white shadow-inner">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Ngày sinh</label>
+                            <input type="date" id="acc-birth-date" class="w-full border border-pink-200 rounded-xl px-5 py-3 bg-white focus:outline-none focus:border-pink-400">
                         </div>
-                        <div class="pt-4">
-                            <button onclick="showNotification('Đã lưu thay đổi hồ sơ!')" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-3 rounded-xl font-bold hover:shadow-lg transition">
-                                Lưu Thay Đổi
-                            </button>
+                        <button onclick="saveProfile()" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-3 rounded-xl font-bold hover:shadow-lg transition">
+                            Lưu Thay Đổi
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-white/80 border border-pink-100 rounded-xl p-4">
+                            <p class="text-sm text-gray-600">Số dư IntelliShop Xu</p>
+                            <p id="coin-balance" class="text-2xl font-black text-pink-700">0 xu</p>
                         </div>
+                        <div id="application-status-box" class="bg-white/80 border border-pink-100 rounded-xl p-4"></div>
+                        <div class="flex gap-2">
+                            <button id="account-vendor-btn" onclick="showVendorApply()" class="flex-1 px-3 py-2 text-sm rounded-xl border border-pink-300 text-pink-700 font-semibold hover:bg-pink-50">Quản lý gian hàng</button>
+                            <button id="account-shipper-btn" onclick="showShipperApply()" class="flex-1 px-3 py-2 text-sm rounded-xl border border-pink-300 text-pink-700 font-semibold hover:bg-pink-50">Đăng ký shipper</button>
+                        </div>
+                        <button id="account-admin-btn" onclick="showAdminDashboard()" class="hidden w-full px-3 py-2 text-sm rounded-xl border border-purple-300 text-purple-700 font-semibold hover:bg-purple-50">
+                            Trung tâm quản trị
+                        </button>
                     </div>
                 </div>
+
+                <div class="mt-10 border-t border-pink-200 pt-6">
+                    <h3 class="text-xl font-bold text-pink-700 mb-4"><i class="fa-solid fa-location-dot mr-2"></i>Sổ địa chỉ</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <input id="addr-receiver-name" type="text" placeholder="Tên người nhận" class="border border-pink-200 rounded-xl px-4 py-3">
+                        <input id="addr-receiver-phone" type="text" placeholder="SĐT người nhận" class="border border-pink-200 rounded-xl px-4 py-3">
+                        <input id="addr-full-address" type="text" placeholder="Địa chỉ đầy đủ (Đường/Quận/Thành phố)" class="border border-pink-200 rounded-xl px-4 py-3 lg:col-span-2">
+                        <label class="flex items-center gap-2 text-sm text-gray-700">
+                            <input id="addr-is-default" type="checkbox"> Đặt làm địa chỉ mặc định
+                        </label>
+                        <button onclick="createAddress()" class="px-6 py-3 rounded-xl bg-pink-600 text-white font-semibold hover:bg-pink-700">Thêm địa chỉ</button>
+                    </div>
+                    <div id="acc-address-list" class="mt-5 space-y-3"></div>
+                </div>
+
+                <div class="mt-10 border-t border-pink-200 pt-6">
+                    <h3 class="text-xl font-bold text-pink-700 mb-4"><i class="fa-solid fa-heart mr-2 text-red-400"></i>Danh sách yêu thích</h3>
+                    <div id="acc-wishlist-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <p class="text-sm text-gray-500 italic py-2">Chưa có sản phẩm yêu thích nào.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-vendor-apply" class="max-w-3xl mx-auto glass-card p-8 hide mt-6">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-14 h-14 bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-store text-pink-600 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-pink-800">Đăng ký trở thành Người bán</h2>
+                        <p class="text-sm text-gray-500 mt-1">Điền đầy đủ thông tin — Admin sẽ xét duyệt trong vòng 24 giờ</p>
+                    </div>
+                </div>
+
+                <form id="vendor-apply-form" onsubmit="submitVendorApplication(event)" class="space-y-5">
+
+                    <!-- 1. Thông tin cửa hàng -->
+                    <fieldset class="border border-pink-100 rounded-2xl p-5 bg-pink-50/30 space-y-3">
+                        <legend class="px-2 font-bold text-pink-700 flex items-center gap-2 text-sm">
+                            <span class="w-5 h-5 bg-pink-600 text-white rounded-full text-xs flex items-center justify-center font-black">1</span>
+                            Thông tin cửa hàng
+                        </legend>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tên cửa hàng <span class="text-red-500">*</span></label>
+                            <input id="vendor-store-name" type="text" required placeholder="VD: Shop Thời Trang ABC" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ngành hàng kinh doanh <span class="text-red-500">*</span></label>
+                            <select id="vendor-business-category" required class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400 text-gray-700">
+                                <option value="">-- Chọn ngành hàng --</option>
+                                <option value="Thời trang &amp; Phụ kiện">👗 Thời trang &amp; Phụ kiện</option>
+                                <option value="Sắc đẹp &amp; Sức khỏe">💄 Sắc đẹp &amp; Sức khỏe</option>
+                                <option value="Điện tử &amp; Công nghệ">📱 Điện tử &amp; Công nghệ</option>
+                                <option value="Nhà cửa &amp; Đời sống">🏠 Nhà cửa &amp; Đời sống</option>
+                                <option value="Thực phẩm &amp; Đồ uống">🍜 Thực phẩm &amp; Đồ uống</option>
+                                <option value="Thể thao &amp; Du lịch">⚽ Thể thao &amp; Du lịch</option>
+                                <option value="Mẹ &amp; Bé">🍼 Mẹ &amp; Bé</option>
+                                <option value="Sách &amp; Giáo dục">📚 Sách &amp; Giáo dục</option>
+                                <option value="Xe cộ &amp; Phụ tùng">🚗 Xe cộ &amp; Phụ tùng</option>
+                                <option value="Dịch vụ &amp; Khác">🛍️ Dịch vụ &amp; Khác</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Mô tả cửa hàng</label>
+                            <textarea id="vendor-description" rows="3" placeholder="Giới thiệu ngắn về cửa hàng, sản phẩm chủ lực..." class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <!-- 2. Thông tin người bán -->
+                    <fieldset class="border border-pink-100 rounded-2xl p-5 bg-pink-50/30 space-y-3">
+                        <legend class="px-2 font-bold text-pink-700 flex items-center gap-2 text-sm">
+                            <span class="w-5 h-5 bg-pink-600 text-white rounded-full text-xs flex items-center justify-center font-black">2</span>
+                            Thông tin người bán
+                        </legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Họ và tên</label>
+                                <input id="vendor-owner-name" type="text" readonly class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 text-gray-600">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input id="vendor-owner-email" type="email" readonly class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 text-gray-600">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại doanh nghiệp <span class="text-red-500">*</span></label>
+                            <input id="vendor-business-phone" type="tel" required placeholder="VD: 0901 234 567" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400">
+                        </div>
+                    </fieldset>
+
+                    <!-- 3. Địa chỉ cửa hàng -->
+                    <fieldset class="border border-pink-100 rounded-2xl p-5 bg-pink-50/30 space-y-3">
+                        <legend class="px-2 font-bold text-pink-700 flex items-center gap-2 text-sm">
+                            <span class="w-5 h-5 bg-pink-600 text-white rounded-full text-xs flex items-center justify-center font-black">3</span>
+                            Địa chỉ cửa hàng
+                        </legend>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tỉnh / Thành phố <span class="text-red-500">*</span></label>
+                                <select id="vendor-province-select" required class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400 text-gray-700">
+                                    <option value="">Đang tải...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Quận / Huyện <span class="text-red-500">*</span></label>
+                                <select id="vendor-district-select" required class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400 text-gray-700">
+                                    <option value="">-- Chọn Tỉnh trước --</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phường / Xã</label>
+                                <select id="vendor-ward-select" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400 text-gray-700">
+                                    <option value="">-- Chọn Quận/Huyện trước --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Số nhà, tên đường <span class="text-red-500">*</span></label>
+                            <input id="vendor-street-input" type="text" required placeholder="VD: 123 Đường Nguyễn Huệ" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400">
+                        </div>
+                    </fieldset>
+
+                    <!-- 4. Giấy phép kinh doanh -->
+                    <fieldset class="border border-pink-100 rounded-2xl p-5 bg-pink-50/30">
+                        <legend class="px-2 font-bold text-pink-700 flex items-center gap-2 text-sm">
+                            <span class="w-5 h-5 bg-pink-600 text-white rounded-full text-xs flex items-center justify-center font-black">4</span>
+                            Giấy phép kinh doanh
+                        </legend>
+                        <p class="text-sm text-gray-500 mt-2 mb-3">Không bắt buộc nhưng giúp Admin xét duyệt nhanh hơn. Hỗ trợ ảnh và PDF.</p>
+                        <input id="vendor-business-license" type="file" accept=".pdf,image/*" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white">
+                    </fieldset>
+
+                    <label class="flex items-start gap-3 text-sm text-gray-600 bg-white/60 rounded-xl px-4 py-3 border border-pink-100 cursor-pointer">
+                        <input type="checkbox" required class="mt-0.5 rounded text-pink-500 shrink-0">
+                        <span>Tôi cam kết thông tin đã cung cấp là chính xác và đồng ý gửi hồ sơ để Admin xét duyệt.</span>
+                    </label>
+
+                    <div class="flex gap-3 justify-end pt-2">
+                        <button type="button" onclick="showAccount()" class="px-6 py-3 rounded-xl border border-pink-300 text-pink-700 font-semibold hover:bg-pink-50 transition">
+                            <i class="fa-solid fa-arrow-left mr-2"></i>Quay lại
+                        </button>
+                        <button type="submit" class="px-8 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold hover:shadow-lg transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-paper-plane mr-2"></i>Gửi đăng ký
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="view-vendor-center" class="glass-card p-8 hide mt-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div>
+                        <h2 id="vendor-center-store-name" class="text-3xl font-black text-pink-800">Trung tâm Người bán</h2>
+                        <p id="vendor-center-store-meta" class="text-sm text-gray-600 mt-1">Quản lý sản phẩm, khuyến mãi và báo cáo cửa hàng.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="btn-vendor-tab-store" onclick="loadVendorTab('store')" class="px-4 py-2 rounded-xl border border-pink-300 text-pink-700 font-semibold">Cửa hàng</button>
+                        <button id="btn-vendor-tab-products" onclick="loadVendorTab('products')" class="px-4 py-2 rounded-xl border border-pink-300 text-pink-700 font-semibold">Sản phẩm</button>
+                        <button id="btn-vendor-tab-vouchers" onclick="loadVendorTab('vouchers')" class="px-4 py-2 rounded-xl border border-pink-300 text-pink-700 font-semibold">Khuyến mãi</button>
+                        <button id="btn-vendor-tab-report" onclick="loadVendorTab('report')" class="px-4 py-2 rounded-xl border border-pink-300 text-pink-700 font-semibold">Báo cáo</button>
+                    </div>
+                </div>
+
+                <div id="vendor-center-pending-banner" class="hidden mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800 text-sm font-semibold">
+                    Cửa hàng của bạn đang chờ Admin phê duyệt. Một số thao tác có thể bị giới hạn.
+                </div>
+
+                <section id="vendor-tab-store" class="hidden">
+                    <h3 class="text-xl font-bold text-pink-700 mb-4">Thông tin cửa hàng</h3>
+                    <form id="vendor-store-form" class="bg-white/80 rounded-2xl border border-pink-100 p-5 space-y-3">
+                        <div class="flex items-center gap-4">
+                            <img id="vendor-store-profile-icon-preview" src="" alt="Store logo" class="w-16 h-16 rounded-full border border-pink-200 object-cover hidden">
+                            <div class="flex-1">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Logo cửa hàng</label>
+                                <input id="vendor-store-profile-icon" type="file" accept="image/*" class="w-full border border-pink-200 rounded-xl px-4 py-2 bg-white">
+                            </div>
+                        </div>
+                        <input id="vendor-store-profile-name" type="text" required placeholder="Tên cửa hàng" class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Ngành hàng</label>
+                                <select id="vendor-store-profile-category" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-pink-400 text-gray-700">
+                                    <option value="">-- Chọn ngành hàng --</option>
+                                    <option value="Thời trang &amp; Phụ kiện">👗 Thời trang &amp; Phụ kiện</option>
+                                    <option value="Sắc đẹp &amp; Sức khỏe">💄 Sắc đẹp &amp; Sức khỏe</option>
+                                    <option value="Điện tử &amp; Công nghệ">📱 Điện tử &amp; Công nghệ</option>
+                                    <option value="Nhà cửa &amp; Đời sống">🏠 Nhà cửa &amp; Đời sống</option>
+                                    <option value="Thực phẩm &amp; Đồ uống">🍜 Thực phẩm &amp; Đồ uống</option>
+                                    <option value="Thể thao &amp; Du lịch">⚽ Thể thao &amp; Du lịch</option>
+                                    <option value="Mẹ &amp; Bé">🍼 Mẹ &amp; Bé</option>
+                                    <option value="Sách &amp; Giáo dục">📚 Sách &amp; Giáo dục</option>
+                                    <option value="Xe cộ &amp; Phụ tùng">🚗 Xe cộ &amp; Phụ tùng</option>
+                                    <option value="Dịch vụ &amp; Khác">🛍️ Dịch vụ &amp; Khác</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại doanh nghiệp</label>
+                                <input id="vendor-store-profile-phone" type="text" placeholder="VD: 0901 234 567" class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                            </div>
+                        </div>
+                        <input type="hidden" id="store-profile-current-city">
+                        <input type="hidden" id="store-profile-current-address">
+                        <div id="vendor-store-current-address-display" class="flex items-start gap-2 text-sm bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
+                            <i class="fa-solid fa-location-dot text-pink-400 mt-0.5 shrink-0"></i>
+                            <span><span class="font-medium text-gray-700">Địa chỉ hiện tại: </span><span id="vendor-store-current-address-text" class="text-gray-600">Chưa cập nhật</span></span>
+                        </div>
+                        <details class="rounded-xl border border-pink-100 bg-pink-50/40">
+                            <summary class="px-4 py-3 font-medium text-pink-700 cursor-pointer text-sm select-none flex items-center gap-2">
+                                <i class="fa-solid fa-map-location-dot"></i> Cập nhật địa chỉ
+                            </summary>
+                            <div class="p-4 pt-2 space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Tỉnh / Thành phố</label>
+                                        <select id="store-profile-province-select" class="w-full border border-pink-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:border-pink-400">
+                                            <option value="">Đang tải...</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Quận / Huyện</label>
+                                        <select id="store-profile-district-select" class="w-full border border-pink-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:border-pink-400">
+                                            <option value="">-- Chọn Tỉnh trước --</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Phường / Xã</label>
+                                        <select id="store-profile-ward-select" class="w-full border border-pink-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:border-pink-400">
+                                            <option value="">-- Chọn Quận trước --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600 mb-1">Số nhà, tên đường</label>
+                                    <input id="store-profile-street-input" type="text" placeholder="VD: 123 Đường Nguyễn Huệ" class="w-full border border-pink-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:border-pink-400">
+                                </div>
+                            </div>
+                        </details>
+                        <textarea id="vendor-store-profile-description" rows="4" placeholder="Mô tả ngắn" class="w-full border border-pink-200 rounded-xl px-4 py-3"></textarea>
+                        <div class="flex justify-end">
+                            <button id="vendor-store-profile-submit" type="submit" class="px-5 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold">Lưu thông tin</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section id="vendor-tab-products" class="hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-pink-700">Quản lý sản phẩm</h3>
+                        <button onclick="createVendorProduct()" class="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold">+ Thêm sản phẩm</button>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-3 mb-4">
+                        <input id="vendor-products-search" type="text" placeholder="Tìm sản phẩm..." class="w-full md:w-72 border border-pink-200 rounded-xl px-4 py-2">
+                        <select id="vendor-products-status-filter" class="w-full md:w-44 border border-pink-200 rounded-xl px-4 py-2 bg-white">
+                            <option value="all">Tất cả</option>
+                            <option value="in_stock">Còn hàng</option>
+                            <option value="out_of_stock">Hết hàng</option>
+                            <option value="hidden">Bị ẩn</option>
+                        </select>
+                        <select id="vendor-products-sort" class="w-full md:w-52 border border-pink-200 rounded-xl px-4 py-2 bg-white">
+                            <option value="newest">Mới nhất</option>
+                            <option value="price_asc">Giá tăng dần</option>
+                            <option value="price_desc">Giá giảm dần</option>
+                            <option value="stock_desc">Tồn kho cao nhất</option>
+                            <option value="stock_asc">Tồn kho thấp nhất</option>
+                            <option value="name_asc">Tên A-Z</option>
+                        </select>
+                        <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-pink-200 bg-white text-sm text-gray-700">
+                            <input id="vendor-products-instock-only" type="checkbox" class="rounded text-pink-500"> Chỉ còn hàng
+                        </label>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-pink-50 text-gray-700">
+                                    <th class="py-3 px-2 text-left">Sản phẩm</th>
+                                    <th class="py-3 px-2 text-left">Giá</th>
+                                    <th class="py-3 px-2 text-left">Tồn kho</th>
+                                    <th class="py-3 px-2 text-left">Trạng thái</th>
+                                    <th class="py-3 px-2 text-left">Kiểm duyệt</th>
+                                    <th class="py-3 px-2 text-left">Danh mục</th>
+                                    <th class="py-3 px-2 text-left">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vendor-products-table-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="vendor-tab-vouchers" class="hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-pink-700">Quản lý khuyến mãi</h3>
+                        <button onclick="createVendorVoucher()" class="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold">+ Tạo khuyến mãi</button>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-3 mb-4">
+                        <input id="vendor-vouchers-search" type="text" placeholder="Tìm mã hoặc tên..." class="w-full md:w-72 border border-pink-200 rounded-xl px-4 py-2">
+                        <select id="vendor-vouchers-status-filter" class="w-full md:w-44 border border-pink-200 rounded-xl px-4 py-2 bg-white">
+                            <option value="all">Tất cả</option>
+                            <option value="running">Đang chạy</option>
+                            <option value="upcoming">Sắp diễn ra</option>
+                            <option value="ended">Đã kết thúc</option>
+                        </select>
+                        <select id="vendor-vouchers-sort" class="w-full md:w-52 border border-pink-200 rounded-xl px-4 py-2 bg-white">
+                            <option value="newest">Mới nhất</option>
+                            <option value="end_asc">Sắp hết hạn</option>
+                            <option value="start_desc">Bắt đầu gần nhất</option>
+                            <option value="discount_desc">Giảm giá cao nhất</option>
+                            <option value="code_asc">Mã A-Z</option>
+                        </select>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-pink-50 text-gray-700">
+                                    <th class="py-3 px-2 text-left">Mã</th>
+                                    <th class="py-3 px-2 text-left">Tên</th>
+                                    <th class="py-3 px-2 text-left">Giảm</th>
+                                    <th class="py-3 px-2 text-left">Thời gian</th>
+                                    <th class="py-3 px-2 text-left">Trạng thái</th>
+                                    <th class="py-3 px-2 text-left">Phạm vi</th>
+                                    <th class="py-3 px-2 text-left">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vendor-vouchers-table-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="vendor-tab-report" class="hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-pink-700">Báo cáo bán hàng</h3>
+                        <button id="vendor-report-refresh-btn" onclick="refreshVendorReport()" class="px-3 py-2 rounded-lg border border-pink-300 text-pink-700 text-sm font-semibold hover:bg-pink-50">
+                            <i class="fa-solid fa-rotate-right mr-1"></i>Làm mới báo cáo
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white/90 border border-pink-100 rounded-xl p-4">
+                            <p class="text-sm text-gray-500">Tổng doanh thu</p>
+                            <p id="vendor-report-total-revenue" class="text-2xl font-black text-pink-700">0₫</p>
+                        </div>
+                        <div class="bg-white/90 border border-pink-100 rounded-xl p-4">
+                            <p class="text-sm text-gray-500">Tổng đơn</p>
+                            <p id="vendor-report-total-orders" class="text-2xl font-black text-pink-700">0</p>
+                        </div>
+                        <div class="bg-white/90 border border-pink-100 rounded-xl p-4">
+                            <p class="text-sm text-gray-500">Tỷ lệ hủy</p>
+                            <p id="vendor-report-cancel-rate" class="text-2xl font-black text-pink-700">0%</p>
+                        </div>
+                        <div class="bg-white/90 border border-pink-100 rounded-xl p-4">
+                            <p class="text-sm text-gray-500">Sản phẩm đã bán</p>
+                            <p id="vendor-report-total-items" class="text-2xl font-black text-pink-700">0</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <div class="bg-white/80 rounded-xl border border-pink-100 p-4">
+                            <h4 class="font-bold text-pink-700 mb-2">Top sản phẩm</h4>
+                            <ul id="vendor-report-top-products" class="text-sm text-gray-700"></ul>
+                        </div>
+                        <div class="lg:col-span-2 bg-white/80 rounded-xl border border-pink-100 p-4 overflow-x-auto">
+                            <h4 class="font-bold text-pink-700 mb-3">Đơn gần đây</h4>
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-pink-50 text-gray-700">
+                                        <th class="py-2 px-2 text-left">Đơn hàng</th>
+                                        <th class="py-2 px-2 text-left">Ngày</th>
+                                        <th class="py-2 px-2 text-left">Trạng thái</th>
+                                        <th class="py-2 px-2 text-left">Thanh toán</th>
+                                        <th class="py-2 px-2 text-right">Số tiền</th>
+                                        <th class="py-2 px-2 text-center">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vendor-report-orders-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
             </div>
 
             <div id="view-orders" class="glass-card p-10 hide">
@@ -632,179 +1134,465 @@
                     <div class="text-center mb-10" id="order-success-msg">
                         <div class="text-7xl mb-4 float-animation">🎉</div>
                         <h2 class="text-4xl font-black text-pink-800 mb-2">ĐẶT HÀNG THÀNH CÔNG!</h2>
-                        <p class="text-lg text-gray-600">Cảm ơn bạn đã tin tưởng mua sắm tại Intelishop</p>
+                        <p class="text-lg text-gray-600">Cảm ơn bạn đã tin tưởng mua sắm tại Intellishop</p>
                     </div>
 
                     <div id="orders-list-container" class="space-y-6 max-w-4xl mx-auto mt-8"></div>
 
-                        <h3 class="font-bold text-lg text-gray-800 mb-6"><i class="fa-solid fa-route text-pink-500 mr-2"></i>Tình trạng đơn hàng</h3>
-
-                        <div class="relative py-4">
-                            <div class="absolute top-1/2 left-0 w-full h-2 bg-gray-200 rounded-full -translate-y-1/2"></div>
-                            <div class="absolute top-1/2 left-0 w-1/3 h-2 bg-gradient-to-r from-green-400 to-pink-500 rounded-full -translate-y-1/2 transition-all duration-1000"></div>
-
-                            <div class="relative flex justify-between">
-                                <div class="flex flex-col items-center">
-                                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg border-4 border-white z-10"><i class="fa-solid fa-check"></i></div>
-                                    <span class="mt-3 font-bold text-green-600 text-sm text-center">Đã xác nhận</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="w-12 h-12 bg-pink-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg border-4 border-white z-10 animate-bounce"><i class="fa-solid fa-box-open"></i></div>
-                                    <span class="mt-3 font-bold text-pink-600 text-sm text-center">Đang đóng gói</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="w-12 h-12 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center text-xl border-4 border-white z-10"><i class="fa-solid fa-truck-fast"></i></div>
-                                    <span class="mt-3 font-semibold text-gray-500 text-sm text-center">Đang giao</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="w-12 h-12 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center text-xl border-4 border-white z-10"><i class="fa-solid fa-house"></i></div>
-                                    <span class="mt-3 font-semibold text-gray-500 text-sm text-center">Hoàn thành</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-10 text-center">
-                            <button onclick="showHome()" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-10 py-4 rounded-full font-bold hover:shadow-xl transition transform hover:-translate-y-1">
-                                <i class="fa-solid fa-bag-shopping mr-2"></i> Tiếp tục mua sắm
-                            </button>
-                        </div>
+                    <div class="mt-10 text-center">
+                        <button onclick="showHome()" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-10 py-4 rounded-full font-bold hover:shadow-xl transition transform hover:-translate-y-1">
+                            <i class="fa-solid fa-bag-shopping mr-2"></i> Tiếp tục mua sắm
+                        </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- ═══ ADMIN DASHBOARD VIEW ═══ -->
+            <div id="view-admin-dashboard" class="glass-card p-8 hide mt-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-3xl font-black text-purple-800"><i class="fa-solid fa-shield-halved mr-2"></i>Trung tâm Quản trị</h2>
+                        <p class="text-sm text-gray-600 mt-1">Quản lý tài khoản, phê duyệt, hỗ trợ và báo cáo hệ thống.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="admin-tab-btn-accounts" onclick="loadAdminTab('accounts')" class="px-4 py-2 rounded-xl border border-purple-300 text-purple-700 font-semibold hover:bg-purple-50 transition">Tài khoản</button>
+                        <button id="admin-tab-btn-support" onclick="loadAdminTab('support')" class="px-4 py-2 rounded-xl border border-purple-300 text-purple-700 font-semibold hover:bg-purple-50 transition">Hỗ trợ</button>
+                        <button id="admin-tab-btn-reports" onclick="loadAdminTab('reports')" class="px-4 py-2 rounded-xl border border-purple-300 text-purple-700 font-semibold hover:bg-purple-50 transition">Báo cáo</button>
+                    </div>
+                </div>
+
+                <!-- ── Tab: Tài khoản & Phê duyệt ── -->
+                <section id="admin-tab-accounts">
+                    <!-- Quản lý tài khoản -->
+                    <h3 class="text-xl font-bold text-purple-700 mb-4"><i class="fa-solid fa-users mr-2"></i>Quản lý tài khoản</h3>
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        <input id="admin-users-q" type="text" placeholder="Tìm theo tên hoặc email..." class="border border-purple-200 rounded-xl px-4 py-2 bg-white focus:outline-none focus:border-purple-400 w-64">
+                        <select id="admin-users-role-filter" class="border border-purple-200 rounded-xl px-4 py-2 bg-white focus:outline-none focus:border-purple-400">
+                            <option value="">Tất cả vai trò</option>
+                            <option value="CUSTOMER">Customer</option>
+                            <option value="VENDOR">Vendor</option>
+                            <option value="SHIPPER">Shipper</option>
+                            <option value="ADMIN">Admin</option>
+                        </select>
+                        <button onclick="loadAdminUsers()" class="px-4 py-2 rounded-xl bg-purple-600 text-white font-semibold hover:bg-purple-700 transition"><i class="fa-solid fa-magnifying-glass mr-1"></i>Tìm</button>
+                    </div>
+                    <div class="overflow-x-auto bg-white/80 rounded-2xl border border-purple-100 p-4 mb-8">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b-2 border-purple-100 text-left text-purple-700 font-bold">
+                                    <th class="py-2 px-2">ID</th>
+                                    <th class="py-2 px-2">Họ tên</th>
+                                    <th class="py-2 px-2">Email</th>
+                                    <th class="py-2 px-2">Vai trò</th>
+                                    <th class="py-2 px-2">Trạng thái</th>
+                                    <th class="py-2 px-2">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-table-body">
+                                <tr><td colspan="6" class="py-4 px-2 text-gray-500 text-center">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Phê duyệt sản phẩm -->
+                    <h3 class="text-xl font-bold text-purple-700 mb-4"><i class="fa-solid fa-box-open mr-2"></i>Sản phẩm chờ duyệt</h3>
+                    <div class="overflow-x-auto bg-white/80 rounded-2xl border border-purple-100 p-4 mb-8">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b-2 border-purple-100 text-left text-purple-700 font-bold">
+                                    <th class="py-2 px-2">ID</th>
+                                    <th class="py-2 px-2">Tên sản phẩm</th>
+                                    <th class="py-2 px-2">Cửa hàng</th>
+                                    <th class="py-2 px-2">Giá</th>
+                                    <th class="py-2 px-2">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-pending-products-body">
+                                <tr><td colspan="5" class="py-4 px-2 text-gray-500 text-center">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Đơn đăng ký Vendor -->
+                    <h3 class="text-xl font-bold text-purple-700 mb-4"><i class="fa-solid fa-store mr-2"></i>Đơn đăng ký người bán</h3>
+                    <div class="overflow-x-auto bg-white/80 rounded-2xl border border-purple-100 p-4 mb-8">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b-2 border-purple-100 text-left text-purple-700 font-bold">
+                                    <th class="py-2 px-2">ID</th>
+                                    <th class="py-2 px-2">Tên cửa hàng</th>
+                                    <th class="py-2 px-2">Email</th>
+                                    <th class="py-2 px-2">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-vendor-apps-body">
+                                <tr><td colspan="4" class="py-4 px-2 text-gray-500 text-center">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Đơn đăng ký Shipper -->
+                    <h3 class="text-xl font-bold text-purple-700 mb-4"><i class="fa-solid fa-truck mr-2"></i>Đơn đăng ký vận chuyển</h3>
+                    <div class="overflow-x-auto bg-white/80 rounded-2xl border border-purple-100 p-4">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b-2 border-purple-100 text-left text-purple-700 font-bold">
+                                    <th class="py-2 px-2">ID</th>
+                                    <th class="py-2 px-2">Công ty</th>
+                                    <th class="py-2 px-2">Email</th>
+                                    <th class="py-2 px-2">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-shipper-apps-body">
+                                <tr><td colspan="4" class="py-4 px-2 text-gray-500 text-center">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ── Tab: Hỗ trợ ── -->
+                <section id="admin-tab-support" class="hide">
+                    <h3 class="text-xl font-bold text-purple-700 mb-4"><i class="fa-solid fa-headset mr-2"></i>Ticket hỗ trợ</h3>
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        <select id="admin-ticket-status-filter" class="border border-purple-200 rounded-xl px-4 py-2 bg-white focus:outline-none focus:border-purple-400">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="OPEN">Mở</option>
+                            <option value="IN_PROGRESS">Đang xử lý</option>
+                            <option value="RESOLVED">Đã giải quyết</option>
+                        </select>
+                        <select id="admin-ticket-role-filter" class="border border-purple-200 rounded-xl px-4 py-2 bg-white focus:outline-none focus:border-purple-400">
+                            <option value="">Tất cả vai trò</option>
+                            <option value="CUSTOMER">Customer</option>
+                            <option value="VENDOR">Vendor</option>
+                            <option value="SHIPPER">Shipper</option>
+                        </select>
+                        <button onclick="loadAdminSupportTickets()" class="px-4 py-2 rounded-xl bg-purple-600 text-white font-semibold hover:bg-purple-700 transition"><i class="fa-solid fa-filter mr-1"></i>Lọc</button>
+                    </div>
+                    <div class="overflow-x-auto bg-white/80 rounded-2xl border border-purple-100 p-4">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b-2 border-purple-100 text-left text-purple-700 font-bold">
+                                    <th class="py-2 px-2">Mã</th>
+                                    <th class="py-2 px-2">Người gửi</th>
+                                    <th class="py-2 px-2">Loại</th>
+                                    <th class="py-2 px-2">Nội dung</th>
+                                    <th class="py-2 px-2">Trạng thái</th>
+                                    <th class="py-2 px-2">Phản hồi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-support-tickets-body">
+                                <tr><td colspan="6" class="py-4 px-2 text-gray-500 text-center">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ── Tab: Báo cáo ── -->
+                <section id="admin-tab-reports" class="hide">
+                    <h3 class="text-xl font-bold text-purple-700 mb-4"><i class="fa-solid fa-chart-line mr-2"></i>Tổng quan hệ thống</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white/80 rounded-2xl border border-purple-100 p-5 text-center">
+                            <p class="text-sm text-gray-500 mb-1">Tổng đơn hàng</p>
+                            <p id="admin-report-total-orders" class="text-3xl font-black text-purple-700">0</p>
+                        </div>
+                        <div class="bg-white/80 rounded-2xl border border-purple-100 p-5 text-center">
+                            <p class="text-sm text-gray-500 mb-1">Khiếu nại</p>
+                            <p id="admin-report-complaints" class="text-3xl font-black text-red-600">0</p>
+                        </div>
+                        <div class="bg-white/80 rounded-2xl border border-purple-100 p-5 text-center">
+                            <p class="text-sm text-gray-500 mb-1">Yêu cầu hỗ trợ</p>
+                            <p id="admin-report-support" class="text-3xl font-black text-blue-600">0</p>
+                        </div>
+                        <div class="bg-white/80 rounded-2xl border border-purple-100 p-5 text-center">
+                            <p class="text-sm text-gray-500 mb-1">Đánh giá TB</p>
+                            <p id="admin-report-rating" class="text-3xl font-black text-yellow-600">0</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-purple-700 mb-4"><i class="fa-solid fa-table mr-2"></i>Dữ liệu 7 ngày gần nhất</h3>
+                    <div class="overflow-x-auto bg-white/80 rounded-2xl border border-purple-100 p-4 mb-8">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b-2 border-purple-100 text-left text-purple-700 font-bold">
+                                    <th class="py-2 px-2">Ngày</th>
+                                    <th class="py-2 px-2">Đơn hàng</th>
+                                    <th class="py-2 px-2">Ticket hỗ trợ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-report-series-body">
+                                <tr><td colspan="3" class="py-4 px-2 text-center text-gray-500">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-purple-700 mb-4"><i class="fa-solid fa-star mr-2"></i>Phản hồi hệ thống</h3>
+                    <div class="overflow-x-auto bg-white/80 rounded-2xl border border-purple-100 p-4">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b-2 border-purple-100 text-left text-purple-700 font-bold">
+                                    <th class="py-2 px-2">Người dùng</th>
+                                    <th class="py-2 px-2">Đánh giá</th>
+                                    <th class="py-2 px-2">Nhận xét</th>
+                                    <th class="py-2 px-2">Ngày</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-system-reviews-body">
+                                <tr><td colspan="4" class="py-4 px-2 text-center text-gray-500">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
 
         </main>
 
-<!--        <div id="ai-chat-widget" class="fixed bottom-6 right-6 z-[100]">-->
+        <!-- ═══ ALL POPUP MODALS — outside <main> to escape stacking context ═══ -->
 
-<!--            <div id="avatar-container" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] pointer-events-none z-[60]"></div>-->
-<!--            <button onclick="toggleChat()" id="chat-toggle-btn" class="bg-gradient-to-r from-pink-600 to-purple-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-transform relative z-50">-->
-<!--                <i class="fa-solid fa-robot"></i>-->
-<!--            </button>-->
-<!--        -->
-<!--            <div id="chat-window" class="hidden absolute bottom-20 right-0 w-[calc(100vw-3rem)] sm:w-96 bg-white/90 backdrop-blur-xl border border-pink-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col" style="height: 500px;">-->
-<!--                <div class="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 flex justify-between items-center shadow-md">-->
-<!--                    <div class="flex items-center space-x-3">-->
-<!--                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl backdrop-blur-sm">-->
-<!--                            <i class="fa-solid fa-wand-magic-sparkles"></i>-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <div class="font-bold text-lg">Trợ lý AI</div>-->
-<!--                            <div class="text-xs text-pink-100 flex items-center">-->
-<!--                                <span class="w-2 h-2 bg-green-400 rounded-full mr-1 animate-pulse"></span> Đang trực tuyến-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <button onclick="toggleChat()" class="text-white hover:text-pink-200 transition"><i class="fa-solid fa-xmark text-xl"></i></button>-->
-<!--                </div>-->
-<!--        -->
-<!--                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gradient-to-b from-pink-50/50 to-white">-->
-<!--                    <div class="flex items-start space-x-2">-->
-<!--                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0"><i class="fa-solid fa-robot"></i></div>-->
-<!--                        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 max-w-[85%] border border-pink-100">-->
-<!--                            Chào bạn! Mình là trợ lý AI của Intelishop. Nhập chiều cao, cân nặng hoặc phong cách bạn thích, mình sẽ gợi ý món đồ phù hợp nhất nhé! ✨-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--        -->
-<!--                <div class="p-3 bg-white border-t border-pink-100 flex items-center">-->
-<!--                    <input type="text" id="chat-input" placeholder="Ví dụ: Mình cao 1m6, 50kg, thích phong cách năng động..." class="flex-1 bg-pink-50/50 border border-pink-100 rounded-full px-4 py-3 text-sm focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition" onkeypress="handleChatKeyPress(event)">-->
-<!--                    <button onclick="sendChatMessage()" class="ml-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white w-11 h-11 rounded-full flex items-center justify-center hover:shadow-lg transition transform hover:scale-105 shrink-0">-->
-<!--                        <i class="fa-solid fa-paper-plane"></i>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-        <button onclick="toggleAIPanel()" id="chat-toggle-btn" class="fixed bottom-6 right-6 bg-gradient-to-r from-pink-600 to-purple-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-transform z-[100]">
-            <i class="fa-solid fa-robot"></i>
-        </button>
-
-        <div id="ai-side-panel" class="fixed top-0 right-0 w-full sm:w-[400px] h-screen bg-white/95 backdrop-blur-xl border-l border-pink-200 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[100] flex flex-col">
-
-            <div class="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 flex justify-between items-center shadow-md shrink-0">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl backdrop-blur-sm">
-                        <i class="fa-solid fa-headset"></i>
-                    </div>
-                    <div>
-                        <div class="font-bold text-lg">Chuyên viên AI</div>
-                        <div class="text-xs text-pink-100 flex items-center">
-                            <span class="w-2 h-2 bg-green-400 rounded-full mr-1 animate-pulse"></span> Đang trực tuyến
+        <div id="product-detail-modal" class="hidden fixed inset-0 z-[200] bg-black/50 p-4 flex items-center justify-center">
+            <div class="w-full max-w-2xl bg-white rounded-2xl border border-pink-100 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-pink-100 shrink-0">
+                    <h3 class="text-xl font-black text-pink-700">Chi tiết sản phẩm</h3>
+                    <button onclick="closeProductDetail()" class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 hover:text-pink-600 hover:bg-pink-50 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div class="overflow-y-auto custom-scrollbar">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 p-5">
+                        <div>
+                            <img id="product-detail-image" src="" alt="Product" class="w-full h-72 object-cover rounded-xl border border-pink-100 bg-gray-50">
+                        </div>
+                        <div class="space-y-3">
+                            <h4 id="product-detail-name" class="text-2xl font-black text-gray-800"></h4>
+                            <p id="product-detail-category" class="text-xs font-semibold text-pink-600 uppercase"></p>
+                            <p id="product-detail-price" class="text-2xl font-black text-pink-700"></p>
+                            <p id="product-detail-store" class="text-sm text-gray-600"></p>
+                            <p id="product-detail-stock" class="text-sm text-gray-600"></p>
+                            <p id="product-detail-description" class="text-sm text-gray-700 leading-relaxed"></p>
+                            <div class="pt-2">
+                                <button id="product-detail-add-cart" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold">Thêm vào giỏ</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <button onclick="toggleAIPanel()" class="text-white hover:text-pink-200 transition">
-                    <i class="fa-solid fa-xmark text-2xl"></i>
-                </button>
-            </div>
-
-            <div id="avatar-container" class="h-1/2 w-full relative bg-gradient-to-b from-pink-50 to-white overflow-hidden flex items-center justify-center border-b border-pink-100">
-                </div>
-
-            <div id="chat-interface" class="h-1/2 flex flex-col bg-white shrink-0">
-                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4">
-                    <div class="flex items-start space-x-2">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white text-xs shrink-0"><i class="fa-solid fa-robot"></i></div>
-                        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 max-w-[85%] border border-pink-100">
-                            Chào bạn! Mình là chuyên viên tư vấn của Intelishop. Bạn cần tìm trang phục cho dịp nào ạ? ✨
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-3 bg-white border-t border-pink-100 flex items-center shrink-0">
-                    <button id="mic-btn" onclick="toggleVoiceRecording()" class="mr-2 text-pink-500 w-11 h-11 rounded-full flex items-center justify-center hover:bg-pink-50 transition border border-pink-200 shrink-0">
-                <i class="fa-solid fa-microphone"></i>
-            </button>
-                    <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." class="flex-1 bg-pink-50/50 border border-pink-100 rounded-full px-4 py-3 text-sm focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition" onkeypress="handleChatKeyPress(event)">
-                    <button onclick="sendChatMessage()" class="ml-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white w-11 h-11 rounded-full flex items-center justify-center hover:shadow-lg transition transform hover:scale-105 shrink-0">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
                 </div>
             </div>
         </div>
 
-        <footer class="glass mt-12 py-8 relative z-10">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div id="vendor-product-modal" class="hidden fixed inset-0 z-[200] bg-black/40 p-4 flex items-center justify-center">
+            <div class="w-full max-w-lg bg-white rounded-2xl border border-pink-100 shadow-2xl">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-pink-50 shrink-0">
+                    <h4 id="vendor-product-modal-title" class="text-xl font-black text-pink-700">Thêm sản phẩm</h4>
+                    <button onclick="closeVendorProductModal()" class="text-gray-500 hover:text-pink-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-pink-50 transition"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="vendor-product-form" class="space-y-4 p-6 overflow-y-auto custom-scrollbar">
+                    <input id="vendor-product-name" type="text" required placeholder="Tên sản phẩm" class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                    <textarea id="vendor-product-description" rows="3" placeholder="Mô tả" class="w-full border border-pink-200 rounded-xl px-4 py-3"></textarea>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <input id="vendor-product-price" type="number" min="0" step="1" required placeholder="Giá bán" class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                        <input id="vendor-product-stock" type="number" min="0" step="1" required placeholder="Tồn kho" class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                    </div>
+                    <select id="vendor-product-category" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white">
+                        <option value="">Chọn danh mục</option>
+                    </select>
                     <div>
-                        <h3 class="font-bold text-pink-800 mb-4 flex items-center">
-                            <span class="text-2xl mr-2">🦋</span>
-                            INTELISHOP
-                        </h3>
-                        <p class="text-sm text-gray-600">123-456-7890</p>
-                        <p class="text-sm text-gray-600">support@intelishop.com</p>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Ảnh sản phẩm</label>
+                        <input id="vendor-product-image" type="file" accept="image/*" class="w-full border border-pink-200 rounded-xl px-2 py-2 bg-white text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 transition">
+                        <img id="vendor-product-image-preview" src="" alt="Product preview" class="hidden mt-3 w-24 h-24 object-cover rounded-lg border border-pink-100">
+                    </div>
+                    <select id="vendor-product-status" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white">
+                        <option value="in_stock">Còn hàng</option>
+                        <option value="out_of_stock">Hết hàng</option>
+                        <option value="hidden">Bị ẩn</option>
+                    </select>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="closeVendorProductModal()" class="px-4 py-2 rounded-lg border border-pink-200 text-pink-700 font-semibold">Hủy</button>
+                        <button id="vendor-product-submit" type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold">Lưu sản phẩm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="vendor-voucher-modal" class="hidden fixed inset-0 z-[200] bg-black/40 p-4 flex items-center justify-center">
+            <div class="w-full max-w-lg bg-white rounded-2xl p-6 border border-pink-100 shadow-2xl">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 id="vendor-voucher-modal-title" class="text-xl font-black text-pink-700">Tạo khuyến mãi</h4>
+                    <button onclick="closeVendorVoucherModal()" class="text-gray-500 hover:text-pink-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="vendor-voucher-form" class="space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <input id="vendor-voucher-code" type="text" required placeholder="Mã (VD: SALE10)" class="w-full border border-pink-200 rounded-xl px-4 py-3 uppercase">
+                        <input id="vendor-voucher-name" type="text" required placeholder="Tên chương trình" class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <select id="vendor-voucher-discount-type" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white">
+                            <option value="percent">Giảm theo %</option>
+                            <option value="fixed">Giảm số tiền</option>
+                        </select>
+                        <input id="vendor-voucher-discount-value" type="number" min="0" step="1" required placeholder="Giá trị giảm" class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <input id="vendor-voucher-start" type="date" required class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                        <input id="vendor-voucher-end" type="date" required class="w-full border border-pink-200 rounded-xl px-4 py-3">
+                    </div>
+                    <select id="vendor-voucher-scope" class="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white">
+                        <option value="store">Toàn shop</option>
+                        <option value="selected_products">Sản phẩm cụ thể</option>
+                    </select>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="closeVendorVoucherModal()" class="px-4 py-2 rounded-lg border border-pink-200 text-pink-700 font-semibold">Hủy</button>
+                        <button id="vendor-voucher-submit" type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold">Lưu khuyến mãi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="shipper-order-detail-modal" class="hidden fixed inset-0 z-[200] bg-black/50 p-4 flex items-center justify-center">
+            <div class="w-full max-w-xl bg-white rounded-2xl border border-pink-100 shadow-2xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-black text-pink-700">Chi tiết đơn giao</h3>
+                    <button onclick="closeShipperOrderDetail()" class="text-gray-500 hover:text-pink-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="shipper-order-detail-content" class="text-sm text-gray-700 space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- ═══ AI PANEL SYSTEM — outside <main> to prevent stacking context issues ═══ -->
+        <div id="ai-panel-backdrop" class="hidden fixed inset-0 bg-black/25 backdrop-blur-[1px] z-[90]" onclick="toggleAIPanel()"></div>
+
+        <button onclick="toggleAIPanel()" id="chat-toggle-btn" class="fixed bottom-4 right-4 bg-white/90 border h-14 px-4 rounded-2xl shadow-lg flex items-center gap-3 hover:shadow-xl transition-all z-[100]">
+            <span class="w-9 h-9 rounded-full border-2 border-pink-200 inline-flex items-center justify-center bg-gradient-to-br from-pink-500 to-purple-500">
+                <i class="fa-solid fa-robot text-white text-sm"></i>
+            </span>
+            <span class="text-sm font-bold text-slate-800">Trợ lý AI</span>
+            <i id="chat-toggle-icon" class="fa-solid fa-chevron-up text-pink-600"></i>
+        </button>
+
+        <div id="ai-side-panel" class="ai-mode-compact fixed bottom-2 right-2 md:right-4 md:w-[980px] h-[calc(100vh-1rem)] md:h-[min(860px,calc(100vh-2rem))] bg-white/95 backdrop-blur-xl border shadow-2xl rounded-2xl transform translate-x-full transition-all duration-300 ease-in-out z-[100] flex flex-col overflow-hidden">
+
+            <!-- Panel Header -->
+            <div class="shrink-0 px-4 py-3 flex justify-between items-center border-b" style="border-color: #d9e3f0; background: linear-gradient(180deg, #ffffff, #f8fafc);">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full border border-pink-200 inline-flex items-center justify-center bg-gradient-to-br from-pink-500 to-purple-600 shadow-sm">
+                        <i class="fa-solid fa-robot text-white text-sm"></i>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-pink-700 mb-3">Hệ thống cửa hàng</h4>
+                        <div class="font-black text-lg leading-none text-slate-900">Trợ lý Intellishop</div>
+                        <div class="text-xs text-slate-500 mt-0.5">Không gian chat thông minh</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-pink-600 transition" title="Thông báo">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                    <button onclick="clearChatHistory()" class="w-9 h-9 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition" title="Xóa lịch sử trò chuyện">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    <button id="ai-expand-btn" onclick="toggleAIPanelExpand()" class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-pink-600 transition" title="Mở rộng bố cục">
+                        <i id="ai-expand-icon" class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                    </button>
+                    <button onclick="toggleAIPanel()" class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-pink-600 transition" title="Đóng">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="ai-panel-workspace" class="flex-1 min-h-0">
+
+                <!-- Column 1: VR Avatar -->
+                <section id="ai-vr-column" class="relative overflow-hidden" style="background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 60%, #fff 100%);">
+                    <div id="avatar-container" class="absolute inset-0"></div>
+                    <div class="absolute left-3 top-3 px-3 py-1 text-xs font-bold text-slate-700 rounded-full shadow-sm pointer-events-none" style="background: rgba(255,255,255,0.92); border: 1px solid #d9e3f0;">
+                        <i class="fa-solid fa-robot mr-1 text-pink-600"></i>Intellishop Assistant
+                    </div>
+                </section>
+
+                <!-- Column 2: Chat Interface -->
+                <section id="chat-interface" class="flex flex-col min-h-0" style="background: linear-gradient(180deg, rgba(248,250,252,0.8), rgba(255,255,255,0.98));">
+                    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4" style="background: transparent;" aria-live="polite">
+                        <div class="flex items-start space-x-2">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs shrink-0 shadow-sm" style="background: linear-gradient(135deg, #ec4899, #a855f7);">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="p-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-slate-700 max-w-[85%]" style="background: rgba(255,255,255,0.95); border: 1px solid #d9e3f0;">
+                                Chào bạn! Mình là chuyên viên tư vấn của Intellishop. Bạn cần tìm trang phục cho dịp nào ạ? ✨
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 shrink-0 flex items-center gap-2" style="border-top: 1px solid #d9e3f0; background: rgba(255,255,255,0.98);">
+                        <button id="mic-btn" onclick="toggleVoiceRecording()" class="mr-1 text-pink-600 w-11 h-11 rounded-full flex items-center justify-center hover:bg-pink-50 transition shrink-0" style="border: 1px solid #f3c7de;">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                        <input type="text" id="chat-input" placeholder="Hỏi Intellishop AI..." class="flex-1 rounded-full px-4 py-3 text-sm focus:outline-none transition" style="background: #fff; border: 1px solid #cfd9e7;" onkeypress="handleChatKeyPress(event)">
+                        <button onclick="sendChatMessage()" class="ml-1 w-11 h-11 rounded-full flex items-center justify-center transition transform hover:scale-105 shrink-0 shadow-md" style="background: linear-gradient(135deg, #ec4899, #a855f7);">
+                            <i class="fa-solid fa-paper-plane text-white"></i>
+                        </button>
+                    </div>
+                    <div class="text-center text-slate-400 text-xs py-1.5" style="border-top: 1px solid #e4ebf5; background: rgba(255,255,255,0.95);">
+                        <i class="fa-solid fa-sparkles mr-1"></i>AI tư vấn thông minh · thông tin mang tính tham khảo
+                    </div>
+                </section>
+
+                <!-- Column 3: Gợi ý sản phẩm -->
+                <aside id="ai-context-column" class="min-h-0" style="display:flex; flex-direction:column; background: linear-gradient(180deg, rgba(248,250,252,0.95), rgba(255,255,255,0.98)); border-left: 1px solid #d9e3f0;">
+                    <div class="shrink-0 p-4" style="border-bottom: 1px solid #d9e3f0; background: linear-gradient(180deg, #f8fafc, #eef2ff);">
+                        <p class="text-xs font-black uppercase tracking-widest text-pink-600 mb-1">Sản phẩm phù hợp</p>
+                        <p id="ai-intent-label" class="text-sm font-semibold text-slate-800 truncate">Chưa có câu hỏi</p>
+                    </div>
+                    <div id="ai-suggested-products" class="flex-1 min-h-0 p-3 overflow-y-auto custom-scrollbar"></div>
+                    <section id="ai-product-detail-panel" class="hidden shrink-0 p-3 border-t overflow-y-auto" style="border-color:#d9e3f0; background: rgba(255,255,255,0.98); max-height: 40%;">
+                        <div id="ai-product-detail-content"></div>
+                    </section>
+                </aside>
+
+            </div>
+        </div>
+
+        <footer class="glass mt-12 py-10 relative z-0 footer-shell">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr] gap-8">
+                    <div>
+                        <h3 class="font-black text-pink-800 mb-4 flex items-center text-xl">
+                            <span class="text-2xl mr-2">🦋</span>
+                            INTELLISHOP
+                        </h3>
+                        <p class="text-sm text-gray-600 leading-6">Nền tảng mua sắm đa gian hàng dành cho thời trang, công nghệ và trải nghiệm mua sắm thông minh cùng AI tư vấn.</p>
+                        <div class="mt-4 space-y-2 text-sm text-gray-600">
+                            <p><i class="fa-solid fa-phone mr-2 text-pink-500"></i>1900 6886</p>
+                            <p><i class="fa-regular fa-envelope mr-2 text-pink-500"></i>support@intellishop.vn</p>
+                            <p><i class="fa-solid fa-location-dot mr-2 text-pink-500"></i>ĐHQG TP.HCM, Thủ Đức, Việt Nam</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-pink-700 mb-3">Khám phá</h4>
                         <ul class="space-y-2 text-sm text-gray-600">
-                            <li>Fashion Forward</li>
-                            <li>Street Style</li>
-                            <li>Luxury Collection</li>
-                            <li>Apple Store</li>
-                            <li>Samsung Store</li>
+                            <li><a href="#deal-hot-section" onclick="showHome()" class="hover:text-pink-600 transition">Deal hot hôm nay</a></li>
+                            <li><a href="#" onclick="showCart()" class="hover:text-pink-600 transition">Giỏ hàng</a></li>
+                            <li><a href="#" onclick="showOrders()" class="hover:text-pink-600 transition">Đơn hàng của tôi</a></li>
+                            <li><a href="#" onclick="showAccount()" class="hover:text-pink-600 transition">Tài khoản</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-pink-700 mb-3">Hỗ trợ</h4>
+                        <h4 class="font-semibold text-pink-700 mb-3">Hỗ trợ mua sắm</h4>
                         <ul class="space-y-2 text-sm text-gray-600">
-                            <li>Trung tâm hỗ trợ</li>
                             <li>Chính sách đổi trả</li>
-                            <li>Hướng dẫn mua hàng</li>
-                            <li>Phương thức vận chuyển</li>
+                            <li>Hướng dẫn thanh toán COD</li>
+                            <li>Đơn vị vận chuyển đối tác</li>
+                            <li>Hỗ trợ AI tư vấn sản phẩm</li>
                         </ul>
                     </div>
                     <div>
                         <h4 class="font-semibold text-pink-700 mb-3">Kết nối</h4>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="#" class="text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#" class="text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-tiktok"></i></a>
-                            <a href="#" class="text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-youtube"></i></a>
+                        <div class="flex space-x-4 mb-5">
+                            <a href="#" class="footer-social text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="#" class="footer-social text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="footer-social text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-tiktok"></i></a>
+                            <a href="#" class="footer-social text-2xl text-pink-600 hover:text-pink-800"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                        <div class="bg-white/70 rounded-2xl border border-pink-100 p-4">
+                            <p class="text-sm font-semibold text-gray-700">Mẹo nhanh</p>
+                            <p class="text-sm text-gray-500 mt-1">Chỉ sản phẩm còn tồn kho mới có thể thêm vào giỏ và thanh toán.</p>
                         </div>
                     </div>
                 </div>
                 <div class="text-center text-sm text-gray-500 mt-8 pt-4 border-t border-pink-200">
-                    © 2026 Intelishop. All rights reserved. 5 Stores System.
+                    © 2026 Intellishop. All rights reserved. Nền tảng mua sắm đa gian hàng thông minh.
                 </div>
             </div>
 </footer>
@@ -821,5 +1609,8 @@
 
         <script type="module" src="avatar.js"></script>
         <script type="module" src="js/main.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
     </body>
 </html>
+<!--admin@example.com / admin123456-->
+
